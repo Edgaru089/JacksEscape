@@ -33,6 +33,15 @@
     <ClInclude Include="util\vector.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Component_Physics.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="util\queue.c">
@@ -43,6 +52,9 @@
     </ClCompile>
     <ClCompile Include="util\vector.c">
       <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Types.c">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

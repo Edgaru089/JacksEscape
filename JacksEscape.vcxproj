@@ -127,6 +127,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Component_Physics.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Types.h" />
     <ClInclude Include="util\minmax.h" />
     <ClInclude Include="util\queue.h" />
     <ClInclude Include="util\tree.h" />
@@ -134,6 +137,7 @@
     <ClInclude Include="util\vector.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Types.c" />
     <ClCompile Include="util\queue.c" />
     <ClCompile Include="util\tree.c" />
     <ClCompile Include="util\vector.c" />
