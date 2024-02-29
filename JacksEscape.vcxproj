@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClCompile Include="Types.c" />
 	<ClCompile Include="Component_Physics.c" />
+	<ClCompile Include="Physics_Move.c" />
     <ClCompile Include="util\queue.c" />
     <ClCompile Include="util\tree.c" />
     <ClCompile Include="util\vector.c" />

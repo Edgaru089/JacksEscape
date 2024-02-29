@@ -12,6 +12,18 @@
 double physics_Gravity = 5.0;
 
 
+Box2 physics_HitboxAbsolute(Component_Hitbox *hitbox) {
+	Entity *super = hitbox->super;
+	if (!super->position)
+		return hitbox->box;
+	else {
+		Box2 box    = hitbox->box;
+		box.lefttop = vec2_Add(box.lefttop, super->position->position);
+		return box;
+	}
+}
+
+
 System_Physics *physics_NewSystem() {
 	System_Physics *sys = malloc(sizeof(System_Physics));
 
@@ -43,9 +55,13 @@ void physics_DeleteEntity(System_Physics *sys, uintptr_t id) {
 }
 
 
-inline void _physics_AdvanceEntity(Entity *e, Duration deltaTime) {
-	if (!e->position)
-		return;
+// Defined in Physics_Move.c
+void _physics_MoveX(System_Physics *sys, Entity *e, Duration deltaTime);
+void _physics_MoveY(System_Physics *sys, Entity *e, Duration deltaTime);
+
+
+inline void _physics_AdvanceEntity(System_Physics *sys, Entity *e, Duration deltaTime) {
+	ASSERT(e->position && "_physics_AdvanceEntity() called on entity with no position");
 
 	// Short path
 	if (!e->hitbox || e->hitbox->fixed) {
@@ -59,6 +75,8 @@ inline void _physics_AdvanceEntity(Entity *e, Duration deltaTime) {
 	}
 
 	// Long path
+	_physics_MoveX(sys, e, deltaTime);
+	_physics_MoveY(sys, e, deltaTime);
 }
 
 
@@ -81,6 +99,6 @@ void physics_Advance(System_Physics *sys, Duration deltaTime) {
 		 i != NULL;
 		 i = tree_Node_Next(i)) {
 		Component_Position *pos = *((Component_Position **)i->data);
-		_physics_AdvanceEntity(pos->super, deltaTime);
+		_physics_AdvanceEntity(sys, pos->super, deltaTime);
 	}
 }

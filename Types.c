@@ -55,3 +55,16 @@ bool box2_Intersects(const Box2 x, const Box2 y, Box2 *out_intersection) {
 		return false;
 	}
 }
+
+Box2 box2_Offset(Box2 box, Vec2 offset) {
+	box.lefttop = vec2_Add(box.lefttop, offset);
+	return box;
+}
+Box2 box2_OffsetX(Box2 box, double offsetX) {
+	box.lefttop.x += offsetX;
+	return box;
+}
+Box2 box2_OffsetY(Box2 box, double offsetY) {
+	box.lefttop.y += offsetY;
+	return box;
+}

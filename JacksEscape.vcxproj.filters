@@ -59,5 +59,8 @@
 	<ClCompile Include="Component_Physics.c">
       <Filter>源文件</Filter>
     </ClCompile>
+	<ClCompile Include="Physics_Move.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -33,6 +33,9 @@ typedef struct {
 	bool    fixed;
 } Component_Hitbox;
 
+// Returns the absolute version of the hitbox.
+Box2 physics_HitboxAbsolute(Component_Hitbox *hitbox);
+
 
 // Physics manager
 typedef struct {
