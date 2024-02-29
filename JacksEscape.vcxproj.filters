@@ -36,7 +36,7 @@
     <ClInclude Include="Entity.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Component_Physics.h">
+    <ClInclude Include="Physics_Component.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Types.h">
@@ -56,10 +56,10 @@
     <ClCompile Include="Types.c">
       <Filter>源文件</Filter>
     </ClCompile>
-	<ClCompile Include="Component_Physics.c">
+    <ClCompile Include="Physics_Component.c">
       <Filter>源文件</Filter>
     </ClCompile>
-	<ClCompile Include="Physics_Move.c">
+    <ClCompile Include="Physics_Move.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

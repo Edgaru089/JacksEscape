@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Component_Physics.h" />
+    <ClInclude Include="Physics_Component.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="util\minmax.h" />
@@ -138,8 +138,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Types.c" />
-	<ClCompile Include="Component_Physics.c" />
-	<ClCompile Include="Physics_Move.c" />
+    <ClCompile Include="Physics_Component.c" />
+    <ClCompile Include="Physics_Move.c" />
     <ClCompile Include="util\queue.c" />
     <ClCompile Include="util\tree.c" />
     <ClCompile Include="util\vector.c" />
