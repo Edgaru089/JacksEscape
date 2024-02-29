@@ -1,5 +1,5 @@
 
-#include "Component_Physics.h"
+#include "Physics_Component.h"
 #include "Entity.h"
 #include "Types.h"
 #include "util/tree.h"

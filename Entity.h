@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 #include "util/vector.h"
-#include "Component_Physics.h"
+#include "Physics_Component.h"
 
 
 #ifdef __cplusplus
