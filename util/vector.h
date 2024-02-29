@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,6 +27,14 @@ void vector_Destroy(vector_Vector *vec);
 //
 // Returns a pointer to data.
 void *vector_Push(vector_Vector *vec, const void *data);
+
+// Pop pops one object at the back of the vector.
+//
+// If out_data is not NULL, the popped data is copied.
+//
+// If the vector is already empty, return false.
+// Returns true otherwise.
+bool vector_Pop(vector_Vector *vec, void *out_data);
 
 // Append pushes multiple objects at the back of the buffer.
 //

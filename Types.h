@@ -29,6 +29,14 @@ typedef struct {
 bool box2_Intersects(const Box2 x, const Box2 y, Box2 *out_intersection);
 
 
+typedef struct {
+	uint64_t microseconds;
+} Duration;
+
+static inline double duration_Seconds(const Duration t) { return ((double)t.microseconds) / 1000.0 / 1000.0; }
+static inline double duration_Milliseconds(const Duration t) { return ((double)t.microseconds) / 1000.0; }
+
+
 #ifdef __cplusplus
 }
 #endif

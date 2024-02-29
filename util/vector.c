@@ -36,6 +36,18 @@ void *vector_Push(vector_Vector *vec, const void *data) {
 	return vec->data + vec->size - vec->objectSize;
 }
 
+bool vector_Pop(vector_Vector *vec, void *out_data) {
+	if (!vector_Size(vec))
+		return false;
+
+	if (out_data)
+		memcpy(out_data, vec->data + (vec->size - vec->objectSize), vec->objectSize);
+
+	vector_Resize(vec, vector_Size(vec) - 1);
+
+	return true;
+}
+
 void vector_Append(vector_Vector *vec, const void *data, uintptr_t n) {
 	uintptr_t oldsize = vec->size, addsize = vec->objectSize * n;
 	vector_Resize(vec, oldsize + addsize);

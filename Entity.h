@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include "util/vector.h"
+#include "Component_Physics.h"
 
 
 #ifdef __cplusplus
@@ -10,12 +11,15 @@ extern "C" {
 
 
 // Entity.
-typedef struct {
-	uintptr_t type;
+typedef struct _Entity {
+	uintptr_t   id;
+	uintptr_t   type;
 	const char *name;
 
-} Entity;
+	Component_Position *position;
+	Component_Hitbox   *hitbox;
 
+} Entity;
 
 
 #ifdef __cplusplus
