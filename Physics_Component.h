@@ -16,12 +16,18 @@ typedef struct _Entity Entity;
 extern double physics_Gravity;
 
 
+// Position component.
+//
+// If not exist, it's like it's at (0,0)
 typedef struct {
 	Entity *super;
 	Vec2    position;
 	Vec2    velocity;
 } Component_Position;
 
+
+// Handler called when hitboxes are hit
+typedef void (*physics_HitHandler)(Entity *me, Entity *other, Vec2 triedDelta);
 
 // Box is relative to Position if exists
 // if not, Box is absolute
@@ -31,6 +37,8 @@ typedef struct {
 	Entity *super;
 	Box2    box;
 	bool    fixed;
+
+	physics_HitHandler onHit;
 } Component_Hitbox;
 
 // Returns the absolute version of the hitbox.

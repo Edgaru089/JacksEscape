@@ -68,3 +68,11 @@ Box2 box2_OffsetY(Box2 box, double offsetY) {
 	box.lefttop.y += offsetY;
 	return box;
 }
+
+
+Duration duration_Now() {
+	// TODO Use Windows.h
+	// Reference: https://github.com/SFML/SFML/blob/2.6.x/src/SFML/System/Win32/ClockImpl.cpp
+	Duration d = {.microseconds = 0};
+	return d;
+}

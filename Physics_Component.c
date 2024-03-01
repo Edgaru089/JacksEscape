@@ -60,7 +60,7 @@ void _physics_MoveX(System_Physics *sys, Entity *e, Duration deltaTime);
 void _physics_MoveY(System_Physics *sys, Entity *e, Duration deltaTime);
 
 
-inline void _physics_AdvanceEntity(System_Physics *sys, Entity *e, Duration deltaTime) {
+static inline void _physics_AdvanceEntity(System_Physics *sys, Entity *e, Duration deltaTime) {
 	ASSERT(e->position && "_physics_AdvanceEntity() called on entity with no position");
 
 	// Short path
