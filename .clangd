@@ -1,0 +1,9 @@
+If:
+  PathMatch: [.*\.h, .*\.c] 
+CompileFlags:
+  Add: [-xc, -I/home/edgar/Codes/JacksEscape/easyx/include, -target, x86_64-pc-windows-gnu]
+---
+If:
+  PathMatch: [.*\.hpp, .*\.cpp] 
+CompileFlags:
+  Add: [-xc++, -I/home/edgar/Codes/JacksEscape/easyx/include, -target, x86_64-pc-windows-gnu]
