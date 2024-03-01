@@ -40,17 +40,20 @@ Box2 box2_OffsetY(Box2 box, double offsetY);
 
 // Time duration.
 typedef struct {
-	uint64_t microseconds;
+	int64_t microseconds;
 } Duration;
 
 static inline double duration_Seconds(const Duration t) { return ((double)t.microseconds) / 1000.0 / 1000.0; }
 static inline double duration_Milliseconds(const Duration t) { return ((double)t.microseconds) / 1000.0; }
 
-// Returns a relative duration since
-// a static time point in the past.
-//
-// Its absolute value has no meaning.
-Duration duration_Now();
+// A Time point since the start of the program.
+typedef struct {
+	int64_t microseconds;
+} TimePoint;
+
+TimePoint time_Now();
+Duration  time_Since(TimePoint prev);
+Duration  time_Difference(TimePoint now, TimePoint prev);
 
 
 #ifdef __cplusplus

@@ -37,7 +37,7 @@ endif
 
 export INCLUDEFLAGS := $(Platform_INCLUDEFLAGS)
 
-export CPPFLAGS =
+export CPPFLAGS = -DWIN32_LEAN_AND_MEAN
 export CFLAGS   = $(INCLUDEFLAGS) $(BUILD_OPTIONS) -O2 -Wno-attributes -flto
 export CXXFLAGS = $(INCLUDEFLAGS) -DHELOS $(BUILD_OPTIONS) $(Platform_CXXFLAGS) -O2 -Wno-unused-result -flto -std=c++17
 export LDFLAGS  = $(Platform_LDFLAGS) -s -O2 -flto

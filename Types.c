@@ -1,5 +1,6 @@
 
 #include "Types.h"
+#include <windows.h>
 
 static inline double dmin(double x, double y) {
 	return x < y ? x : y;
@@ -70,9 +71,28 @@ Box2 box2_OffsetY(Box2 box, double offsetY) {
 }
 
 
-Duration duration_Now() {
-	// TODO Use Windows.h
+static double freqInverse = 0.0;
+
+TimePoint time_Now() {
 	// Reference: https://github.com/SFML/SFML/blob/2.6.x/src/SFML/System/Win32/ClockImpl.cpp
-	Duration d = {.microseconds = 0};
+
+	if (freqInverse == 0.0) {
+		LARGE_INTEGER freq;
+		QueryPerformanceFrequency(&freq);
+		freqInverse = 1000000.0 / ((double)freq.QuadPart);
+	}
+
+	LARGE_INTEGER time;
+	QueryPerformanceCounter(&time);
+
+	TimePoint t = {.microseconds = (int64_t)(((double)time.QuadPart) * freqInverse)};
+	return t;
+}
+
+Duration time_Since(TimePoint prev) {
+	return time_Difference(time_Now(), prev);
+}
+Duration time_Difference(TimePoint now, TimePoint prev) {
+	Duration d = {.microseconds = now.microseconds - prev.microseconds};
 	return d;
 }
