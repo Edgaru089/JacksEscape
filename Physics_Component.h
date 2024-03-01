@@ -27,7 +27,8 @@ typedef struct {
 
 
 // Handler called when hitboxes are hit
-typedef void (*physics_HitHandler)(Entity *me, Entity *other, Vec2 triedDelta);
+typedef void (*physics_HitHandler)(Entity *me, Entity *other, Vec2 triedDelta, void *data);
+
 
 // Box is relative to Position if exists
 // if not, Box is absolute
@@ -39,21 +40,25 @@ typedef struct {
 	bool    fixed;
 
 	physics_HitHandler onHit;
+	void              *onHitData;
 } Component_Hitbox;
 
 // Returns the absolute version of the hitbox.
 Box2 physics_HitboxAbsolute(Component_Hitbox *hitbox);
 
 
+typedef struct _App App;
+
 // Physics manager
 typedef struct {
+	App *super;
 	// Every Position & Hitbox components
 	tree_Tree     *pos, *hit;
 	vector_Vector *flaggedDelete;
 } System_Physics;
 
 // Returns an empty physics system.
-System_Physics *physics_NewSystem();
+System_Physics *physics_NewSystem(App *super);
 // Frees a physics system.
 void physics_DeleteSystem(System_Physics *sys);
 

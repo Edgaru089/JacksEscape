@@ -24,8 +24,9 @@ Box2 physics_HitboxAbsolute(Component_Hitbox *hitbox) {
 }
 
 
-System_Physics *physics_NewSystem() {
+System_Physics *physics_NewSystem(App *super) {
 	System_Physics *sys = malloc(sizeof(System_Physics));
+	sys->super          = super;
 
 	sys->pos           = tree_Create(sizeof(uintptr_t));
 	sys->hit           = tree_Create(sizeof(uintptr_t));

@@ -9,6 +9,8 @@ static inline double dmax(double x, double y) {
 	return x > y ? x : y;
 }
 
+const double EPS = 1e-6;
+
 
 Vec2 vec2_Add(Vec2 x, Vec2 y) {
 	Vec2 result = {

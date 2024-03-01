@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "util/vector.h"
 #include "Physics_Component.h"
+#include "Player_Component.h"
 
 
 #ifdef __cplusplus
@@ -12,13 +13,12 @@ extern "C" {
 
 // Entity.
 typedef struct _Entity {
-	uintptr_t   id;
-	uintptr_t   type;
-	const char *name;
+	uintptr_t id;
+	char     *name;
 
 	Component_Position *position;
 	Component_Hitbox   *hitbox;
-
+	Component_Player   *player;
 } Entity;
 
 

@@ -46,7 +46,11 @@ static inline bool input_IsPressed(input_KeyState state) { return state == Press
 static inline bool input_IsReleased(input_KeyState state) { return state == Released || state == JustReleased; }
 
 
+typedef struct _App App;
+
 typedef struct {
+	App *super;
+
 	input_KeyState keys[input_Key_Count];         // States of keys
 	unsigned int   systemKeymap[input_Key_Count]; // Which system key (VK code) this function uses
 												  // https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
@@ -55,7 +59,7 @@ typedef struct {
 
 // Creates a new input system.
 // Uses a default keymap
-System_Input *input_NewSystem();
+System_Input *input_NewSystem(App *super);
 void          input_DeleteSystem(System_Input *sys);
 
 // Sets the keymaps to default.

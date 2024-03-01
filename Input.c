@@ -1,5 +1,6 @@
 
 #include "Input.h"
+#include "App.h"
 
 #include <stdlib.h>
 #include <windows.h>
@@ -16,8 +17,9 @@ void input_SetDefaultKeymap(System_Input *sys) {
 	sys->systemKeymap[input_Key_Use]    = 'L';
 }
 
-System_Input *input_NewSystem() {
+System_Input *input_NewSystem(App *super) {
 	System_Input *sys = malloc(sizeof(System_Input));
+	sys->super        = super;
 	return sys;
 }
 

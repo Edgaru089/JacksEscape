@@ -55,6 +55,9 @@ TimePoint time_Now();
 Duration  time_Since(TimePoint prev);
 Duration  time_Difference(TimePoint now, TimePoint prev);
 
+// 1e-6
+extern const double EPS;
+
 
 #ifdef __cplusplus
 }

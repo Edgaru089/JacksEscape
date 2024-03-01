@@ -7,15 +7,13 @@
 #include <stdlib.h>
 
 
-static const double EPS = 1e-6;
-
 static inline double dabs(double x) {
 	return x < 0 ? -x : x;
 }
 
-static inline void call_hithandler(Entity *me, Entity *other, Vec2 triedDelta) {
+static inline void call_hithandler(Entity *me, Entity *other, Vec2 triedDelta, void *data) {
 	if (me->hitbox->onHit)
-		me->hitbox->onHit(me, other, triedDelta);
+		me->hitbox->onHit(me, other, triedDelta, data);
 }
 
 
@@ -34,7 +32,7 @@ void _physics_MoveX(System_Physics *sys, Entity *e, Duration deltaTime) {
 			continue;
 
 		if (box2_Intersects(tohit, box2_OffsetX(mybox, delta), NULL)) {
-			call_hithandler(e, tohit_comp->super, vec2(delta, 0));
+			call_hithandler(e, tohit_comp->super, vec2(delta, 0), e->hitbox->onHitData);
 			if (delta > 0) {
 				// Moves right, hits left edge
 				double maxdelta = tohit.lefttop.x - mybox.lefttop.x - mybox.size.x;
