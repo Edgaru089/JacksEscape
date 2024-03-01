@@ -1,0 +1,49 @@
+
+.SILENT:
+
+
+FLAGS_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
+SELF_DIR   = $(dir $@)
+
+export RM = rm
+export CP = cp
+
+export AR1 := x86_64-w64-mingw32-ar
+export AS1 := x86_64-w64-mingw32-as
+export CC1 := x86_64-w64-mingw32-cc
+export CXX1 := x86_64-w64-mingw32-c++
+export LD1 := x86_64-w64-mingw32-cc
+
+export AR   = echo "  AR    $<" && $(AR1)
+export AS   = echo "  AS    $^" && $(AS1)
+export CC   = echo "  CC    $^" && $(CC1)
+export CXX  = echo "  CXX   $^" && $(CXX1)
+export LD   = echo "  LD    $@" && $(LD1)
+export FASM = echo "  FASM  $^" && fasm >/dev/null
+
+
+# halt&cache fire if windows
+ifneq (, $(findstring mingw,$(shell $(CC1) -dumpmachine)))
+export Platform_CXXFLAGS      :=
+export Platform_LDFLAGS       := -L$(FLAGS_DIR)/easyx/lib64
+export Platform_LDLIBS        := -leasyx -lgdi32 -limm32 -lwinmm -lopengl32
+export Platform_INCLUDEFLAGS  := -I$(FLAGS_DIR)/easyx/include
+else
+export Platform_CXXFLAGS      :=
+export Platform_LDFLAGS       :=
+export Platform_LDLIBS        :=
+export Platform_INCLUDEFLAGS  :=
+endif
+
+export INCLUDEFLAGS := $(Platform_INCLUDEFLAGS)
+
+export CPPFLAGS =
+export CFLAGS   = $(INCLUDEFLAGS) $(BUILD_OPTIONS) -O2 -Wno-attributes -flto
+export CXXFLAGS = $(INCLUDEFLAGS) -DHELOS $(BUILD_OPTIONS) $(Platform_CXXFLAGS) -O2 -Wno-unused-result -flto -std=c++17
+export LDFLAGS  = $(Platform_LDFLAGS) -s -O2 -flto
+export LDLIBS   = $(Platform_LDLIBS) -lm -lstdc++
+
+# Pattern rule for FASM assembly
+%.o: %.S
+	$(FASM) $^ $@
+
