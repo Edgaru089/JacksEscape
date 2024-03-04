@@ -53,8 +53,7 @@ typedef struct _App App;
 typedef struct {
 	App *super;
 	// Every Position & Hitbox components
-	tree_Tree     *pos, *hit;
-	vector_Vector *flaggedDelete;
+	tree_Tree *pos, *hit;
 } System_Physics;
 
 // Returns an empty physics system.

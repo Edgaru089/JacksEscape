@@ -36,10 +36,10 @@ const char *input_KeyNames[input_Key_Count] = {
 
 // States a key might in
 typedef enum {
-	Pressed,
-	JustPressed,
 	Released,
-	JustReleased
+	JustReleased,
+	Pressed,
+	JustPressed
 } input_KeyState;
 
 static inline bool input_IsPressed(input_KeyState state) { return state == Pressed || state == JustPressed; }

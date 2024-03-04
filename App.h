@@ -11,6 +11,7 @@ typedef struct _App {
 	System_Physics *physics;
 	System_Player  *player;
 	System_Input   *input;
+	System_Entity  *entity;
 } App;
 
 App *app_NewApp();

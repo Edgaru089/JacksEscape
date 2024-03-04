@@ -19,7 +19,9 @@ void input_SetDefaultKeymap(System_Input *sys) {
 
 System_Input *input_NewSystem(App *super) {
 	System_Input *sys = malloc(sizeof(System_Input));
-	sys->super        = super;
+	memset(sys, 0, sizeof(System_Input));
+	sys->super = super;
+	input_SetDefaultKeymap(sys);
 	return sys;
 }
 

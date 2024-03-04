@@ -28,9 +28,8 @@ System_Physics *physics_NewSystem(App *super) {
 	System_Physics *sys = malloc(sizeof(System_Physics));
 	sys->super          = super;
 
-	sys->pos           = tree_Create(sizeof(uintptr_t));
-	sys->hit           = tree_Create(sizeof(uintptr_t));
-	sys->flaggedDelete = vector_Create(sizeof(uintptr_t));
+	sys->pos = tree_Create(sizeof(uintptr_t));
+	sys->hit = tree_Create(sizeof(uintptr_t));
 
 	return sys;
 }
@@ -38,7 +37,6 @@ System_Physics *physics_NewSystem(App *super) {
 void physics_DeleteSystem(System_Physics *sys) {
 	tree_Destroy(sys->pos);
 	tree_Destroy(sys->hit);
-	vector_Destroy(sys->flaggedDelete);
 }
 
 
@@ -52,7 +50,13 @@ void physics_AddEntity(System_Physics *sys, Entity *e) {
 }
 
 void physics_DeleteEntity(System_Physics *sys, uintptr_t id) {
-	vector_Push(sys->flaggedDelete, &id);
+	tree_Node *n;
+	n = tree_FindNode(sys->pos, id);
+	if (n)
+		tree_Delete(sys->pos, n);
+	n = tree_FindNode(sys->hit, id);
+	if (n)
+		tree_Delete(sys->hit, n);
 }
 
 
@@ -82,20 +86,6 @@ static inline void _physics_AdvanceEntity(System_Physics *sys, Entity *e, Durati
 
 
 void physics_Advance(System_Physics *sys, Duration deltaTime) {
-	// Delete flagged entities
-	while (vector_Size(sys->flaggedDelete)) {
-		uintptr_t id;
-		vector_Pop(sys->flaggedDelete, &id);
-
-		tree_Node *n;
-		n = tree_FindNode(sys->pos, id);
-		if (n)
-			tree_Delete(sys->pos, n);
-		n = tree_FindNode(sys->hit, id);
-		if (n)
-			tree_Delete(sys->hit, n);
-	}
-
 	for (tree_Node *i = tree_FirstNode(sys->pos);
 		 i != NULL;
 		 i = tree_Node_Next(i)) {

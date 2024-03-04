@@ -1,9 +1,9 @@
 If:
   PathMatch: [.*\.h, .*\.c] 
 CompileFlags:
-  Add: [-xc, -DWIN32_LEAN_AND_MEAN, -I/home/edgar/Codes/JacksEscape/easyx/include, -target, x86_64-pc-windows-gnu]
+  Add: [-xc, -Wall, -DWIN32_LEAN_AND_MEAN, -I/home/edgar/Codes/JacksEscape/easyx/include, -target, x86_64-pc-windows-gnu]
 ---
 If:
   PathMatch: [.*\.hpp, .*\.cpp] 
 CompileFlags:
-  Add: [-xc++, -DWIN32_LEAN_AND_MEAN, -I/home/edgar/Codes/JacksEscape/easyx/include, -target, x86_64-pc-windows-gnu]
+  Add: [-xc++, -Wall, -DWIN32_LEAN_AND_MEAN, -I/home/edgar/Codes/JacksEscape/easyx/include, -target, x86_64-pc-windows-gnu]
