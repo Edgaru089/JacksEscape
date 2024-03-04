@@ -67,7 +67,7 @@ void _physics_MoveY(System_Physics *sys, Entity *e, Duration deltaTime) {
 			continue;
 
 		if (box2_Intersects(tohit, box2_OffsetY(mybox, delta), NULL)) {
-			call_hithandler(e, tohit_comp->super, vec2(0, delta));
+			call_hithandler(e, tohit_comp->super, vec2(0, delta), e->hitbox->onHitData);
 			if (delta > 0) {
 				// Moves down, hits top edge
 				double maxdelta = tohit.lefttop.y - mybox.lefttop.y - mybox.size.y;
