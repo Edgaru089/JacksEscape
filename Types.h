@@ -43,10 +43,12 @@ typedef struct {
 	int64_t microseconds;
 } Duration;
 
-static inline double duration_Seconds(const Duration t) { return ((double)t.microseconds) / 1000.0 / 1000.0; }
+static inline double duration_Seconds(const Duration t) { return ((double)t.microseconds) / 1000000.0; }
 static inline double duration_Milliseconds(const Duration t) { return ((double)t.microseconds) / 1000.0; }
+// This function has a precision of at most 1ms under Windows. Sad
+void duration_Sleep(const Duration t);
 
-// A Time point since the start of the program.
+// A Time point, counted since a fixed point in the past.
 typedef struct {
 	int64_t microseconds;
 } TimePoint;
@@ -54,6 +56,7 @@ typedef struct {
 TimePoint time_Now();
 Duration  time_Since(TimePoint prev);
 Duration  time_Difference(TimePoint now, TimePoint prev);
+Duration  time_Reset(TimePoint *prev);
 
 // 1e-6
 extern const double EPS;

@@ -15,6 +15,8 @@ App *app_NewApp() {
 	app->player  = player_NewSystem(app);
 	app->entity  = entity_NewSystem(app);
 
+	app->wantQuit = false;
+
 	return app;
 }
 

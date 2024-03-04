@@ -1,6 +1,8 @@
 
 #include "Types.h"
+#include <math.h>
 #include <windows.h>
+#include <timeapi.h>
 
 static inline double dmin(double x, double y) {
 	return x < y ? x : y;
@@ -75,6 +77,19 @@ Box2 box2_OffsetY(Box2 box, double offsetY) {
 
 static double freqInverse = 0.0;
 
+
+void duration_Sleep(const Duration t) {
+	if (t.microseconds <= 0)
+		return;
+	// https://learn.microsoft.com/zh-cn/windows/win32/api/timeapi/nf-timeapi-timebeginperiod
+	// timeBeginPeriod() and friends
+	TIMECAPS tc;
+	timeGetDevCaps(&tc, sizeof(TIMECAPS));
+	timeBeginPeriod(tc.wPeriodMin);
+	Sleep((DWORD)(round(duration_Milliseconds(t)))); // Only millisecond precision. Sad
+	timeEndPeriod(tc.wPeriodMin);
+}
+
 TimePoint time_Now() {
 	// Reference: https://github.com/SFML/SFML/blob/2.6.x/src/SFML/System/Win32/ClockImpl.cpp
 
@@ -96,5 +111,11 @@ Duration time_Since(TimePoint prev) {
 }
 Duration time_Difference(TimePoint now, TimePoint prev) {
 	Duration d = {.microseconds = now.microseconds - prev.microseconds};
+	return d;
+}
+Duration time_Reset(TimePoint *prev) {
+	TimePoint now = time_Now();
+	Duration  d   = time_Difference(now, *prev);
+	*prev         = now;
 	return d;
 }

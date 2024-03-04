@@ -19,19 +19,12 @@ typedef enum {
 	input_Key_Attack,
 	input_Key_Spell,
 	input_Key_Use,
+	input_Key_Escape,
 	input_Key_Count
 } input_Key;
 
 // Names for input_Key
-const char *input_KeyNames[input_Key_Count] = {
-	"Left",
-	"Right",
-	"Up",
-	"Down",
-	"Jump",
-	"Attack",
-	"Spell",
-	"Use"};
+extern const char *input_KeyNames[input_Key_Count];
 
 
 // States a key might in

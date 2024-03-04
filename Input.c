@@ -3,8 +3,20 @@
 #include "App.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <windows.h>
 
+
+const char *input_KeyNames[input_Key_Count] = {
+	"Left",
+	"Right",
+	"Up",
+	"Down",
+	"Jump",
+	"Attack",
+	"Spell",
+	"Use",
+	"Escape"};
 
 void input_SetDefaultKeymap(System_Input *sys) {
 	sys->systemKeymap[input_Key_Up]     = 'W';
@@ -15,6 +27,7 @@ void input_SetDefaultKeymap(System_Input *sys) {
 	sys->systemKeymap[input_Key_Attack] = 'J';
 	sys->systemKeymap[input_Key_Spell]  = 'K';
 	sys->systemKeymap[input_Key_Use]    = 'L';
+	sys->systemKeymap[input_Key_Escape] = VK_ESCAPE;
 }
 
 System_Input *input_NewSystem(App *super) {
@@ -36,9 +49,10 @@ void input_Advance(System_Input *sys) {
 		// Checks the most significiant bit (of the SHORT returned)
 		if ((GetAsyncKeyState(sys->systemKeymap[i]) & 0x8000) != 0) {
 			// Pressed
-			if (sys->keys[i] == JustReleased || sys->keys[i] == Released)
+			if (sys->keys[i] == JustReleased || sys->keys[i] == Released) {
+				fprintf(stderr, "[input_Advance] Key %s pressed\n", input_KeyNames[i]);
 				sys->keys[i] = JustPressed;
-			else
+			} else
 				sys->keys[i] = Pressed;
 		} else {
 			// Released
@@ -47,5 +61,10 @@ void input_Advance(System_Input *sys) {
 			else
 				sys->keys[i] = Released;
 		}
+	}
+
+	if (sys->keys[input_Key_Escape] == JustPressed) {
+		fprintf(stderr, "[input_Advance] Let's quit now!\n");
+		sys->super->wantQuit = true;
 	}
 }
