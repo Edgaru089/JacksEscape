@@ -16,6 +16,7 @@ static inline double dabs(double x) {
 System_Player *player_NewSystem(App *super) {
 	System_Player *sys = malloc(sizeof(System_Player));
 	sys->super         = super;
+	sys->player        = NULL;
 	return sys;
 }
 void player_DeleteSystem(System_Player *sys) {

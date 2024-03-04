@@ -5,6 +5,7 @@
 #include "util/tree.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 
 
 static inline double dabs(double x) {
@@ -35,10 +36,12 @@ void _physics_MoveX(System_Physics *sys, Entity *e, Duration deltaTime) {
 			call_hithandler(e, tohit_comp->super, vec2(delta, 0), e->hitbox->onHitData);
 			if (delta > 0) {
 				// Moves right, hits left edge
+				fprintf(stderr, "hit left edge");
 				double maxdelta = tohit.lefttop.x - mybox.lefttop.x - mybox.size.x;
 				delta           = maxdelta - EPS;
 			} else {
 				// Moves left, hits right edge
+				fprintf(stderr, "hit right edge");
 				double maxdelta = tohit.lefttop.x - mybox.lefttop.x + tohit.size.x;
 				delta           = maxdelta + EPS;
 			}
