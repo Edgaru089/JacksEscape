@@ -30,6 +30,12 @@ typedef struct _Entity {
 	void          *thinkerData; // Data managed by the Thinker, if exists.
 } Entity;
 
+#define ADD_COMPONENT(entity, component, value) \
+	do {                                        \
+		entity->component        = value;       \
+		entity->component->super = entity;      \
+	} while (false)
+
 
 typedef struct _App App;
 
@@ -46,7 +52,10 @@ System_Entity *entity_NewSystem(App *super);
 void           entity_DeleteSystem(System_Entity *sys);
 
 Entity *entity_Create(System_Entity *sys, const char *name);
-void    entity_Delete(System_Entity *sys, uintptr_t id);
+// After the Entity from Create is assigned its components,
+// it should be commited into the system via this function.
+void entity_Commit(System_Entity *sys, Entity *e);
+void entity_Delete(System_Entity *sys, uintptr_t id);
 
 void entity_Advance(System_Entity *sys, Duration deltaTime);
 

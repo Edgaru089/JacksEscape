@@ -24,7 +24,7 @@ App *app_NewApp();
 void app_DeleteApp(App *app);
 
 void app_Advance(App *app, Duration deltaTime);
-void app_Render();
+void app_Render(App *app);
 
 
 #ifdef __cplusplus

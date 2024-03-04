@@ -44,7 +44,8 @@ void physics_AddEntity(System_Physics *sys, Entity *e) {
 	if (e->position)
 		memcpy(tree_Insert(sys->pos, e->id, NULL), &e->position, sizeof(uintptr_t));
 	if (e->hitbox) {
-		ASSERT(!e->hitbox->fixed && !e->position && "Entity has non-Fixed Hitbox but no position");
+		if (!e->hitbox->fixed)
+			ASSERT(e->position && "Entity has non-Fixed Hitbox but no position");
 		memcpy(tree_Insert(sys->hit, e->id, NULL), &e->hitbox, sizeof(uintptr_t));
 	}
 }
@@ -85,11 +86,17 @@ static inline void _physics_AdvanceEntity(System_Physics *sys, Entity *e, Durati
 }
 
 
+static double gravity = 30;
+
 void physics_Advance(System_Physics *sys, Duration deltaTime) {
 	for (tree_Node *i = tree_FirstNode(sys->pos);
 		 i != NULL;
 		 i = tree_Node_Next(i)) {
 		Component_Position *pos = *((Component_Position **)i->data);
+
+		// if (pos->super->hitbox && !pos->super->hitbox->fixed)
+		// pos->velocity.y += gravity * duration_Seconds(deltaTime);
+
 		_physics_AdvanceEntity(sys, pos->super, deltaTime);
 	}
 }

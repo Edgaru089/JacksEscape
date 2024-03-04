@@ -42,6 +42,7 @@ void _physics_MoveX(System_Physics *sys, Entity *e, Duration deltaTime) {
 				double maxdelta = tohit.lefttop.x - mybox.lefttop.x + tohit.size.x;
 				delta           = maxdelta + EPS;
 			}
+			e->position->velocity.x = 0;
 		}
 
 		if (dabs(delta) < EPS)
@@ -77,6 +78,7 @@ void _physics_MoveY(System_Physics *sys, Entity *e, Duration deltaTime) {
 				double maxdelta = tohit.lefttop.y - mybox.lefttop.y + tohit.size.y;
 				delta           = maxdelta + EPS;
 			}
+			e->position->velocity.y = 0;
 		}
 
 		if (dabs(delta) < EPS)

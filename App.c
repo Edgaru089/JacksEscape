@@ -4,7 +4,20 @@
 #include "Input.h"
 #include "Physics_Component.h"
 #include "Player_Component.h"
+#include "Types.h"
 #include <stdlib.h>
+#include <stdio.h>
+
+
+static void _app_onHit(Entity *me, Entity *other, Vec2 triedDelta, void *data) {
+	fprintf(
+		stderr,
+		"[_app_onHit] Entity \"%s\" hit by \"%s\", delta: [%.2lf, %.2lf]\n",
+		me->name,
+		other->name,
+		triedDelta.x,
+		triedDelta.y);
+}
 
 
 App *app_NewApp() {
@@ -16,6 +29,33 @@ App *app_NewApp() {
 	app->entity  = entity_NewSystem(app);
 
 	app->wantQuit = false;
+
+
+	Entity *player = entity_Create(app->entity, "player");
+	ADD_COMPONENT(player, player, zero_malloc(sizeof(Component_Player)));
+	ADD_COMPONENT(player, position, zero_malloc(sizeof(Component_Position)));
+	player->position->position = vec2(500, 500);
+	player->position->velocity = vec2(0, 0);
+	ADD_COMPONENT(player, hitbox, zero_malloc(sizeof(Component_Hitbox)));
+	player->hitbox->box.lefttop = vec2(-20, -80);
+	player->hitbox->box.size    = vec2(40, 80);
+	entity_Commit(app->entity, player);
+
+	Entity *hit1 = entity_Create(app->entity, "hit1");
+	ADD_COMPONENT(hit1, hitbox, zero_malloc(sizeof(Component_Hitbox)));
+	hit1->hitbox->box.lefttop = vec2(200, 200);
+	hit1->hitbox->box.size    = vec2(100, 400);
+	hit1->hitbox->fixed       = true;
+	hit1->hitbox->onHit       = &_app_onHit;
+	entity_Commit(app->entity, hit1);
+
+	Entity *hit2 = entity_Create(app->entity, "hit2");
+	ADD_COMPONENT(hit2, hitbox, zero_malloc(sizeof(Component_Hitbox)));
+	hit2->hitbox->box.lefttop = vec2(700, 200);
+	hit2->hitbox->box.size    = vec2(100, 400);
+	hit2->hitbox->fixed       = true;
+	hit2->hitbox->onHit       = &_app_onHit;
+	entity_Commit(app->entity, hit2);
 
 	return app;
 }

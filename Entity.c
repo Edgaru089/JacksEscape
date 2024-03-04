@@ -64,6 +64,11 @@ Entity *entity_Create(System_Entity *sys, const char *name) {
 	return e;
 }
 
+void entity_Commit(System_Entity *sys, Entity *e) {
+	physics_AddEntity(sys->super->physics, e);
+	player_AddEntity(sys->super->player, e);
+}
+
 
 static inline void _entity_Delete(System_Entity *sys, uintptr_t id) {
 	tree_Node *node = tree_FindNode(sys->entities, id);

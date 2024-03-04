@@ -2,10 +2,19 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+
+static inline void *zero_malloc(size_t size) {
+	void *d = malloc(size);
+	memset(d, 0, size);
+	return d;
+}
 
 
 // A 2d vector of double.

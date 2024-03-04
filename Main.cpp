@@ -25,7 +25,10 @@ int main() {
 
 		app_Advance(app, time_Reset(&lastUpdate));
 
-		app_Render();
+		BeginBatchDraw();
+		cleardevice();
+		app_Render(app);
+		EndBatchDraw();
 
 		Duration toSleep = {.microseconds = 1000000 / 30 - time_Reset(&lastFrame).microseconds};
 		duration_Sleep(toSleep);

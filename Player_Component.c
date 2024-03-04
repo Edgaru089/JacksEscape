@@ -45,7 +45,7 @@ void player_DeleteEntity(System_Player *sys, uintptr_t id) {
 }
 
 
-static double walkSpeed = 2.0, jumpSpeed = 5.0;
+static double walkSpeed = 200.0, jumpSpeed = 500.0;
 static int    airjumpCount = 1;
 
 void player_Advance(System_Player *sys, Duration deltaTime) {
@@ -69,7 +69,7 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 	// Jump
 	if (sys->super->input->keys[input_Key_Jump] == JustPressed) {
 		if (sys->player->onGround || sys->player->jumpCount < airjumpCount)
-			sys->player->super->position->velocity.x = jumpSpeed;
+			sys->player->super->position->velocity.y = -jumpSpeed;
 		if (!sys->player->onGround) // Took the second clause, airjumped
 			sys->player->jumpCount++;
 	}
