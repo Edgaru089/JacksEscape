@@ -4,6 +4,7 @@
 #include "Physics_Component.h"
 #include "Player_Component.h"
 #include "Input.h"
+#include "Types.h"
 
 
 typedef struct _App {
@@ -11,3 +12,9 @@ typedef struct _App {
 	System_Player  *player;
 	System_Input   *input;
 } App;
+
+App *app_NewApp();
+void app_DeleteApp(App *app);
+
+void app_Advance(App *app, Duration deltaTime);
+void app_Render();
