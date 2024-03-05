@@ -19,6 +19,7 @@ typedef enum {
 	input_Key_Attack,
 	input_Key_Spell,
 	input_Key_Use,
+	input_Key_Dash,
 	input_Key_Escape,
 	input_Key_Count
 } input_Key;

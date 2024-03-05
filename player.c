@@ -4,6 +4,7 @@
 #include "app.h"
 #include "input.h"
 
+#include "types.h"
 #include "util/assert.h"
 #include <stdlib.h>
 
@@ -46,8 +47,9 @@ void player_DeleteEntity(System_Player *sys, uintptr_t id) {
 }
 
 
-static double walkSpeed = 300.0, jumpSpeed = 500.0;
-static int    airjumpCount = 1;
+static double   walkSpeed = 300.0, jumpSpeed = 800.0, dashSpeed = 1500.0;
+static int      airjumpCount = 1, airdashCount = 1;
+static Duration dashLength = {.microseconds = 150000}, dashCooldown = {.microseconds = 400000};
 
 void player_Advance(System_Player *sys, Duration deltaTime) {
 	if (!sys->player)
@@ -55,26 +57,54 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 	// The bulk of player logic right here
 	System_Input *input = sys->super->input;
 
+	if (sys->player->faceDirection != 1 && sys->player->faceDirection != -1)
+		sys->player->faceDirection = 1; // Face right by default
+
+
 	double targetVecX = 0.0;
 	// Move left/right
-	if (input_IsPressed(input->keys[input_Key_Left]))
+	if (input_IsPressed(input->keys[input_Key_Left])) {
+		sys->player->faceDirection = -1;
 		targetVecX += -walkSpeed;
-	if (input_IsPressed(input->keys[input_Key_Right]))
+	}
+	if (input_IsPressed(input->keys[input_Key_Right])) {
+		sys->player->faceDirection = 1;
 		targetVecX += walkSpeed;
+	}
 	sys->player->super->position->velocity.x = targetVecX;
 
 
+	// Jump
 	if (sys->player->onGround)
 		sys->player->jumpCount = 0;
-
-	// Jump
-	if (sys->super->input->keys[input_Key_Jump] == JustPressed) {
+	if (sys->super->input->keys[input_Key_Jump] == JustPressed ||
+		(sys->super->input->keys[input_Key_Jump] == Pressed && dabs(sys->player->super->position->velocity.y) < 5)) {
 		if (sys->player->onGround || sys->player->jumpCount < airjumpCount) {
-			sys->player->super->position->velocity.y = -jumpSpeed;
+			sys->player->storedSpeedY = -jumpSpeed;
 			if (!sys->player->onGround) // Took the second clause, airjumped
 				sys->player->jumpCount++;
 		}
 	}
+
+	// Dash
+	if (sys->player->onGround)
+		sys->player->dashCount = 0;
+	if (input_IsPressed(input->keys[input_Key_Dash]) &&
+		(sys->player->onGround || sys->player->dashCount < airdashCount) &&
+		time_Since(sys->player->lastDash).microseconds > dashCooldown.microseconds) {
+		sys->player->lastDash = time_Now();
+		if (!sys->player->onGround)
+			sys->player->dashCount++;
+	}
+	// Am I dashing right now?
+	if (time_Since(sys->player->lastDash).microseconds < dashLength.microseconds) {
+		sys->player->super->position->velocity.x += sys->player->faceDirection * dashSpeed;
+		sys->player->super->position->velocity.y = 0;
+	} else { // Release the stored Y speed
+		sys->player->super->position->velocity.y += sys->player->storedSpeedY;
+		sys->player->storedSpeedY = 0;
+	}
+
 
 	// Check OnGround again
 	if (dabs(sys->player->super->position->velocity.y) > EPS)

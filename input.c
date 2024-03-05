@@ -16,6 +16,7 @@ const char *input_KeyNames[input_Key_Count] = {
 	"Attack",
 	"Spell",
 	"Use",
+	"Dash",
 	"Escape"};
 
 void input_SetDefaultKeymap(System_Input *sys) {
@@ -27,6 +28,7 @@ void input_SetDefaultKeymap(System_Input *sys) {
 	sys->systemKeymap[input_Key_Attack] = 'J';
 	sys->systemKeymap[input_Key_Spell]  = 'K';
 	sys->systemKeymap[input_Key_Use]    = 'L';
+	sys->systemKeymap[input_Key_Dash]   = VK_OEM_1; // The ;: key on the US keyboard
 	sys->systemKeymap[input_Key_Escape] = VK_ESCAPE;
 }
 

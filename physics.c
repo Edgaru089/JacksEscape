@@ -86,7 +86,7 @@ static inline void _physics_AdvanceEntity(System_Physics *sys, Entity *e, Durati
 }
 
 
-static double gravity = 1000;
+static double gravity = 2000;
 
 void physics_Advance(System_Physics *sys, Duration deltaTime) {
 	for (tree_Node *i = tree_FirstNode(sys->pos);

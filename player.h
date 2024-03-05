@@ -16,10 +16,15 @@ typedef struct _Entity Entity;
 typedef struct {
 	Entity *super;
 
-	int jumpCount;            // Number of times the player has jumped since leaving ground
-							  // (Initial jump does not count)
-	bool onGround;            // If the player is on the ground?
-	bool moveLeft, moveRight; // If the player is moving left/right?
+	int       faceDirection; // +1 for right, -1 for left
+	TimePoint lastDash;
+	int       dashCount; // Number of dashes the player did since in air
+	int       jumpCount; // Number of times the player has jumped since leaving ground
+						 // (Initial jump does not count)
+
+	double storedSpeedY;        // Speed stored in the middle of a dash
+	bool   onGround;            // If the player is on the ground?
+	bool   moveLeft, moveRight; // If the player is moving left/right?
 } Component_Player;
 
 
