@@ -3,7 +3,10 @@
 #include <stdio.h>
 
 #include "app.h"
+#include "easyx.h"
 #include "types.h"
+#include "render_util.h"
+#include "util/vector.h"
 
 
 int main() {
@@ -14,6 +17,9 @@ int main() {
 
 	HWND win = initgraph(1280, 720);
 	SetWindowTextA(win, "JacksEscape");
+
+	settextstyle(TEXTHEIGHT, 0, "Courier New");
+	vector_Vector *debugText = vector_Create(1);
 
 	App *app = app_NewApp();
 	while (!app->wantQuit) {
@@ -31,7 +37,12 @@ int main() {
 		BeginBatchDraw();
 		cleardevice();
 		app_Render(app);
+
+		app_DebugText(app, debugText);
+		render_DrawText(10, 10, (const char *)vector_Data(debugText));
+
 		EndBatchDraw();
+
 
 		Duration toSleep = {.microseconds = 1000000 / 60 - time_Reset(&lastFrame).microseconds};
 		duration_Sleep(toSleep);

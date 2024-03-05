@@ -23,7 +23,7 @@ typedef struct {
 } Vec2;
 
 
-inline Vec2 vec2(double x, double y) {
+static inline Vec2 vec2(double x, double y) {
 	Vec2 v = {.x = x, .y = y};
 	return v;
 }

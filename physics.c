@@ -94,8 +94,8 @@ void physics_Advance(System_Physics *sys, Duration deltaTime) {
 		 i = tree_Node_Next(i)) {
 		Component_Position *pos = *((Component_Position **)i->data);
 
-		// if (pos->super->hitbox && !pos->super->hitbox->fixed)
-		// pos->velocity.y += gravity * duration_Seconds(deltaTime);
+		if (pos->super->hitbox && !pos->super->hitbox->fixed)
+			pos->velocity.y += gravity * duration_Seconds(deltaTime);
 
 		_physics_AdvanceEntity(sys, pos->super, deltaTime);
 	}

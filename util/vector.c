@@ -59,7 +59,7 @@ void vector_Append(vector_Vector *vec, const void *data, uintptr_t n) {
 }
 
 void vector_Resize(vector_Vector *vec, uintptr_t size) {
-	uintptr_t newsize = vec->size + size * vec->objectSize;
+	uintptr_t newsize = size;
 	if (newsize > vec->cap) {
 		// grow the buffer exponentially
 		uint64_t newcap = vec->cap;

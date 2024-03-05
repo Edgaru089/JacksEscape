@@ -5,6 +5,7 @@
 #include "player.h"
 #include "input.h"
 #include "types.h"
+#include "util/vector.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,6 +26,8 @@ void app_DeleteApp(App *app);
 
 void app_Advance(App *app, Duration deltaTime);
 void app_Render(App *app);
+
+void app_DebugText(App *app, vector_Vector *vec_string);
 
 
 #ifdef __cplusplus
