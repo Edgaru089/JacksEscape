@@ -1,11 +1,11 @@
 #pragma once
 
 #include <stdint.h>
-#include "Types.h"
+#include "types.h"
 #include "util/vector.h"
 #include "util/tree.h"
-#include "Physics_Component.h"
-#include "Player_Component.h"
+#include "physics.h"
+#include "player.h"
 
 
 #ifdef __cplusplus

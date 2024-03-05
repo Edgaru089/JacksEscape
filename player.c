@@ -1,8 +1,8 @@
 
-#include "Player_Component.h"
-#include "Entity.h"
-#include "App.h"
-#include "Input.h"
+#include "player.h"
+#include "entity.h"
+#include "app.h"
+#include "input.h"
 
 #include "util/assert.h"
 #include <stdlib.h>

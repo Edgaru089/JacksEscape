@@ -1,10 +1,10 @@
 
-#include "App.h"
-#include "Entity.h"
-#include "Input.h"
-#include "Physics_Component.h"
-#include "Player_Component.h"
-#include "Types.h"
+#include "app.h"
+#include "entity.h"
+#include "input.h"
+#include "physics.h"
+#include "player.h"
+#include "types.h"
 #include <stdlib.h>
 #include <stdio.h>
 

@@ -1,5 +1,5 @@
 
-#include "Types.h"
+#include "types.h"
 #include <math.h>
 #include <windows.h>
 #include <timeapi.h>

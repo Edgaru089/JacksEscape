@@ -1,6 +1,6 @@
 
-#include "Input.h"
-#include "App.h"
+#include "input.h"
+#include "app.h"
 
 #include <stdlib.h>
 #include <stdio.h>

@@ -2,8 +2,8 @@
 #include <graphics.h>
 #include <stdio.h>
 
-#include "App.h"
-#include "Types.h"
+#include "app.h"
+#include "types.h"
 
 
 int main() {

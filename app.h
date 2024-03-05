@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Entity.h"
-#include "Physics_Component.h"
-#include "Player_Component.h"
-#include "Input.h"
-#include "Types.h"
+#include "entity.h"
+#include "physics.h"
+#include "player.h"
+#include "input.h"
+#include "types.h"
 
 #ifdef __cplusplus
 extern "C" {

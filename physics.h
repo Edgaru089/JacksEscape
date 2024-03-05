@@ -2,7 +2,7 @@
 
 #include "util/tree.h"
 #include "util/vector.h"
-#include "Types.h"
+#include "types.h"
 #include <stdint.h>
 #include <stdbool.h>
 

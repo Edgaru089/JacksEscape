@@ -1,7 +1,7 @@
 
-#include "Physics_Component.h"
-#include "Entity.h"
-#include "Types.h"
+#include "physics.h"
+#include "entity.h"
+#include "types.h"
 #include "util/tree.h"
 #include "util/vector.h"
 #include "util/assert.h"

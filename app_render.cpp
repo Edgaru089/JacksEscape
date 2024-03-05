@@ -1,6 +1,6 @@
 
-#include "App.h"
-#include "Physics_Component.h"
+#include "app.h"
+#include "physics.h"
 #include "easyx.h"
 #include "util/tree.h"
 #include <math.h>
