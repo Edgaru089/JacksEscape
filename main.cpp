@@ -15,6 +15,7 @@ int main() {
 	lastFrame = lastUpdate = frameCounter = time_Now();
 	int frameCount                        = 0;
 
+	SetProcessDPIAware();
 	HWND win = initgraph(1280, 720);
 	SetWindowTextA(win, "JacksEscape");
 
