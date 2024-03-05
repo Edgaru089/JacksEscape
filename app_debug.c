@@ -17,11 +17,17 @@ void app_DebugText(App *app, vector_Vector *vec_string) {
 	} else {
 		snprintf(
 			buf, sizeof(buf) - 1,
-			"Player:\n    Pos: [%.4lf, %.4lf], Vec:[%.4lf, %.4lf]\n",
+			"Player:\n"
+			"    Pos: [%.4lf, %.4lf]\n"
+			"    Vec:[%.4lf, %.4lf]\n"
+			"    OnGround: %s\n"
+			"    JumpCount: %d\n",
 			player->super->position->position.x,
 			player->super->position->position.y,
 			player->super->position->velocity.x,
-			player->super->position->velocity.y);
+			player->super->position->velocity.y,
+			(player->onGround ? "true" : "false"),
+			player->jumpCount);
 		PUSH_STRING(buf);
 	}
 

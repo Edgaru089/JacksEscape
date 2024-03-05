@@ -20,12 +20,10 @@ void render_DrawText(int x, int y, const char *str) {
 
 	vector_Clear(tbuf);
 	int len = strlen(str);
-	printf("%s, len=%d\n", str, len);
-	int i = 0;
+	int i   = 0;
 	while (i < len) {
 		if (str[i] == '\n') {
 			vector_Push(tbuf, &zero);
-			printf("outtext: \"%s\"\n", vector_Data(tbuf));
 			outtextxy(cx, cy, (LPCTSTR)vector_Data(tbuf));
 
 			cy += TEXTHEIGHT;
