@@ -32,8 +32,8 @@ bool box2_Intersects(const Box2 x, const Box2 y, Box2 *out_intersection) {
 	// Compute the min and max of the first rectangle on both axes
 	const double r1MinX = dmin(x.lefttop.x, x.lefttop.x + x.size.x);
 	const double r1MaxX = dmax(x.lefttop.x, x.lefttop.x + x.size.x);
-	const double r1MinY = dmin(x.lefttop.y, x.lefttop.x + x.size.x);
-	const double r1MaxY = dmax(x.lefttop.y, x.lefttop.x + x.size.x);
+	const double r1MinY = dmin(x.lefttop.y, x.lefttop.y + x.size.y);
+	const double r1MaxY = dmax(x.lefttop.y, x.lefttop.y + x.size.y);
 
 	// Compute the min and max of the second rectangle on both axes
 	const double r2MinX = dmin(y.lefttop.x, y.lefttop.x + y.size.x);

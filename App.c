@@ -9,7 +9,7 @@
 #include <stdio.h>
 
 
-static void _app_onHit(Entity *me, Entity *other, Vec2 triedDelta, void *data) {
+static void _app_onHitBy(Entity *me, Entity *other, Vec2 triedDelta, void *data) {
 	fprintf(
 		stderr,
 		"[_app_onHit] Entity \"%s\" hit by \"%s\", delta: [%.2lf, %.2lf]\n",
@@ -46,7 +46,7 @@ App *app_NewApp() {
 	hit1->hitbox->box.lefttop = vec2(200, 200);
 	hit1->hitbox->box.size    = vec2(100, 400);
 	hit1->hitbox->fixed       = true;
-	hit1->hitbox->onHit       = &_app_onHit;
+	hit1->hitbox->onHitBy     = &_app_onHitBy;
 	entity_Commit(app->entity, hit1);
 
 	Entity *hit2 = entity_Create(app->entity, "hit2");
@@ -54,8 +54,16 @@ App *app_NewApp() {
 	hit2->hitbox->box.lefttop = vec2(700, 200);
 	hit2->hitbox->box.size    = vec2(100, 400);
 	hit2->hitbox->fixed       = true;
-	hit2->hitbox->onHit       = &_app_onHit;
+	hit2->hitbox->onHitBy     = &_app_onHitBy;
 	entity_Commit(app->entity, hit2);
+
+	Entity *hit3 = entity_Create(app->entity, "hit3");
+	ADD_COMPONENT(hit3, hitbox, zero_malloc(sizeof(Component_Hitbox)));
+	hit3->hitbox->box.lefttop = vec2(100, 550);
+	hit3->hitbox->box.size    = vec2(800, 30);
+	hit3->hitbox->fixed       = true;
+	hit3->hitbox->onHitBy     = &_app_onHitBy;
+	entity_Commit(app->entity, hit3);
 
 	return app;
 }

@@ -16,6 +16,10 @@ static inline void call_hithandler(Entity *me, Entity *other, Vec2 triedDelta, v
 	if (me->hitbox->onHit)
 		me->hitbox->onHit(me, other, triedDelta, data);
 }
+static inline void call_hitby(Entity *me, Entity *other, Vec2 triedDelta, void *data) {
+	if (me->hitbox->onHitBy)
+		me->hitbox->onHitBy(me, other, triedDelta, data);
+}
 
 
 void _physics_MoveX(System_Physics *sys, Entity *e, Duration deltaTime) {
@@ -34,14 +38,13 @@ void _physics_MoveX(System_Physics *sys, Entity *e, Duration deltaTime) {
 
 		if (box2_Intersects(tohit, box2_OffsetX(mybox, delta), NULL)) {
 			call_hithandler(e, tohit_comp->super, vec2(delta, 0), e->hitbox->onHitData);
+			call_hitby(tohit_comp->super, e, vec2(delta, 0), tohit_comp->onHitData);
 			if (delta > 0) {
 				// Moves right, hits left edge
-				fprintf(stderr, "hit left edge");
 				double maxdelta = tohit.lefttop.x - mybox.lefttop.x - mybox.size.x;
 				delta           = maxdelta - EPS;
 			} else {
 				// Moves left, hits right edge
-				fprintf(stderr, "hit right edge");
 				double maxdelta = tohit.lefttop.x - mybox.lefttop.x + tohit.size.x;
 				delta           = maxdelta + EPS;
 			}
@@ -72,6 +75,7 @@ void _physics_MoveY(System_Physics *sys, Entity *e, Duration deltaTime) {
 
 		if (box2_Intersects(tohit, box2_OffsetY(mybox, delta), NULL)) {
 			call_hithandler(e, tohit_comp->super, vec2(0, delta), e->hitbox->onHitData);
+			call_hitby(tohit_comp->super, e, vec2(0, delta), tohit_comp->onHitData);
 			if (delta > 0) {
 				// Moves down, hits top edge
 				double maxdelta = tohit.lefttop.y - mybox.lefttop.y - mybox.size.y;

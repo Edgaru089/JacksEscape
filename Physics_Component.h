@@ -39,7 +39,7 @@ typedef struct {
 	Box2    box;
 	bool    fixed;
 
-	physics_HitHandler onHit;
+	physics_HitHandler onHit, onHitBy;
 	void              *onHitData;
 } Component_Hitbox;
 

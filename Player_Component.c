@@ -62,7 +62,14 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 	if (input_IsPressed(input->keys[input_Key_Right]))
 		targetVecX += walkSpeed;
 
+	double targetVecY = 0.0;
+	if (input_IsPressed(input->keys[input_Key_Up]))
+		targetVecY += -walkSpeed;
+	if (input_IsPressed(input->keys[input_Key_Down]))
+		targetVecY += walkSpeed;
+
 	sys->player->super->position->velocity.x = targetVecX;
+	sys->player->super->position->velocity.y = targetVecY;
 
 	if (sys->player->onGround)
 		sys->player->jumpCount = 0;
