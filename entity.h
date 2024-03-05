@@ -30,10 +30,12 @@ typedef struct _Entity {
 	void          *thinkerData; // Data managed by the Thinker, if exists.
 } Entity;
 
-#define ADD_COMPONENT(entity, component, value) \
-	do {                                        \
-		entity->component        = value;       \
-		entity->component->super = entity;      \
+// https://en.cppreference.com/w/c/language/sizeof
+// The expression in sizeof is not evaluated
+#define ADD_COMPONENT(entity, component)                                    \
+	do {                                                                    \
+		entity->component        = zero_malloc(sizeof(*entity->component)); \
+		entity->component->super = entity;                                  \
 	} while (false)
 
 
