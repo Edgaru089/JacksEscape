@@ -1,6 +1,10 @@
 
 #include "types.h"
 #include <math.h>
+#include <stdio.h>
+#ifdef WIN32_LEAN_AND_MEAN
+#undef WIN32_LEAN_AND_MEAN
+#endif
 #include <windows.h>
 #include <timeapi.h>
 
@@ -61,6 +65,12 @@ bool box2_Intersects(const Box2 x, const Box2 y, Box2 *out_intersection) {
 	}
 }
 
+Vec2 box2_Center(Box2 box) {
+	return vec2(
+		box.lefttop.x + box.size.x / 2.0,
+		box.lefttop.y + box.size.y / 2.0);
+}
+
 Box2 box2_Offset(Box2 box, Vec2 offset) {
 	box.lefttop = vec2_Add(box.lefttop, offset);
 	return box;
@@ -78,16 +88,29 @@ Box2 box2_OffsetY(Box2 box, double offsetY) {
 static double freqInverse = 0.0;
 
 
+// https://stackoverflow.com/a/31411628
+// "How to make thread sleep less than a millisecond on Windows"
+
+typedef NTSTATUS(__stdcall *NtDelayExecution_Type)(BOOL Alertable, PLARGE_INTEGER DelayInterval);
+typedef NTSTATUS(__stdcall *ZwSetTimerResolution_Type)(IN ULONG RequestedResolution, IN BOOLEAN Set, OUT PULONG ActualResolution);
+
+static NtDelayExecution_Type     NtDelayExecution;
+static ZwSetTimerResolution_Type ZwSetTimerResolution;
+
 void duration_Sleep(const Duration t) {
-	if (t.microseconds <= 0)
-		return;
-	// https://learn.microsoft.com/zh-cn/windows/win32/api/timeapi/nf-timeapi-timebeginperiod
-	// timeBeginPeriod() and friends
-	TIMECAPS tc;
-	timeGetDevCaps(&tc, sizeof(TIMECAPS));
-	timeBeginPeriod(tc.wPeriodMin);
-	Sleep((DWORD)(round(duration_Milliseconds(t)))); // Only millisecond precision. Sad
-	timeEndPeriod(tc.wPeriodMin);
+	if (!NtDelayExecution) {
+		NtDelayExecution     = (NtDelayExecution_Type)GetProcAddress(GetModuleHandle("ntdll.dll"), "NtDelayExecution");
+		ZwSetTimerResolution = (ZwSetTimerResolution_Type)GetProcAddress(GetModuleHandle("ntdll.dll"), "ZwSetTimerResolution");
+
+		// Only run this once
+		ULONG actualResolution;
+		ZwSetTimerResolution(1, true, &actualResolution);
+		fprintf(stderr, "[duration_Sleep] ActualResolution was %u\n", actualResolution);
+	}
+
+	LARGE_INTEGER interval;
+	interval.QuadPart = t.microseconds * -10;
+	NtDelayExecution(false, &interval);
 }
 
 TimePoint time_Now() {

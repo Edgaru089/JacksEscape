@@ -42,6 +42,8 @@ typedef struct {
 // Intersection test.
 bool box2_Intersects(const Box2 x, const Box2 y, Box2 *out_intersection);
 
+Vec2 box2_Center(Box2 box);
+
 Box2 box2_Offset(Box2 box, Vec2 offset);
 Box2 box2_OffsetX(Box2 box, double offsetX);
 Box2 box2_OffsetY(Box2 box, double offsetY);
