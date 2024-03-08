@@ -4,6 +4,7 @@
 #include "physics.h"
 #include "player.h"
 #include "input.h"
+#include "camera.h"
 #include "types.h"
 #include "util/vector.h"
 
@@ -17,6 +18,7 @@ typedef struct _App {
 	System_Player  *player;
 	System_Input   *input;
 	System_Entity  *entity;
+	System_Camera  *camera;
 
 	bool wantQuit;
 } App;

@@ -1,5 +1,6 @@
 
 #include "app.h"
+#include "types.h"
 #include "util/vector.h"
 
 #include <stdio.h>
@@ -19,7 +20,7 @@ void app_DebugText(App *app, vector_Vector *vec_string) {
 			buf, sizeof(buf) - 1,
 			"Player:\n"
 			"    Pos: [%.4lf, %.4lf]\n"
-			"    Vec:[%.4lf, %.4lf]\n"
+			"    Vec: [%.4lf, %.4lf]\n"
 			"    OnGround: %s\n"
 			"    JumpCount: %d\n",
 			player->super->position->position.x,
@@ -30,6 +31,17 @@ void app_DebugText(App *app, vector_Vector *vec_string) {
 			player->jumpCount);
 		PUSH_STRING(buf);
 	}
+
+	Vec2 center = box2_Center(app->camera->cam),
+		 size   = app->camera->cam.size;
+	snprintf(
+		buf, sizeof(buf) - 1,
+		"Camera:\n"
+		"    Center: [%.4lf, %.4lf]\n"
+		"    Size:   [%.4lf, %.4lf]\n",
+		center.x, center.y,
+		size.x, size.y);
+	PUSH_STRING(buf);
 
 	char zero = '\0';
 	vector_Push(vec_string, &zero);

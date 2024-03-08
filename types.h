@@ -29,6 +29,7 @@ static inline Vec2 vec2(double x, double y) {
 }
 
 Vec2 vec2_Add(Vec2 x, Vec2 y);
+Vec2 vec2_Minus(Vec2 pos, Vec2 neg);
 Vec2 vec2_Scale(Vec2 v, double scale);
 
 
@@ -43,6 +44,7 @@ typedef struct {
 bool box2_Intersects(const Box2 x, const Box2 y, Box2 *out_intersection);
 
 Vec2 box2_Center(Box2 box);
+Box2 box2_FromCenter(Vec2 center, Vec2 size);
 
 Box2 box2_Offset(Box2 box, Vec2 offset);
 Box2 box2_OffsetX(Box2 box, double offsetX);

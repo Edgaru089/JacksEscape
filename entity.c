@@ -1,6 +1,7 @@
 
 #include "entity.h"
 #include "app.h"
+#include "camera.h"
 #include "physics.h"
 #include "util/assert.h"
 #include "util/tree.h"
@@ -29,6 +30,7 @@ void entity_DeleteSystem(System_Entity *sys) {
 
 		physics_DeleteEntity(sys->super->physics, e->id);
 		player_DeleteEntity(sys->super->player, e->id);
+		camera_DeleteEntity(sys->super->camera, e->id);
 
 		if (e->position)
 			free(e->position);
@@ -67,6 +69,7 @@ Entity *entity_Create(System_Entity *sys, const char *name) {
 void entity_Commit(System_Entity *sys, Entity *e) {
 	physics_AddEntity(sys->super->physics, e);
 	player_AddEntity(sys->super->player, e);
+	camera_AddEntity(sys->super->camera, e);
 }
 
 
@@ -82,6 +85,7 @@ static inline void _entity_Delete(System_Entity *sys, uintptr_t id) {
 
 	physics_DeleteEntity(sys->super->physics, e->id);
 	player_DeleteEntity(sys->super->player, e->id);
+	camera_DeleteEntity(sys->super->camera, e->id);
 
 	if (e->position)
 		free(e->position);

@@ -1,5 +1,6 @@
 
 #include "app.h"
+#include "camera.h"
 #include "physics.h"
 #include "easyx.h"
 #include "util/tree.h"
@@ -21,7 +22,7 @@ void app_Render(App *app) {
 			else
 				setlinecolor(RGB(255, 255, 0));
 
-			Box2 box = physics_HitboxAbsolute(e->hitbox);
+			Box2 box = camera_TransformBox2(app->camera, physics_HitboxAbsolute(e->hitbox));
 			rectangle(
 				(int)round(box.lefttop.x),
 				(int)round(box.lefttop.y),

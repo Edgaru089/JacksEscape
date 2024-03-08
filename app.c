@@ -1,5 +1,6 @@
 
 #include "app.h"
+#include "camera.h"
 #include "entity.h"
 #include "input.h"
 #include "physics.h"
@@ -16,6 +17,7 @@ App *app_NewApp() {
 	app->physics = physics_NewSystem(app);
 	app->player  = player_NewSystem(app);
 	app->entity  = entity_NewSystem(app);
+	app->camera  = camera_NewSystem(app);
 
 	app->wantQuit = false;
 
@@ -59,6 +61,7 @@ void app_DeleteApp(App *app) {
 	entity_DeleteSystem(app->entity);
 	physics_DeleteSystem(app->physics);
 	player_DeleteSystem(app->player);
+	camera_DeleteSystem(app->camera);
 
 	free(app);
 }
@@ -69,4 +72,5 @@ void app_Advance(App *app, Duration deltaTime) {
 	player_Advance(app->player, deltaTime);
 	physics_Advance(app->physics, deltaTime);
 	entity_Advance(app->entity, deltaTime);
+	camera_Advance(app->camera, deltaTime);
 }

@@ -25,6 +25,13 @@ Vec2 vec2_Add(Vec2 x, Vec2 y) {
 	return result;
 }
 
+Vec2 vec2_Minus(Vec2 pos, Vec2 neg) {
+	Vec2 result = {
+		.x = pos.x - neg.x,
+		.y = pos.y - neg.y};
+	return result;
+}
+
 Vec2 vec2_Scale(Vec2 v, double scale) {
 	Vec2 result = {
 		.x = v.x * scale,
@@ -69,6 +76,15 @@ Vec2 box2_Center(Box2 box) {
 	return vec2(
 		box.lefttop.x + box.size.x / 2.0,
 		box.lefttop.y + box.size.y / 2.0);
+}
+
+Box2 box2_FromCenter(Vec2 center, Vec2 size) {
+	Box2 box = {
+		.size    = size,
+		.lefttop = {
+			.x = center.x - size.x / 2.0,
+			.y = center.y - size.y / 2.0}};
+	return box;
 }
 
 Box2 box2_Offset(Box2 box, Vec2 offset) {
