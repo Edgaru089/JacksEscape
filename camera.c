@@ -41,7 +41,9 @@ void camera_Advance(System_Camera *sys, Duration deltaTime) {
 	if (sys->target.size.x > EPS)
 		tocenter = box2_Center(sys->target);
 	else if (sys->player)
-		tocenter = sys->player->super->position->position;
+		tocenter = vec2_Add(
+			sys->player->super->position->position,
+			vec2(0, -sys->player->super->hitbox->box.size.y));
 	else
 		return;
 
