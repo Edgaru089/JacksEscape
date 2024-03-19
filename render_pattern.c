@@ -2,14 +2,18 @@
 #include <math.h>
 
 
-BYTE *render_DissolvePattern(double progress) {
+BYTE *render_DissolvePatternOut(double progress) {
 	if (progress < .0)
 		progress = .0;
 	if (progress > 1.0)
 		progress = 1.0;
 
-	int index = round(progress * 65);
+	int index = round(progress * 64);
 	return (BYTE *)(render_DissolvePatternData + index * 8);
+}
+
+BYTE *render_DissolvePatternIn(double progress) {
+	return render_DissolvePatternOut(1.0 - progress);
 }
 
 

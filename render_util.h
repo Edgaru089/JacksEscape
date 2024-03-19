@@ -42,6 +42,7 @@ typedef struct {
 	// Dissolve the entire screen in an animation in this
 	// amount of time. Overrides rotate, style & hatch
 	Duration dissolve;
+	bool     fadein; // Fade Into being full for true, fade out of otherwise
 } FillMode;
 
 // Default fill mode.
@@ -56,12 +57,12 @@ typedef struct _App App;
 void render_SetModes(FillMode mode, TimePoint since);
 
 // Fills the entire screen
-void render_FillScreen(FillMode mode, TimePoint since);
+void render_FillScreen();
 
 // Fills a rectangle in world coordinates
-void render_FillRectW(App *app, Box2 rect, FillMode mode, TimePoint since);
+void render_FillRectW(App *app, Box2 rect);
 // Fills a circle in world coordinates
-void render_FillCircleW(App *app, Vec2 center, double radius, FillMode mode, TimePoint since);
+void render_FillCircleW(App *app, Vec2 center, double radius);
 
 
 #ifdef __cplusplus

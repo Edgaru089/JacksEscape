@@ -4,8 +4,15 @@
 #include "physics.h"
 #include "easyx.h"
 #include "util/tree.h"
+#include "types.h"
+#include "render_util.h"
 #include <math.h>
 #include <graphics.h>
+
+
+namespace {
+TimePoint since = time_Now();
+} // namespace
 
 
 extern "C" {
@@ -30,5 +37,14 @@ void app_Render(App *app) {
 				(int)round(box.lefttop.y + box.size.y));
 		}
 	}
+
+	static FillMode mode_rotate = {
+		.rotate = Duration{.microseconds = 100 * 1000}};
+
+
+	setfillcolor(RGB(255, 255, 255));
+	setbkcolor(RGB(0, 0, 0));
+	render_SetModes(mode_rotate, since);
+	render_FillCircleW(app, vec2(200, 100), 20);
 }
 }

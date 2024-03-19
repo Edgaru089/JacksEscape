@@ -52,21 +52,25 @@ const FillMode render_DefaultMode = {
 	.style    = BS_SOLID,
 	.hatch    = 0,
 	.rotate   = {.microseconds = 0},
-	.dissolve = {.microseconds = 0}};
+	.dissolve = {.microseconds = 0},
+	.fadein   = false};
 
 
 void render_SetModes(FillMode mode, TimePoint since) {
 	if (mode.dissolve.microseconds != 0) {
 		// Dissolve mode
 		double progress = duration_Seconds(time_Since(since)) / duration_Seconds(mode.dissolve);
-		setfillstyle(render_DissolvePattern(progress)); // progress is capped into [0,1] in this func
+		if (mode.fadein)
+			setfillstyle(render_DissolvePatternIn(progress)); // progress is capped into [0,1] in this func
+		else
+			setfillstyle(render_DissolvePatternOut(progress));
 		setrop2(R2_COPYPEN);
 		return;
 	}
 
 	if (mode.rotate.microseconds != 0) {
 		// Rotate mode
-		int steps = round(duration_Seconds(time_Since(since)) / duration_Seconds(mode.dissolve));
+		int steps = round(duration_Seconds(time_Since(since)) / duration_Seconds(mode.rotate));
 
 		static const long hatches[] = {HS_HORIZONTAL, HS_FDIAGONAL, HS_VERTICAL, HS_BDIAGONAL};
 		setfillstyle(BS_HATCHED, hatches[steps % 4], NULL);
@@ -79,11 +83,11 @@ void render_SetModes(FillMode mode, TimePoint since) {
 	setrop2(mode.rop2);
 }
 
-void render_FillScreen(FillMode mode, TimePoint since) {
+void render_FillScreen() {
 	solidrectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
-void render_FillRectW(App *app, Box2 rect, FillMode mode, TimePoint since) {
+void render_FillRectW(App *app, Box2 rect) {
 	if (app->camera)
 		rect = camera_TransformBox2(app->camera, rect);
 	else
@@ -95,7 +99,7 @@ void render_FillRectW(App *app, Box2 rect, FillMode mode, TimePoint since) {
 		(int)round(rect.lefttop.y + rect.size.y));
 }
 
-void render_FillCircleW(App *app, Vec2 center, double radius, FillMode mode, TimePoint since) {
+void render_FillCircleW(App *app, Vec2 center, double radius) {
 	if (app->camera) {
 		center = camera_TransformVec2(app->camera, center);
 		radius = camera_TransformSize(app->camera, vec2(radius, 0)).x; // TODO non-aspect scaling
