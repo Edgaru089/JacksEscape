@@ -10,6 +10,10 @@ extern "C" {
 #endif
 
 
+#define SCREEN_WIDTH  1280
+#define SCREEN_HEIGHT 720
+
+
 static inline void *zero_malloc(size_t size) {
 	void *d = malloc(size);
 	memset(d, 0, size);

@@ -1,5 +1,8 @@
 #pragma once
 
+#include "types.h"
+#include <stdbool.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -13,6 +16,52 @@ extern "C" {
 // unlike outtext(), this function takes consideration
 // for newlines.
 void render_DrawText(int x, int y, const char *str);
+
+
+// Fill modes.
+typedef struct {
+	// Most often it's:
+	//     R2_COPYPEN (Output = Pen color)
+	//     R2_BLACK   (Output = Black)
+	//     R2_WHITE   (Output = White)
+	//     R2_NOT     (Output = NOT Screen color)
+	//
+	// https://docs.easyx.cn/zh-cn/setrop2
+	int rop2;
+
+	// Style & hatch passed into setfillstyle()
+	//
+	// https://docs.easyx.cn/zh-cn/setfillstyle
+	int  style;
+	long hatch;
+
+	// Rotates in /-\| every this amount of time, if not 0
+	// Overrides style & hatch
+	Duration rotate;
+
+	// Dissolve the entire screen in an animation in this
+	// amount of time. Overrides rotate, style & hatch
+	Duration dissolve;
+} FillMode;
+
+// Default fill mode.
+//     rop2 = R2_COPYPEN,
+//     style = BS_SOLID,
+//     others = 0
+extern const FillMode render_DefaultMode;
+
+typedef struct _App App;
+
+// Calls the required setfillstyle/setrop2 calls for the struct.
+void render_SetModes(FillMode mode, TimePoint since);
+
+// Fills the entire screen
+void render_FillScreen(FillMode mode, TimePoint since);
+
+// Fills a rectangle in world coordinates
+void render_FillRectW(App *app, Box2 rect, FillMode mode, TimePoint since);
+// Fills a circle in world coordinates
+void render_FillCircleW(App *app, Vec2 center, double radius, FillMode mode, TimePoint since);
 
 
 #ifdef __cplusplus

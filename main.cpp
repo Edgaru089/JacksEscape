@@ -16,7 +16,7 @@ int main() {
 	int frameCount                        = 0;
 
 	SetProcessDPIAware();
-	HWND win = initgraph(1280, 720);
+	HWND win = initgraph(SCREEN_WIDTH, SCREEN_HEIGHT);
 	SetWindowTextA(win, "JacksEscape");
 
 	settextstyle(TEXTHEIGHT, 0, "Courier New");

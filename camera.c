@@ -15,7 +15,7 @@ System_Camera *camera_NewSystem(App *super) {
 
 	Box2 default_screen = {
 		.lefttop = {.x = 0.0, .y = 0.0},
-		.size    = {.x = 1280, .y = 720}};
+		.size    = {.x = SCREEN_WIDTH, .y = SCREEN_HEIGHT}};
 	sys->cam = sys->screen = default_screen;
 	return sys;
 }
@@ -69,7 +69,7 @@ void camera_Advance(System_Camera *sys, Duration deltaTime) {
 }
 
 
-inline static Vec2 _camera_TransformSize(System_Camera *sys, Vec2 worldSize) {
+Vec2 camera_TransformSize(System_Camera *sys, Vec2 worldSize) {
 	Vec2 result = {
 		.x = worldSize.x / sys->cam.size.x * sys->screen.size.x,
 		.y = worldSize.y / sys->cam.size.y * sys->screen.size.y};
@@ -78,11 +78,11 @@ inline static Vec2 _camera_TransformSize(System_Camera *sys, Vec2 worldSize) {
 
 Vec2 camera_TransformVec2(System_Camera *sys, Vec2 world) {
 	Vec2 relative = vec2_Minus(world, sys->cam.lefttop);
-	return vec2_Add(sys->screen.lefttop, _camera_TransformSize(sys, relative));
+	return vec2_Add(sys->screen.lefttop, camera_TransformSize(sys, relative));
 }
 Box2 camera_TransformBox2(System_Camera *sys, Box2 world) {
 	Box2 result = {
 		.lefttop = camera_TransformVec2(sys, world.lefttop),
-		.size    = _camera_TransformSize(sys, world.size)};
+		.size    = camera_TransformSize(sys, world.size)};
 	return result;
 }

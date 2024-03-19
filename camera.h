@@ -28,8 +28,9 @@ void camera_DeleteEntity(System_Camera *sys, uintptr_t id);
 
 void camera_Advance(System_Camera *sys, Duration deltaTime);
 
-Vec2 camera_TransformVec2(System_Camera *sys, Vec2 world);
-Box2 camera_TransformBox2(System_Camera *sys, Box2 world);
+Vec2 camera_TransformVec2(System_Camera *sys, Vec2 world);     // Transform a Point, accounted for offset
+Box2 camera_TransformBox2(System_Camera *sys, Box2 world);     // Transform a Rect, accounted for offset & zoom
+Vec2 camera_TransformSize(System_Camera *sys, Vec2 worldSize); // Transform a certain size, accounted for only zoom
 
 
 #ifdef __cplusplus
