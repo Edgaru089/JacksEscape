@@ -80,7 +80,7 @@ void render_SetModes(FillMode mode, TimePoint since) {
 }
 
 void render_FillScreen(FillMode mode, TimePoint since) {
-	fillrectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	solidrectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 void render_FillRectW(App *app, Box2 rect, FillMode mode, TimePoint since) {
@@ -88,7 +88,7 @@ void render_FillRectW(App *app, Box2 rect, FillMode mode, TimePoint since) {
 		rect = camera_TransformBox2(app->camera, rect);
 	else
 		fprintf(stderr, "[WARN][render_FillRectW] called without an active camera system\n");
-	fillrectangle(
+	solidrectangle(
 		(int)round(rect.lefttop.x),
 		(int)round(rect.lefttop.y),
 		(int)round(rect.lefttop.x + rect.size.x),
@@ -101,7 +101,7 @@ void render_FillCircleW(App *app, Vec2 center, double radius, FillMode mode, Tim
 		radius = camera_TransformSize(app->camera, vec2(radius, 0)).x; // TODO non-aspect scaling
 	} else
 		fprintf(stderr, "[WARN][render_FillCircleW] called without an active camera system\n");
-	fillcircle(
+	solidcircle(
 		(int)round(center.x),
 		(int)round(center.y),
 		(int)round(radius));
