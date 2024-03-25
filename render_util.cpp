@@ -47,8 +47,15 @@ void render_DrawText(int x, int y, const char *str) {
 }
 
 
-const FillMode render_DefaultMode = {
+const FillMode render_ModeDefault = {
 	.rop2     = R2_COPYPEN,
+	.style    = BS_SOLID,
+	.hatch    = 0,
+	.rotate   = {.microseconds = 0},
+	.dissolve = {.microseconds = 0},
+	.fadein   = false};
+const FillMode render_ModeInverse = {
+	.rop2     = R2_NOT,
 	.style    = BS_SOLID,
 	.hatch    = 0,
 	.rotate   = {.microseconds = 0},

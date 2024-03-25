@@ -49,7 +49,13 @@ typedef struct {
 //     rop2 = R2_COPYPEN,
 //     style = BS_SOLID,
 //     others = 0
-extern const FillMode render_DefaultMode;
+extern const FillMode render_ModeDefault;
+
+// Fill mode that inverses the screen.
+//     rop2 = R2_NOT,
+//     style = BS_SOLID,
+//     others = 0
+extern const FillMode render_ModeInverse;
 
 typedef struct _App App;
 

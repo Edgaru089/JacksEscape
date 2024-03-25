@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -60,8 +61,12 @@ typedef struct {
 	int64_t microseconds;
 } Duration;
 
-static inline double duration_Seconds(const Duration t) { return ((double)t.microseconds) / 1000000.0; }
-static inline double duration_Milliseconds(const Duration t) { return ((double)t.microseconds) / 1000.0; }
+static inline double   duration_Seconds(const Duration t) { return ((double)t.microseconds) / 1000000.0; }
+static inline double   duration_Milliseconds(const Duration t) { return ((double)t.microseconds) / 1000.0; }
+static inline Duration duration_FromSeconds(double seconds) {
+	Duration d = {.microseconds = (int64_t)round(seconds * 1000.0 * 1000.0)};
+	return d;
+}
 // This function has a precision of at most 1ms under Windows. Sad
 void duration_Sleep(const Duration t);
 
