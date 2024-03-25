@@ -33,13 +33,37 @@
     <ClInclude Include="util\vector.h">
       <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
+    <ClInclude Include="util\assert.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="app.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Physics_Component.h">
+    <ClInclude Include="camera.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Types.h">
+    <ClInclude Include="entity.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="physics.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="render_pattern.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="render_util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="types.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,13 +77,49 @@
     <ClCompile Include="util\vector.c">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="Types.c">
+    <ClCompile Include="app.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Physics_Component.c">
+    <ClCompile Include="app_debug.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Physics_Move.c">
+    <ClCompile Include="camera.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="entity.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="input.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="particle.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="physics.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="physics_move.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="player.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="render_pattern.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="types.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="app_render.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_render.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="render_util.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -115,8 +115,8 @@ static ZwSetTimerResolution_Type ZwSetTimerResolution;
 
 void duration_Sleep(const Duration t) {
 	if (!NtDelayExecution) {
-		NtDelayExecution     = (NtDelayExecution_Type)GetProcAddress(GetModuleHandle("ntdll.dll"), "NtDelayExecution");
-		ZwSetTimerResolution = (ZwSetTimerResolution_Type)GetProcAddress(GetModuleHandle("ntdll.dll"), "ZwSetTimerResolution");
+		NtDelayExecution     = (NtDelayExecution_Type)GetProcAddress(GetModuleHandleA("ntdll.dll"), "NtDelayExecution");
+		ZwSetTimerResolution = (ZwSetTimerResolution_Type)GetProcAddress(GetModuleHandleA("ntdll.dll"), "ZwSetTimerResolution");
 
 		// Only run this once
 		ULONG actualResolution;

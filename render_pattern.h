@@ -1,7 +1,7 @@
 #pragma once
 
 // for BYTE
-#include <minwindef.h>
+#include <windows.h>
 
 #ifdef __cplusplus
 extern "C" {

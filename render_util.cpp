@@ -17,12 +17,18 @@ extern "C" {
 
 static vector_Vector *tbuf;
 
+#ifdef __MINGW32__
+#define NCHAR char
+#else
+#define NCHAR wchar_t
+#endif
+
 void render_DrawText(int x, int y, const char *str) {
 	if (!tbuf)
-		tbuf = vector_Create(1);
+		tbuf = vector_Create(sizeof(NCHAR));
 
-	int        cx = x, cy = y;
-	const char zero = 0;
+	int         cx = x, cy = y;
+	const NCHAR zero = 0;
 
 	vector_Clear(tbuf);
 	int len = strlen(str);
@@ -34,8 +40,10 @@ void render_DrawText(int x, int y, const char *str) {
 
 			cy += TEXTHEIGHT;
 			vector_Clear(tbuf);
-		} else
-			vector_Push(tbuf, &str[i]);
+		} else {
+			NCHAR wc = str[i];
+			vector_Push(tbuf, &wc);
+		}
 		i++;
 	}
 
@@ -77,7 +85,7 @@ void render_SetModes(FillMode mode, TimePoint since) {
 
 	if (mode.rotate.microseconds != 0) {
 		// Rotate mode
-		int steps = round(duration_Seconds(time_Since(since)) / duration_Seconds(mode.rotate));
+		int steps = (int)round(duration_Seconds(time_Since(since)) / duration_Seconds(mode.rotate));
 
 		static const long hatches[] = {HS_HORIZONTAL, HS_FDIAGONAL, HS_VERTICAL, HS_BDIAGONAL};
 		setfillstyle(BS_HATCHED, hatches[steps % 4], NULL);

@@ -15,11 +15,17 @@ int main() {
 	lastFrame = lastUpdate = frameCounter = time_Now();
 	int frameCount                        = 0;
 
+#ifdef __MINGW32__
 	SetProcessDPIAware();
+#endif
 	HWND win = initgraph(SCREEN_WIDTH, SCREEN_HEIGHT);
 	SetWindowTextA(win, "JacksEscape");
 
+#ifdef __MINGW32__
 	settextstyle(TEXTHEIGHT, 0, "Courier New");
+#else // MSVC
+	settextstyle(TEXTHEIGHT, 0, L"Courier New");
+#endif
 	vector_Vector *debugText = vector_Create(1);
 
 	App *app = app_NewApp();
