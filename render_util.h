@@ -50,12 +50,13 @@ typedef struct {
 //     style = BS_SOLID,
 //     others = 0
 extern const FillMode render_ModeDefault;
-
 // Fill mode that inverses the screen.
 //     rop2 = R2_NOT,
 //     style = BS_SOLID,
 //     others = 0
 extern const FillMode render_ModeInverse;
+// Fill mode that rotates.
+extern const FillMode render_ModeRotate;
 
 typedef struct _App App;
 

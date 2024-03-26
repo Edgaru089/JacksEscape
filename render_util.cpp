@@ -69,6 +69,13 @@ const FillMode render_ModeInverse = {
 	.rotate   = {.microseconds = 0},
 	.dissolve = {.microseconds = 0},
 	.fadein   = false};
+extern const FillMode render_ModeRotate = {
+	.rop2     = R2_COPYPEN,
+	.style    = BS_SOLID,
+	.hatch    = 0,
+	.rotate   = {.microseconds = 100000},
+	.dissolve = {.microseconds = 0},
+	.fadein   = false};
 
 
 void render_SetModes(FillMode mode, TimePoint since) {

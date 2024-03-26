@@ -88,8 +88,8 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 				sys->super->particle,
 				vec2_Add(vec2_Random(-5, 5, -30, 30), to_pos),
 				vec2(rand_DoubleRange(650, 700) * -p->faceDirection, rand_DoubleRange(-100, 100)),
-				7, rand_DoubleRange(10, 16), 3,
-				duration_FromSeconds(rand_DoubleRange(1.5, 2.0)), &render_ModeInverse);
+				7, rand_DoubleRange(10, 16), 4,
+				duration_FromSeconds(rand_DoubleRange(4.0, 5.0)), &render_ModeRotate);
 		}
 	}
 
