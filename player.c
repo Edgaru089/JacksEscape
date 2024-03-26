@@ -8,6 +8,7 @@
 #include "render_util.h"
 #include "types.h"
 #include "util/assert.h"
+#include "util/rand.h"
 #include <stdlib.h>
 
 
@@ -53,8 +54,6 @@ static double   walkSpeed = 300.0, jumpSpeed = 800.0, dashSpeed = 1500.0;
 static int      airjumpCount = 1, airdashCount = 1;
 static Duration dashLength = {.microseconds = 150000}, dashCooldown = {.microseconds = 400000};
 
-static Duration  emitCooldown = {.microseconds = 200000};
-static TimePoint lastEmit;
 
 void player_Advance(System_Player *sys, Duration deltaTime) {
 	if (!sys->player)
@@ -65,6 +64,34 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 
 	if (p->faceDirection != 1 && p->faceDirection != -1)
 		p->faceDirection = 1; // Face right by default
+
+	// Particles
+	static Duration  emitCooldown = {.microseconds = 150000};
+	static TimePoint lastEmit     = {};
+	if (time_Since(lastEmit).microseconds > emitCooldown.microseconds) {
+		lastEmit    = time_Now();
+		Vec2 to_pos = vec2_Add(p->super->position->position, vec2(0, -p->super->hitbox->box.size.y));
+		particle_Emit(
+			sys->super->particle,
+			vec2_Add(vec2_Random(-20, 20, -10, 10), to_pos),
+			vec2(0, -100), 2, 6, 6,
+			duration_FromSeconds(0), &render_ModeDefault);
+	}
+	// Particles when dashing
+	if (time_Since(p->lastDash).microseconds < dashLength.microseconds && dabs(p->super->position->velocity.x) > EPS) {
+		static TimePoint lastDashEmit = {};
+		static Duration  cooldown     = {.microseconds = 10000};
+		if (time_Since(lastDashEmit).microseconds > cooldown.microseconds) {
+			lastDashEmit = time_Now();
+			Vec2 to_pos  = vec2_Add(p->super->position->position, vec2(0, -p->super->hitbox->box.size.y / 2.0));
+			particle_Emit(
+				sys->super->particle,
+				vec2_Add(vec2_Random(-5, 5, -30, 30), to_pos),
+				vec2(rand_DoubleRange(650, 700) * -p->faceDirection, rand_DoubleRange(-100, 100)),
+				7, rand_DoubleRange(10, 16), 3,
+				duration_FromSeconds(rand_DoubleRange(1.5, 2.0)), &render_ModeInverse);
+		}
+	}
 
 
 	double targetVecX = 0.0;
@@ -115,15 +142,4 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 	// Check OnGround again
 	if (dabs(sys->player->super->position->velocity.y) > EPS)
 		sys->player->onGround = false;
-
-
-	// Particles
-	if (time_Since(lastEmit).microseconds > emitCooldown.microseconds) {
-		lastEmit = time_Now();
-		particle_Emit(
-			sys->super->particle,
-			vec2_Add(p->super->position->position, vec2(0, -p->super->hitbox->box.size.y)),
-			vec2(0, -100), 2, 6, 6,
-			duration_FromSeconds(0), &render_ModeDefault);
-	}
 }

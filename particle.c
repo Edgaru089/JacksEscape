@@ -35,7 +35,7 @@ static void _particle_AdvancePart(System_Particle *sys, Particle *p, Duration de
 	Vec2 delta = vec2_Scale(p->vec, duration_Seconds(deltaTime));
 	p->pos     = vec2_Add(p->pos, delta);
 	// Move slower
-	Vec2 delta_vec = vec2_Scale(p->vec, -p->vec_friction);
+	Vec2 delta_vec = vec2_Scale(p->vec, -p->vec_friction * duration_Seconds(deltaTime));
 	p->vec         = vec2_Add(p->vec, delta_vec);
 }
 
