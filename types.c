@@ -1,5 +1,6 @@
 
 #include "types.h"
+#include "util/rand.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -41,6 +42,10 @@ Vec2 vec2_Scale(Vec2 v, double scale) {
 }
 
 Vec2 vec2_Random(double minX, double maxX, double minY, double maxY) {
+	Vec2 result = {
+		.x = minX + (maxX - minX) * rand_Double01(),
+		.y = minY + (maxY - minY) * rand_Double01()};
+	return result;
 }
 
 
