@@ -37,6 +37,8 @@ Vec2 vec2_Add(Vec2 x, Vec2 y);
 Vec2 vec2_Minus(Vec2 pos, Vec2 neg);
 Vec2 vec2_Scale(Vec2 v, double scale);
 
+Vec2 vec2_Random(double minX, double maxX, double minY, double maxY);
+
 
 // A 2d box of double.
 typedef struct {

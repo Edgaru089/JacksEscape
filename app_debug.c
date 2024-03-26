@@ -1,6 +1,7 @@
 
 #include "app.h"
 #include "types.h"
+#include "util/tree.h"
 #include "util/vector.h"
 
 #include <stdio.h>
@@ -41,6 +42,10 @@ void app_DebugText(App *app, vector_Vector *vec_string) {
 		"    Size:   [%.4lf, %.4lf]\n",
 		center.x, center.y,
 		size.x, size.y);
+	PUSH_STRING(buf);
+	snprintf(
+		buf, sizeof(buf) - 1,
+		"Particle count: %d\n", tree_Count(app->particle->parts));
 	PUSH_STRING(buf);
 
 	char zero = '\0';

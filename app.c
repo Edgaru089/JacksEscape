@@ -3,6 +3,7 @@
 #include "camera.h"
 #include "entity.h"
 #include "input.h"
+#include "particle.h"
 #include "physics.h"
 #include "player.h"
 #include "types.h"
@@ -13,11 +14,12 @@
 App *app_NewApp() {
 	App *app = malloc(sizeof(App));
 
-	app->input   = input_NewSystem(app);
-	app->physics = physics_NewSystem(app);
-	app->player  = player_NewSystem(app);
-	app->entity  = entity_NewSystem(app);
-	app->camera  = camera_NewSystem(app);
+	app->input    = input_NewSystem(app);
+	app->physics  = physics_NewSystem(app);
+	app->player   = player_NewSystem(app);
+	app->entity   = entity_NewSystem(app);
+	app->camera   = camera_NewSystem(app);
+	app->particle = particle_NewSystem(app);
 
 	app->wantQuit = false;
 
@@ -68,6 +70,7 @@ void app_DeleteApp(App *app) {
 
 
 void app_Advance(App *app, Duration deltaTime) {
+	particle_Advance(app->particle, deltaTime);
 	input_Advance(app->input);
 	player_Advance(app->player, deltaTime);
 	physics_Advance(app->physics, deltaTime);

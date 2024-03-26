@@ -174,3 +174,13 @@ tree_Node *tree_Node_Previous(tree_Node *node) {
 		return result->father;
 	}
 }
+
+
+size_t tree_Count(tree_Tree *tree) {
+	size_t cnt = 0;
+	for (tree_Node *i = tree_FirstNode(tree);
+		 i != NULL;
+		 i = tree_Node_Next(i))
+		cnt++;
+	return cnt;
+}

@@ -3,7 +3,9 @@
 #include "entity.h"
 #include "app.h"
 #include "input.h"
+#include "particle.h"
 
+#include "render_util.h"
 #include "types.h"
 #include "util/assert.h"
 #include <stdlib.h>
@@ -51,62 +53,77 @@ static double   walkSpeed = 300.0, jumpSpeed = 800.0, dashSpeed = 1500.0;
 static int      airjumpCount = 1, airdashCount = 1;
 static Duration dashLength = {.microseconds = 150000}, dashCooldown = {.microseconds = 400000};
 
+static Duration  emitCooldown = {.microseconds = 200000};
+static TimePoint lastEmit;
+
 void player_Advance(System_Player *sys, Duration deltaTime) {
 	if (!sys->player)
 		return;
 	// The bulk of player logic right here
-	System_Input *input = sys->super->input;
+	System_Input     *input = sys->super->input;
+	Component_Player *p     = sys->player;
 
-	if (sys->player->faceDirection != 1 && sys->player->faceDirection != -1)
-		sys->player->faceDirection = 1; // Face right by default
+	if (p->faceDirection != 1 && p->faceDirection != -1)
+		p->faceDirection = 1; // Face right by default
 
 
 	double targetVecX = 0.0;
 	// Move left/right
 	if (input_IsPressed(input->keys[input_Key_Left])) {
-		sys->player->faceDirection = -1;
+		p->faceDirection = -1;
 		targetVecX += -walkSpeed;
 	}
 	if (input_IsPressed(input->keys[input_Key_Right])) {
-		sys->player->faceDirection = 1;
+		p->faceDirection = 1;
 		targetVecX += walkSpeed;
 	}
-	sys->player->super->position->velocity.x = targetVecX;
+	p->super->position->velocity.x = targetVecX;
 
 
 	// Jump
-	if (sys->player->onGround)
-		sys->player->jumpCount = 0;
-	if (sys->super->input->keys[input_Key_Jump] == JustPressed ||
-		(sys->super->input->keys[input_Key_Jump] == Pressed && dabs(sys->player->super->position->velocity.y) < 5)) {
-		if (sys->player->onGround || sys->player->jumpCount < airjumpCount) {
-			sys->player->storedSpeedY = -jumpSpeed;
-			if (!sys->player->onGround) // Took the second clause, airjumped
-				sys->player->jumpCount++;
+	if (p->onGround)
+		p->jumpCount = 0;
+	if (input->keys[input_Key_Jump] == JustPressed ||
+		(input->keys[input_Key_Jump] == Pressed && dabs(p->super->position->velocity.y) < 5)) {
+		if (p->onGround || p->jumpCount < airjumpCount) {
+			p->storedSpeedY = -jumpSpeed;
+			if (!p->onGround) // Took the second clause, airjumped
+				p->jumpCount++;
 		}
 	}
 
 	// Dash
-	if (sys->player->onGround)
-		sys->player->dashCount = 0;
+	if (p->onGround)
+		p->dashCount = 0;
 	if (input_IsPressed(input->keys[input_Key_Dash]) &&
-		(sys->player->onGround || sys->player->dashCount < airdashCount) &&
-		time_Since(sys->player->lastDash).microseconds > dashCooldown.microseconds) {
-		sys->player->lastDash = time_Now();
-		if (!sys->player->onGround)
-			sys->player->dashCount++;
+		(p->onGround || p->dashCount < airdashCount) &&
+		time_Since(p->lastDash).microseconds > dashCooldown.microseconds) {
+		p->lastDash = time_Now();
+		if (!p->onGround)
+			p->dashCount++;
 	}
 	// Am I dashing right now?
-	if (time_Since(sys->player->lastDash).microseconds < dashLength.microseconds) {
-		sys->player->super->position->velocity.x += sys->player->faceDirection * dashSpeed;
-		sys->player->super->position->velocity.y = 0;
+	if (time_Since(p->lastDash).microseconds < dashLength.microseconds) {
+		p->super->position->velocity.x += p->faceDirection * dashSpeed;
+		p->super->position->velocity.y = 0;
 	} else { // Release the stored Y speed
-		sys->player->super->position->velocity.y += sys->player->storedSpeedY;
-		sys->player->storedSpeedY = 0;
+		p->super->position->velocity.y += p->storedSpeedY;
+		p->storedSpeedY = 0;
 	}
 
 
 	// Check OnGround again
 	if (dabs(sys->player->super->position->velocity.y) > EPS)
 		sys->player->onGround = false;
+
+
+	// Particles
+	if (time_Since(lastEmit).microseconds > emitCooldown.microseconds) {
+		lastEmit = time_Now();
+		particle_Emit(
+			sys->super->particle,
+			vec2_Add(p->super->position->position, vec2(0, -p->super->hitbox->box.size.y)),
+			vec2(0, -100), 2, 6, 6,
+			duration_FromSeconds(0), &render_ModeDefault);
+	}
 }

@@ -1,6 +1,7 @@
 
 #include "app.h"
 #include "camera.h"
+#include "particle.h"
 #include "physics.h"
 #include "easyx.h"
 #include "util/tree.h"
@@ -46,5 +47,8 @@ void app_Render(App *app) {
 	setbkcolor(RGB(0, 0, 0));
 	render_SetModes(mode_rotate, since);
 	render_FillCircleW(app, vec2(200, 100), 20);
+
+	// Draw particles
+	particle_Render(app->particle);
 }
 }

@@ -2,6 +2,7 @@
 #include "types.h"
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #ifdef WIN32_LEAN_AND_MEAN
 #undef WIN32_LEAN_AND_MEAN
 #endif
@@ -38,6 +39,10 @@ Vec2 vec2_Scale(Vec2 v, double scale) {
 		.y = v.y * scale};
 	return result;
 }
+
+Vec2 vec2_Random(double minX, double maxX, double minY, double maxY) {
+}
+
 
 bool box2_Intersects(const Box2 x, const Box2 y, Box2 *out_intersection) {
 	// Compute the min and max of the first rectangle on both axes

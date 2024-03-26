@@ -69,6 +69,9 @@ tree_Node *tree_Node_Next(tree_Node *node);
 // Node_Previous returns the previous node. Returns NULL if first.
 tree_Node *tree_Node_Previous(tree_Node *node);
 
+// Count walks the tree and counts how many nodes are there in the tree.
+size_t tree_Count(tree_Tree *tree);
+
 
 #ifdef __cplusplus
 }
