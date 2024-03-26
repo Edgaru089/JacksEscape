@@ -11,7 +11,8 @@
 
 void app_DebugText(App *app, vector_Vector *vec_string) {
 	vector_Clear(vec_string);
-	char buf[256] = {};
+	char buf[256];
+	memset(buf, 0, sizeof(0));
 
 	Component_Player *player = app->player->player;
 	if (!player) {

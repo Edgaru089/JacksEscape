@@ -142,6 +142,7 @@
     <ClInclude Include="util\assert.h" />
     <ClInclude Include="util\minmax.h" />
     <ClInclude Include="util\queue.h" />
+    <ClInclude Include="util\rand.h" />
     <ClInclude Include="util\tree.h" />
     <ClInclude Include="util\tree_internal.h" />
     <ClInclude Include="util\vector.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="render_util.cpp" />
     <ClCompile Include="types.c" />
     <ClCompile Include="util\queue.c" />
+    <ClCompile Include="util\rand.c" />
     <ClCompile Include="util\tree.c" />
     <ClCompile Include="util\vector.c" />
   </ItemGroup>

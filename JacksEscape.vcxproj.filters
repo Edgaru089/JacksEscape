@@ -66,6 +66,9 @@
     <ClInclude Include="types.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="util\rand.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="util\queue.c">
@@ -121,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="render_util.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="util\rand.c">
+      <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
