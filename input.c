@@ -51,10 +51,9 @@ void input_Advance(System_Input *sys) {
 		// Checks the most significiant bit (of the SHORT returned)
 		if ((GetAsyncKeyState(sys->systemKeymap[i]) & 0x8000) != 0) {
 			// Pressed
-			if (sys->keys[i] == JustReleased || sys->keys[i] == Released) {
-				fprintf(stderr, "[input_Advance] Key %s pressed\n", input_KeyNames[i]);
+			if (sys->keys[i] == JustReleased || sys->keys[i] == Released)
 				sys->keys[i] = JustPressed;
-			} else
+			else
 				sys->keys[i] = Pressed;
 		} else {
 			// Released
