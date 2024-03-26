@@ -80,7 +80,7 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 	// Particles when dashing
 	if (time_Since(p->lastDash).microseconds < dashLength.microseconds && dabs(p->super->position->velocity.x) > EPS) {
 		static TimePoint lastDashEmit = {};
-		static Duration  cooldown     = {.microseconds = 10000};
+		static Duration  cooldown     = {.microseconds = 8000};
 		if (time_Since(lastDashEmit).microseconds > cooldown.microseconds) {
 			lastDashEmit = time_Now();
 			Vec2 to_pos  = vec2_Add(p->super->position->position, vec2(0, -p->super->hitbox->box.size.y / 2.0));

@@ -146,6 +146,10 @@ TimePoint time_Now() {
 		LARGE_INTEGER freq;
 		QueryPerformanceFrequency(&freq);
 		freqInverse = 1000000.0 / ((double)freq.QuadPart);
+
+		LARGE_INTEGER time;
+		QueryPerformanceCounter(&time);
+		fprintf(stderr, "[time_Now] Frequency=%llu, Epoch=%llu\n", freq.QuadPart, time.QuadPart);
 	}
 
 	LARGE_INTEGER time;
