@@ -56,6 +56,7 @@ int main() {
 	}
 
 	closegraph();
+	app_DeleteApp(app);
 	printf("%.6lf seconds has elapsed\n", duration_Seconds(time_Since(startup)));
 	return 0;
 }

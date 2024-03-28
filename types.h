@@ -14,11 +14,20 @@ extern "C" {
 #define SCREEN_WIDTH  1280
 #define SCREEN_HEIGHT 720
 
+#define WARN(fmt, ...) fprintf(stderr, "[WARN][%s] " fmt "\n", __func__, __VA_ARGS__)
+
 
 static inline void *zero_malloc(size_t size) {
 	void *d = malloc(size);
 	memset(d, 0, size);
 	return d;
+}
+
+static inline char *copy_malloc(const char *src) {
+	size_t len = strlen(src);
+	char  *p   = (char *)malloc(len + 1);
+	memcpy(p, src, len + 1);
+	return p;
 }
 
 

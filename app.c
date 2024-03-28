@@ -7,11 +7,14 @@
 #include "physics.h"
 #include "player.h"
 #include "types.h"
+#include "render_bundle.h"
 #include <stdlib.h>
 #include <stdio.h>
 
 
 App *app_NewApp() {
+	render_LoadBundle("bundles.txt");
+
 	App *app = malloc(sizeof(App));
 
 	app->input    = input_NewSystem(app);
