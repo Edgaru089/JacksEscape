@@ -102,7 +102,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -117,7 +117,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -133,9 +133,12 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="mapper_misc.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="physics.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="render_bundle.h" />
+    <ClInclude Include="render_component.h" />
     <ClInclude Include="render_pattern.h" />
     <ClInclude Include="render_util.h" />
     <ClInclude Include="types.h" />
@@ -155,11 +158,17 @@
     <ClCompile Include="entity.c" />
     <ClCompile Include="input.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mapper_misc.c" />
+    <ClCompile Include="mapper_misc_render.cpp" />
     <ClCompile Include="particle.c" />
     <ClCompile Include="particle_render.cpp" />
     <ClCompile Include="physics.c" />
     <ClCompile Include="physics_move.c" />
     <ClCompile Include="player.c" />
+    <ClCompile Include="render_bundle.c" />
+    <ClCompile Include="render_bundle_draw.cpp" />
+    <ClCompile Include="render_bundle_file.c" />
+    <ClCompile Include="render_component.c" />
     <ClCompile Include="render_pattern.c" />
     <ClCompile Include="render_util.cpp" />
     <ClCompile Include="types.c" />

@@ -69,6 +69,15 @@
     <ClInclude Include="util\rand.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="render_bundle.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="mapper_misc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="render_component.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="util\queue.c">
@@ -127,6 +136,24 @@
     </ClCompile>
     <ClCompile Include="util\rand.c">
       <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="render_bundle_file.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="render_bundle.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="render_bundle_draw.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mapper_misc.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mapper_misc_render.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="render_component.c">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

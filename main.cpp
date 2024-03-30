@@ -51,7 +51,7 @@ int main() {
 		EndBatchDraw();
 
 
-		Duration toSleep = {.microseconds = 1000000 / 300 - time_Reset(&lastFrame).microseconds};
+		Duration toSleep = {.microseconds = 1000000 / 200 - time_Reset(&lastFrame).microseconds};
 		duration_Sleep(toSleep);
 	}
 
