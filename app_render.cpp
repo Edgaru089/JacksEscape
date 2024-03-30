@@ -73,19 +73,12 @@ void app_Render(App *app) {
 		}
 	}
 
-	static FillMode mode_rotate = {
-		.rotate = Duration{.microseconds = 100 * 1000}};
-
 
 	setfillcolor(RGB(255, 255, 255));
 	setbkcolor(RGB(0, 0, 0));
-	render_SetModes(mode_rotate, since);
+	render_SetModes(render_ModeRotate, since);
 	render_FillCircleW(app, vec2(200, 100), 20);
 
-
-	// render_DrawBundleW(app, render_FindBundle("info_plate"), vec2(600, 550));
-	render_DrawBundleW(app, render_FindBundle("info_plate_small_1"), vec2(250, 200));
-	render_DrawBundleW(app, render_FindBundle("info_plate_small_2"), vec2(750, 200));
 
 	// Draw entities
 	for (tree_Node *i = tree_FirstNode(app->entity->entities);
