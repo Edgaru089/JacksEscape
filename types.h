@@ -55,6 +55,15 @@ typedef struct {
 	Vec2 size;
 } Box2;
 
+static inline Box2 box2(double x, double y, double width, double height) {
+	Box2 b;
+	b.lefttop.x = x;
+	b.lefttop.y = y;
+	b.size.x    = width;
+	b.size.y    = height;
+	return b;
+}
+
 
 // Intersection test.
 bool box2_Intersects(const Box2 x, const Box2 y, Box2 *out_intersection);

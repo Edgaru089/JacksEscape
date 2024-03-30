@@ -62,6 +62,7 @@ extern "C" void misc_render_Textbox(App *app, Entity *e, Vec2 entity_screen_pos,
 	rect.top   = (LONG)round(entity_screen_pos.y) + t->offset + 40;
 
 	// Convert & draw
+	// https://docs.easyx.cn/zh-cn/drawtext
 	convert_text(t->text);
 	drawtext((LPCTSTR)vector_Data(tbuf), &rect, DT_CENTER | DT_NOCLIP);
 }

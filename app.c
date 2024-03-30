@@ -8,6 +8,8 @@
 #include "player.h"
 #include "types.h"
 #include "render_bundle.h"
+#include "render_component.h"
+#include "mapper_misc.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -57,6 +59,27 @@ App *app_NewApp() {
 	hit3->hitbox->box.size    = vec2(800, 30);
 	hit3->hitbox->fixed       = true;
 	entity_Commit(app->entity, hit3);
+
+	Entity *text1 = entity_Create(app->entity, "text_plate_large_1");
+	ADD_COMPONENT(text1, position);
+	text1->position->position = vec2(600, 550);
+	text1->render             = render_NewComponent(app, "info_plate");
+	misc_InstantiateTextbox(app, text1, "So long lives this,\nAnd this gives life to thee.", misc_TextboxUpright(110, 110), -220);
+	entity_Commit(app->entity, text1);
+
+	Entity *text2 = entity_Create(app->entity, "text_plate_1");
+	ADD_COMPONENT(text2, position);
+	text2->position->position = vec2(250, 200);
+	text2->render             = render_NewComponent(app, "info_plate_small_1");
+	misc_InstantiateTextbox(app, text2, "Press Space to jump.\nYou can jump again midair.", misc_TextboxUpright(70, 70), -180);
+	entity_Commit(app->entity, text2);
+
+	Entity *text3 = entity_Create(app->entity, "text_plate_2");
+	ADD_COMPONENT(text3, position);
+	text3->position->position = vec2(750, 200);
+	text3->render             = render_NewComponent(app, "info_plate_small_2");
+	misc_InstantiateTextbox(app, text3, "Press ; to dash.\nYou can only dash one time midair.", misc_TextboxUpright(70, 70), -180);
+	entity_Commit(app->entity, text3);
 
 	return app;
 }

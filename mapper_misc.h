@@ -11,7 +11,7 @@ typedef struct _App    App;
 typedef struct _Entity Entity;
 
 
-#define MISC_TEXTBOX_FADEIN_SPEED 5.0 // Fades in/out in 1/5 seconds
+#define MISC_TEXTBOX_FADEIN_SPEED 6.0 // Fades in/out in 1/6 seconds
 
 // A textbox that shows itself when the player is close
 typedef struct {
@@ -55,6 +55,19 @@ void misc_DeleteComponent(Component_Misc *misc);
 // Creates misc + render components & sets the thinker.
 void misc_InstantiateTextbox(App *app, Entity *e, const char *text, Box2 trigger_box, float offset);
 
+// Inserts the components for a hazard respawn area.
+// Creates misc & sets the thinker.
+void misc_InstantiateHazardRespawn(App *app, Entity *e, Box2 trigger_box, Vec2 respawn_pos);
+
+
+static inline Box2 misc_TextboxUpright(double width, double height) {
+	Box2 b = {
+		.lefttop = {
+			.x = -width / 2.0,
+			.y = -height},
+		.size = {.x = width, .y = height}};
+	return b;
+}
 
 #ifdef __cplusplus
 }
