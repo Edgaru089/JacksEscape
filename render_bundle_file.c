@@ -1,9 +1,13 @@
 
 #include "render_bundle.h"
+#include "render_util.h"
 #include "util/vector.h"
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+
+
+#define RGB(r, g, b) ((r) | ((g) << 8) | ((b) << 16))
 
 
 vector_Vector           *render_Bundles;
@@ -49,14 +53,15 @@ static void _render_BundleCommand(char *cmd) {
 		_tmpp->points = vector_Create(sizeof(Vec2));
 		_tmpp->fg     = 0xffffff;
 		_tmpp->bg     = 0;
+		_tmpp->mode   = render_ModeDefault;
 
 		// parse the type
 		char *type = strtok(NULL, " ");
-		if (strcmp(type, "LINES"))
+		if (strcmp(type, "LINES") == 0)
 			_tmpp->type = render_Lines;
-		else if (strcmp(type, "LINESTRIP"))
+		else if (strcmp(type, "LINESTRIP") == 0)
 			_tmpp->type = render_LineStrip;
-		else if (strcmp(type, "POLY"))
+		else if (strcmp(type, "POLY") == 0)
 			_tmpp->type = render_Polygon;
 
 
@@ -74,10 +79,30 @@ static void _render_BundleCommand(char *cmd) {
 	} else if (CMD("P")) {
 		// Add a Vec2
 		if (_tmpp) {
-			Vec2 v = vec2(strtod(strtok(NULL, " "), NULL), strtod(strtok(NULL, " "), NULL));
+			double x = strtod(strtok(NULL, " "), NULL);
+			double y = strtod(strtok(NULL, " "), NULL);
+			Vec2   v = vec2(x, y);
 			vector_Push(_tmpp->points, &v);
 		} else
 			WARN("P without PRIM first", 0);
+	} else if (CMD("FG")) {
+		// Set Foreground color
+		if (_tmpp) {
+			int r     = atoi(strtok(NULL, " "));
+			int g     = atoi(strtok(NULL, " "));
+			int b     = atoi(strtok(NULL, " "));
+			_tmpp->fg = RGB(r, g, b);
+		} else
+			WARN("FG without PRIM first", 0);
+	} else if (CMD("BG")) {
+		// Set Background color
+		if (_tmpp) {
+			int r     = atoi(strtok(NULL, " "));
+			int g     = atoi(strtok(NULL, " "));
+			int b     = atoi(strtok(NULL, " "));
+			_tmpp->bg = RGB(r, g, b);
+		} else
+			WARN("BG without PRIM first", 0);
 	} else {
 		WARN("unknown command %s", cmd);
 	}

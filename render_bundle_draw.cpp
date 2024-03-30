@@ -2,8 +2,8 @@
 #include "camera.h"
 #include "render_bundle.h"
 #include "app.h"
+#include "render_util.h"
 #include "util/vector.h"
-#include "util/assert.h"
 #include <stdio.h>
 #include <math.h>
 #include <easyx.h>
@@ -41,20 +41,25 @@ extern "C" void render_DrawPrimitiveW(App *app, render_Primitive *p, Vec2 offset
 	setlinecolor(p->fg);
 	setfillcolor(p->fg);
 	setbkcolor(p->bg);
+	render_SetModes(p->mode, time_Now());
 
 	// Draw the converted primitive
 	switch (p->type) {
 		case render_Lines:
 			if (vector_Size(buff) % 2 != 0)
-				fprintf(stderr, "[WARN][render_DrawPrimitiveW] render_Lines drawed odd numbers of points");
-			for (int i = 0; i < vector_Size(buff); i += 2) {
+				WARN("render_Lines drawed odd numbers of points", 0);
+			for (int i = 0; i < vector_Size(buff) - 1; i += 2) {
 				POINT p0 = *(POINT *)vector_At(buff, i);
 				POINT p1 = *(POINT *)vector_At(buff, i + 1);
 				line(p0.x, p0.y, p1.x, p1.y);
 			}
 			break;
 		case render_LineStrip:
-			polyline((POINT *)vector_Data(buff), vector_Size(buff));
+			for (int i = 0; i < vector_Size(buff) - 1; i++) {
+				POINT p0 = *(POINT *)vector_At(buff, i);
+				POINT p1 = *(POINT *)vector_At(buff, i + 1);
+				line(p0.x, p0.y, p1.x, p1.y);
+			}
 			break;
 		case render_Polygon:
 			fillpolygon((POINT *)vector_Data(buff), vector_Size(buff));

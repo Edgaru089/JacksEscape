@@ -4,6 +4,7 @@
 #include "particle.h"
 #include "physics.h"
 #include "easyx.h"
+#include "render_bundle.h"
 #include "util/tree.h"
 #include "types.h"
 #include "render_util.h"
@@ -48,7 +49,13 @@ void app_Render(App *app) {
 	render_SetModes(mode_rotate, since);
 	render_FillCircleW(app, vec2(200, 100), 20);
 
+
+	render_DrawBundleW(app, render_FindBundle("info_plate"), vec2(600, 550));
+
+
 	// Draw particles
+	setfillcolor(RGB(255, 255, 255));
+	setbkcolor(RGB(0, 0, 0));
 	particle_Render(app->particle);
 }
 }
