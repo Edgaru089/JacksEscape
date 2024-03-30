@@ -81,6 +81,10 @@ App *app_NewApp() {
 	misc_InstantiateTextbox(app, text3, "Press ; to dash.\nYou can only dash one time midair.", misc_TextboxUpright(70, 70), -180);
 	entity_Commit(app->entity, text3);
 
+	Entity *respawn1 = entity_Create(app->entity, "respawn1");
+	misc_InstantiateHazardRespawn(app, respawn1, box2(300, 500, 400, 50), vec2(500, 550));
+	entity_Commit(app->entity, respawn1);
+
 	return app;
 }
 

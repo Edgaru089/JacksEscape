@@ -51,6 +51,25 @@ void app_Render(App *app) {
 					(int)round(box.lefttop.x + box.size.x),
 					(int)round(box.lefttop.y + box.size.y));
 			}
+			if (e->misc->respawn) {
+				setlinecolor(RGB(255, 0, 255));
+				Box2 box;
+				Vec2 pos;
+				if (e->position) {
+					box = camera_TransformBox2(app->camera, box2_Offset(e->misc->respawn->trigger_box, e->position->position));
+					pos = camera_TransformVec2(app->camera, vec2_Add(e->misc->respawn->respawn_pos, e->position->position));
+				} else {
+					box = camera_TransformBox2(app->camera, e->misc->respawn->trigger_box);
+					pos = camera_TransformVec2(app->camera, e->misc->respawn->respawn_pos);
+				}
+				rectangle(
+					(int)round(box.lefttop.x),
+					(int)round(box.lefttop.y),
+					(int)round(box.lefttop.x + box.size.x),
+					(int)round(box.lefttop.y + box.size.y));
+				line((int)round(pos.x + 12), (int)round(pos.y), (int)round(pos.x - 12), (int)round(pos.y));
+				line((int)round(pos.x), (int)round(pos.y + 12), (int)round(pos.x), (int)round(pos.y - 12));
+			}
 		}
 	}
 

@@ -151,7 +151,22 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 	}
 
 
+	// Respawn if fallen out of the world
+	if (p->super->position->position.y > 5000)
+		player_HazardHarm(sys);
+
+
 	// Check OnGround again
 	if (dabs(sys->player->super->position->velocity.y) > EPS)
 		sys->player->onGround = false;
+}
+
+
+void player_HazardHarm(System_Player *sys) {
+	if (!sys->player)
+		return;
+	sys->player->storedSpeedY              = 0;
+	sys->player->super->position->velocity = vec2(0, 0);
+	sys->player->super->position->position = sys->player->hazardRespawn;
+	sys->player->super->position->position.y -= EPS; // Stay loose!
 }

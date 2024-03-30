@@ -52,6 +52,16 @@ void player_DeleteEntity(System_Player *sys, uintptr_t id);
 // Called on every frame.
 void player_Advance(System_Player *sys, Duration deltaTime);
 
+// Harm the player.
+// The player is hit backwards, releasing a puff of smoke.
+//
+// To be implemented
+// void player_Harm(System_Player *sys, Vec2 source);
+
+// Hazard harm the player.
+// The player is teleported to the hazard respawn point.
+void player_HazardHarm(System_Player *sys);
+
 
 #ifdef __cplusplus
 }
