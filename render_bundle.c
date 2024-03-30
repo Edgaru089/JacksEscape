@@ -37,6 +37,8 @@ void render_DeleteBundle(render_Bundle *b) {
 			vector_Destroy(p->points);
 	}
 	vector_Destroy(b->prims);
+	if (b->name)
+		free(b->name);
 	free(b);
 }
 

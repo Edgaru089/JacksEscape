@@ -75,7 +75,7 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 			sys->super->particle,
 			vec2_Add(vec2_Random(-20, 20, -10, 10), to_pos),
 			vec2(0, -100), 2, 6, 6,
-			duration_FromSeconds(0), &render_ModeDefault);
+			duration_FromSeconds(0), &render_ModeInverse);
 	}
 	// Particles when dashing
 	if (time_Since(p->lastDash).microseconds < dashLength.microseconds && dabs(p->super->position->velocity.x) > EPS) {

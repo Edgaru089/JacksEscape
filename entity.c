@@ -2,6 +2,7 @@
 #include "entity.h"
 #include "app.h"
 #include "camera.h"
+#include "mapper_misc.h"
 #include "physics.h"
 #include "util/assert.h"
 #include "util/tree.h"
@@ -9,6 +10,23 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+
+// Frees every member if they exists.
+static void _entity_FreeMembers(Entity *e) {
+	if (e->position)
+		free(e->position);
+	if (e->hitbox)
+		free(e->hitbox);
+	if (e->player)
+		free(e->player);
+	if (e->name)
+		free(e->name);
+	if (e->render)
+		render_DeleteComponent(e->render);
+	if (e->misc)
+		misc_DeleteComponent(e->misc);
+}
 
 
 System_Entity *entity_NewSystem(App *super) {
@@ -32,14 +50,7 @@ void entity_DeleteSystem(System_Entity *sys) {
 		player_DeleteEntity(sys->super->player, e->id);
 		camera_DeleteEntity(sys->super->camera, e->id);
 
-		if (e->position)
-			free(e->position);
-		if (e->hitbox)
-			free(e->hitbox);
-		if (e->player)
-			free(e->player);
-		if (e->name)
-			free(e->name);
+		_entity_FreeMembers(e);
 	}
 
 	tree_Destroy(sys->entities);
@@ -87,14 +98,7 @@ static inline void _entity_Delete(System_Entity *sys, uintptr_t id) {
 	player_DeleteEntity(sys->super->player, e->id);
 	camera_DeleteEntity(sys->super->camera, e->id);
 
-	if (e->position)
-		free(e->position);
-	if (e->hitbox)
-		free(e->hitbox);
-	if (e->player)
-		free(e->player);
-	if (e->name)
-		free(e->name);
+	_entity_FreeMembers(e);
 
 	tree_Delete(sys->entities, node);
 }
@@ -116,6 +120,6 @@ void entity_Advance(System_Entity *sys, Duration deltaTime) {
 		Entity *e = (Entity *)(i->data);
 
 		if (e->thinker)
-			e->thinker(e, deltaTime);
+			e->thinker(sys->super, e, deltaTime);
 	}
 }

@@ -21,6 +21,8 @@ extern "C" {
 
 
 void app_Render(App *app) {
+	render_SetModes(render_ModeDefault, time_Now());
+
 	for (tree_Node *i = tree_FirstNode(app->entity->entities);
 		 i != NULL;
 		 i = tree_Node_Next(i)) {
@@ -38,6 +40,17 @@ void app_Render(App *app) {
 				(int)round(box.lefttop.x + box.size.x),
 				(int)round(box.lefttop.y + box.size.y));
 		}
+		if (e->misc) {
+			if (e->misc->textbox) {
+				setlinecolor(RGB(0, 0, 255));
+				Box2 box = camera_TransformBox2(app->camera, box2_Offset(e->misc->textbox->trigger_box, e->position->position));
+				rectangle(
+					(int)round(box.lefttop.x),
+					(int)round(box.lefttop.y),
+					(int)round(box.lefttop.x + box.size.x),
+					(int)round(box.lefttop.y + box.size.y));
+			}
+		}
 	}
 
 	static FillMode mode_rotate = {
@@ -51,6 +64,8 @@ void app_Render(App *app) {
 
 
 	render_DrawBundleW(app, render_FindBundle("info_plate"), vec2(600, 550));
+	render_DrawBundleW(app, render_FindBundle("info_plate_small_1"), vec2(250, 200));
+	render_DrawBundleW(app, render_FindBundle("info_plate_small_2"), vec2(750, 200));
 
 
 	// Draw particles

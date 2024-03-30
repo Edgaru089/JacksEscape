@@ -82,6 +82,17 @@ bool box2_Intersects(const Box2 x, const Box2 y, Box2 *out_intersection) {
 	}
 }
 
+bool box2_Contains(const Box2 box, const Vec2 point) {
+	return box.lefttop.x < point.x &&
+		   box.lefttop.x + box.size.x > point.x &&
+		   box.lefttop.y < point.y &&
+		   box.lefttop.y + box.size.y > point.y;
+}
+
+bool box2_NotZero(Box2 box) {
+	return box.size.x > EPS && box.size.y > EPS;
+}
+
 Vec2 box2_Center(Box2 box) {
 	return vec2(
 		box.lefttop.x + box.size.x / 2.0,

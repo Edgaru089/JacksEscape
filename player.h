@@ -25,6 +25,8 @@ typedef struct {
 	double storedSpeedY;        // Speed stored in the middle of a dash
 	bool   onGround;            // If the player is on the ground?
 	bool   moveLeft, moveRight; // If the player is moving left/right?
+
+	Vec2 hazardRespawn; // Where the last hazard respawn is
 } Component_Player;
 
 

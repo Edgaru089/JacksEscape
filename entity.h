@@ -6,6 +6,8 @@
 #include "util/tree.h"
 #include "physics.h"
 #include "player.h"
+#include "render_component.h"
+#include "mapper_misc.h"
 
 
 #ifdef __cplusplus
@@ -13,8 +15,9 @@ extern "C" {
 #endif
 
 
+typedef struct _App    App;
 typedef struct _Entity Entity;
-typedef void (*entity_Thinker)(Entity *e, Duration deltaTime); // The Thinker function type assigned to Entities
+typedef void (*entity_Thinker)(App *app, Entity *e, Duration deltaTime); // The Thinker function type assigned to Entities
 
 
 // Entity.
@@ -25,6 +28,8 @@ typedef struct _Entity {
 	Component_Position *position;
 	Component_Hitbox   *hitbox;
 	Component_Player   *player;
+	Component_Render   *render;
+	Component_Misc     *misc;
 
 	entity_Thinker thinker;     // Called by System_Entity each frame if not NULL.
 	void          *thinkerData; // Data managed by the Thinker, if exists.
@@ -38,8 +43,6 @@ typedef struct _Entity {
 		entity->component->super = entity;                                  \
 	} while (false)
 
-
-typedef struct _App App;
 
 // Entity manager.
 typedef struct {
