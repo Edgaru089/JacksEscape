@@ -47,11 +47,7 @@ tree_Node *__tree_InsertNodes(tree_Tree *t, tree_Node *node, tree_Node *father, 
 	if (!node) {
 		if (added)
 			*added = true;
-#ifdef HELOS_UTIL_TREE_TYPE_TREAP
-		return *result = __tree_NewNode(t, key, father, random_Rand() ^ key);
-#else
-		return *result = __tree_NewNode(t, key, father, 0);
-#endif
+		return *result = __tree_NewNode(t, key, father, rand() ^ key);
 	} else if (key < node->key) {
 		node->left = __tree_InsertNodes(t, node->left, node, key, result, added);
 		return node;
@@ -70,10 +66,8 @@ tree_Node *tree_InsertNode(tree_Tree *t, uintptr_t key, bool *added) {
 	tree_Node *result;
 	t->root = __tree_InsertNodes(t, t->root, 0, key, &result, added);
 
-#ifdef HELOS_UTIL_TREE_TYPE_TREAP
-	if (*added)
+	if (added == NULL || *added)
 		__tree_treap_Adjust(result, &t->root);
-#endif
 
 	return result;
 }
@@ -108,16 +102,11 @@ void *tree_Find(tree_Tree *t, uintptr_t key) {
 
 
 void tree_Delete(tree_Tree *t, tree_Node *node) {
-#ifdef HELOS_UTIL_TREE_TYPE_TREAP
 	while (node->left && node->right)
 		if (node->left->internal < node->right->internal)
 			__tree_Rotate(node->left, &t->root);
 		else
 			__tree_Rotate(node->right, &t->root);
-#else
-	while (node->left)
-		__tree_Rotate(node->left, &t->root);
-#endif
 
 	if (node == t->root)
 		t->root = (node->left ? node->left : node->right);
