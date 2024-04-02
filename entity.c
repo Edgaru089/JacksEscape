@@ -123,3 +123,23 @@ void entity_Advance(System_Entity *sys, Duration deltaTime) {
 			e->thinker(sys->super, e, deltaTime);
 	}
 }
+
+
+void entity_Clear(System_Entity *sys) {
+	// Build a list of all entity IDs
+	vector_Clear(sys->flaggedDelete);
+	for (tree_Node *i = tree_FirstNode(sys->entities);
+		 i != NULL;
+		 i = tree_Node_Next(i)) {
+		Entity *e = (Entity *)i->data;
+		vector_Push(sys->flaggedDelete, &e->id);
+	}
+
+	// _Delete all of them
+	for (int i = 0; i < vector_Size(sys->flaggedDelete); i++) {
+		_entity_Delete(sys, *(uintptr_t *)(vector_At(sys->flaggedDelete, i)));
+	}
+	vector_Clear(sys->flaggedDelete);
+
+	ASSERT(tree_Count(sys->entities) == 0);
+}

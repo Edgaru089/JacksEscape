@@ -85,9 +85,11 @@ void app_Render(App *app) {
 			}
 		}
 	}
-	setlinecolor(RGB(255, 0, 255));
-	Vec2 respawn = camera_TransformVec2(app->camera, app->player->player->hazardRespawn);
-	circle((int)round(respawn.x), (int)round(respawn.y), 6);
+	if (app->player->player) {
+		setlinecolor(RGB(255, 0, 255));
+		Vec2 respawn = camera_TransformVec2(app->camera, app->player->player->hazardRespawn);
+		circle((int)round(respawn.x), (int)round(respawn.y), 6);
+	}
 
 
 	setfillcolor(RGB(255, 255, 255));

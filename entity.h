@@ -65,6 +65,14 @@ void entity_Delete(System_Entity *sys, uintptr_t id);
 void entity_Advance(System_Entity *sys, Duration deltaTime);
 
 
+// Clears all the entities. Also calls other systems
+// to update these removals.
+//
+// Should load all other new entities and the player
+// before any game logic after this, or this probably
+// will crash. Sketchy.
+void entity_Clear(System_Entity *sys);
+
 #ifdef __cplusplus
 }
 #endif
