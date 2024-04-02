@@ -39,6 +39,11 @@ typedef struct {
 void misc_thinker_HazardRespawn(App *app, Entity *e, Duration deltaTime);
 
 
+// Thinker for hazard areas
+// Tracks the player & harms on contact
+void misc_thinker_Hazard(App *app, Entity *e, Duration deltaTime);
+
+
 // Misc data an entity in the map might want.
 // Used as patches for quick logic like hazard respawn & textbox
 typedef struct {
@@ -58,6 +63,10 @@ void misc_InstantiateTextbox(App *app, Entity *e, const char *text, Box2 trigger
 // Inserts the components for a hazard respawn area.
 // Creates misc & sets the thinker.
 void misc_InstantiateHazardRespawn(App *app, Entity *e, Box2 trigger_box, Vec2 respawn_pos);
+
+// Inserts the components for a hazard harming area.
+// Creates misc & sets the thinker.
+void misc_InstantiateHazard(App *app, Entity *e, Box2 trigger_box);
 
 
 static inline Box2 misc_TextboxUpright(double width, double height) {

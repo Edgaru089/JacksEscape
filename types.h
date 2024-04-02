@@ -30,6 +30,12 @@ static inline char *copy_malloc(const char *src) {
 	return p;
 }
 
+static inline void *copy_malloc_size(void *src, size_t size) {
+	void *p = malloc(size);
+	memcpy(p, src, size);
+	return p;
+}
+
 
 // A 2d vector of double.
 typedef struct {

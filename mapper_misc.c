@@ -3,6 +3,7 @@
 #include "app.h"
 #include "entity.h"
 #include "physics.h"
+#include "player.h"
 #include "types.h"
 #include "util/assert.h"
 #include <stdio.h>
@@ -46,6 +47,26 @@ void misc_thinker_HazardRespawn(App *app, Entity *e, Duration deltaTime) {
 
 	if (box2_Intersects(worldbox, playerbox, NULL))
 		p->hazardRespawn = worldspawn;
+}
+
+void misc_thinker_Hazard(App *app, Entity *e, Duration deltaTime) {
+	if (!e->misc || !e->misc->hazard) {
+		WARN("called on an entity without misc or misc.textbox", 0);
+		return;
+	}
+	if (app->player->player == NULL) // No player
+		return;
+	Component_Player *p         = app->player->player;
+	Box2              playerbox = physics_HitboxAbsolute(p->super->hitbox);
+
+	Box2 worldbox; // Offset if position component exists
+	if (e->position)
+		worldbox = box2_Offset(*e->misc->hazard, e->position->position);
+	else
+		worldbox = *e->misc->hazard;
+
+	if (box2_Intersects(worldbox, playerbox, NULL))
+		player_HazardHarm(app->player);
 }
 
 void misc_thinker_Textbox(App *app, Entity *e, Duration deltaTime) {
@@ -101,4 +122,12 @@ void misc_InstantiateHazardRespawn(App *app, Entity *e, Box2 trigger_box, Vec2 r
 	e->misc->respawn->trigger_box = trigger_box;
 
 	e->thinker = &misc_thinker_HazardRespawn;
+}
+
+void misc_InstantiateHazard(App *app, Entity *e, Box2 trigger_box) {
+	ASSERT(e->misc == NULL && "Instantiate must be called with e.misc not set");
+	e->misc         = zero_malloc(sizeof(Component_Misc));
+	e->misc->hazard = copy_malloc_size(&trigger_box, sizeof(Box2));
+
+	e->thinker = &misc_thinker_Hazard;
 }

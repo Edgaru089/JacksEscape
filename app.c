@@ -85,6 +85,10 @@ App *app_NewApp() {
 	misc_InstantiateHazardRespawn(app, respawn1, box2(300, 500, 400, 50), vec2(500, 550));
 	entity_Commit(app->entity, respawn1);
 
+	Entity *hazard1 = entity_Create(app->entity, "hazard1");
+	misc_InstantiateHazard(app, hazard1, box2(800, 545, 100, 5));
+	entity_Commit(app->entity, hazard1);
+
 	return app;
 }
 

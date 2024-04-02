@@ -70,8 +70,24 @@ void app_Render(App *app) {
 				line((int)round(pos.x + 12), (int)round(pos.y), (int)round(pos.x - 12), (int)round(pos.y));
 				line((int)round(pos.x), (int)round(pos.y + 12), (int)round(pos.x), (int)round(pos.y - 12));
 			}
+			if (e->misc->hazard) {
+				setlinecolor(RGB(255, 0, 0));
+				Box2 box;
+				if (e->position)
+					box = camera_TransformBox2(app->camera, box2_Offset(*e->misc->hazard, e->position->position));
+				else
+					box = camera_TransformBox2(app->camera, *e->misc->hazard);
+				rectangle(
+					(int)round(box.lefttop.x),
+					(int)round(box.lefttop.y),
+					(int)round(box.lefttop.x + box.size.x),
+					(int)round(box.lefttop.y + box.size.y));
+			}
 		}
 	}
+	setlinecolor(RGB(255, 0, 255));
+	Vec2 respawn = camera_TransformVec2(app->camera, app->player->player->hazardRespawn);
+	circle((int)round(respawn.x), (int)round(respawn.y), 6);
 
 
 	setfillcolor(RGB(255, 255, 255));
