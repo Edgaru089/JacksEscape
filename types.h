@@ -11,8 +11,8 @@ extern "C" {
 #endif
 
 
-#define SCREEN_WIDTH  1280
-#define SCREEN_HEIGHT 720
+#define SCREEN_WIDTH  1600
+#define SCREEN_HEIGHT 900
 
 #define WARN(fmt, ...) fprintf(stderr, "[WARN][%s] " fmt "\n", __func__, __VA_ARGS__)
 
