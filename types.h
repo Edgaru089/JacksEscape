@@ -107,6 +107,7 @@ typedef struct {
 } TimePoint;
 
 TimePoint time_Now();
+TimePoint time_After(TimePoint now, Duration after);
 Duration  time_Since(TimePoint prev);
 Duration  time_Difference(TimePoint now, TimePoint prev);
 Duration  time_Reset(TimePoint *prev);

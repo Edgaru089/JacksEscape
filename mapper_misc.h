@@ -43,6 +43,10 @@ void misc_thinker_HazardRespawn(App *app, Entity *e, Duration deltaTime);
 // Tracks the player & harms on contact
 void misc_thinker_Hazard(App *app, Entity *e, Duration deltaTime);
 
+// Thinker for tolive
+// Kills itself after some time
+void misc_thinker_ToLive(App *app, Entity *e, Duration deltaTime);
+
 
 // Misc data an entity in the map might want.
 // Used as patches for quick logic like hazard respawn & textbox
@@ -50,6 +54,7 @@ typedef struct {
 	misc_Textbox       *textbox;
 	misc_HazardRespawn *respawn;
 	Box2               *hazard; // Harms the player on contact if not null, relative
+	TimePoint           tolive; // Deletes itself after this time if it is not 0
 } Component_Misc;
 
 // Deletes everything nested in misc, and then itself.
@@ -67,6 +72,13 @@ void misc_InstantiateHazardRespawn(App *app, Entity *e, Box2 trigger_box, Vec2 r
 // Inserts the components for a hazard harming area.
 // Creates misc & sets the thinker.
 void misc_InstantiateHazard(App *app, Entity *e, Box2 trigger_box);
+
+// Inserts the components for the entity to kill itself after some time.
+// Creates misc & sets the thinker.
+//
+// You would normally want to set duration to a fixed amount,
+// and since to time_Now().
+void misc_InstantiateToLive(App *app, Entity *e, Duration duration, TimePoint since);
 
 
 static inline Box2 misc_TextboxUpright(double width, double height) {

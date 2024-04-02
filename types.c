@@ -170,6 +170,12 @@ TimePoint time_Now() {
 	return t;
 }
 
+TimePoint time_After(TimePoint now, Duration after) {
+	TimePoint p = {
+		.microseconds = now.microseconds + after.microseconds};
+	return p;
+}
+
 Duration time_Since(TimePoint prev) {
 	return time_Difference(time_Now(), prev);
 }

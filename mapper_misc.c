@@ -28,6 +28,7 @@ void misc_DeleteComponent(Component_Misc *misc) {
 void misc_thinker_HazardRespawn(App *app, Entity *e, Duration deltaTime) {
 	if (!e->misc || !e->misc->respawn) {
 		WARN("called on an entity without misc or misc.respawn", 0);
+		e->thinker = NULL;
 		return;
 	}
 	if (app->player->player == NULL) // No player
@@ -52,6 +53,7 @@ void misc_thinker_HazardRespawn(App *app, Entity *e, Duration deltaTime) {
 void misc_thinker_Hazard(App *app, Entity *e, Duration deltaTime) {
 	if (!e->misc || !e->misc->hazard) {
 		WARN("called on an entity without misc or misc.textbox", 0);
+		e->thinker = NULL;
 		return;
 	}
 	if (app->player->player == NULL) // No player
@@ -72,6 +74,7 @@ void misc_thinker_Hazard(App *app, Entity *e, Duration deltaTime) {
 void misc_thinker_Textbox(App *app, Entity *e, Duration deltaTime) {
 	if (!e->misc || !e->misc->textbox) {
 		WARN("called on an entity without misc or misc.textbox", 0);
+		e->thinker = NULL;
 		return;
 	}
 	misc_Textbox *t = e->misc->textbox;
@@ -92,6 +95,19 @@ void misc_thinker_Textbox(App *app, Entity *e, Duration deltaTime) {
 	else
 		// Fade out
 		t->progress = fmaxf(0.0f, t->progress - duration_Seconds(deltaTime) * MISC_TEXTBOX_FADEIN_SPEED);
+}
+
+void misc_thinker_ToLive(App *app, Entity *e, Duration deltaTime) {
+	if (!e->misc || e->misc->tolive.microseconds == 0) {
+		WARN("called on an entity without misc or misc.tolive", 0);
+		e->thinker = NULL;
+		return;
+	}
+
+	if (e->misc->tolive.microseconds < time_Now().microseconds) {
+		// After its allocated time
+		entity_Delete(app->entity, e->id);
+	}
 }
 
 
@@ -130,4 +146,12 @@ void misc_InstantiateHazard(App *app, Entity *e, Box2 trigger_box) {
 	e->misc->hazard = copy_malloc_size(&trigger_box, sizeof(Box2));
 
 	e->thinker = &misc_thinker_Hazard;
+}
+
+void misc_InstantiateToLive(App *app, Entity *e, Duration duration, TimePoint since) {
+	ASSERT(e->misc == NULL && "Instantiate must be called with e.misc not set");
+	e->misc         = zero_malloc(sizeof(Component_Misc));
+	e->misc->tolive = time_After(since, duration);
+
+	e->thinker = &misc_thinker_ToLive;
 }
