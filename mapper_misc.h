@@ -15,10 +15,9 @@ typedef struct _Entity Entity;
 
 // A textbox that shows itself when the player is close
 typedef struct {
-	char *text;        // Allocated & copied
-	Box2  trigger_box; // Relative
-	float progress;    // [0.0, 1.0]
-	float offset;      // Offset of the top of the text to its origin, usually negative
+	char *text;     // Allocated & copied
+	float progress; // [0.0, 1.0]
+	float offset;   // Offset of the top of the text to its origin, usually negative
 } misc_Textbox;
 
 // Thinker for textboxes
@@ -27,12 +26,6 @@ void misc_thinker_Textbox(App *app, Entity *e, Duration deltaTime);
 // Render callback for textboxes
 void misc_render_Textbox(App *app, Entity *e, Vec2 entity_screen_pos, void *user);
 
-
-// Hazard respawn point
-typedef struct {
-	Box2 trigger_box;
-	Vec2 respawn_pos;
-} misc_HazardRespawn;
 
 // Thinker for hazard respawns
 // Tracks the player & sets its respawn point
@@ -47,14 +40,20 @@ void misc_thinker_Hazard(App *app, Entity *e, Duration deltaTime);
 // Kills itself after some time
 void misc_thinker_ToLive(App *app, Entity *e, Duration deltaTime);
 
+typedef enum {
+	misc_Hazard = 1 << 0, // Hazard, harms the player on contact
+} misc_TriggerFlags;
+
 
 // Misc data an entity in the map might want.
 // Used as patches for quick logic like hazard respawn & textbox
 typedef struct {
-	misc_Textbox       *textbox;
-	misc_HazardRespawn *respawn;
-	Box2               *hazard; // Harms the player on contact if not null, relative
-	TimePoint           tolive; // Deletes itself after this time if it is not 0
+	Box2              trigger; // Relative to Position if exists; absolute otherwise
+	misc_TriggerFlags trigger_flags;
+	misc_Textbox     *textbox;
+	Vec2             *respawn_pos; // Set hazard respawn trigger
+
+	TimePoint tolive; // Deletes itself after this time if it is not 0
 } Component_Misc;
 
 // Deletes everything nested in misc, and then itself.

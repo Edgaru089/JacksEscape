@@ -42,47 +42,30 @@ void app_Render(App *app) {
 				(int)round(box.lefttop.y + box.size.y));
 		}
 		if (e->misc) {
-			if (e->misc->textbox) {
+			if (e->misc->textbox)
 				setlinecolor(RGB(0, 0, 255));
-				Box2 box = camera_TransformBox2(app->camera, box2_Offset(e->misc->textbox->trigger_box, e->position->position));
-				rectangle(
-					(int)round(box.lefttop.x),
-					(int)round(box.lefttop.y),
-					(int)round(box.lefttop.x + box.size.x),
-					(int)round(box.lefttop.y + box.size.y));
-			}
-			if (e->misc->respawn) {
+			if (e->misc->respawn_pos) {
 				setlinecolor(RGB(255, 0, 255));
-				Box2 box;
 				Vec2 pos;
-				if (e->position) {
-					box = camera_TransformBox2(app->camera, box2_Offset(e->misc->respawn->trigger_box, e->position->position));
-					pos = camera_TransformVec2(app->camera, vec2_Add(e->misc->respawn->respawn_pos, e->position->position));
-				} else {
-					box = camera_TransformBox2(app->camera, e->misc->respawn->trigger_box);
-					pos = camera_TransformVec2(app->camera, e->misc->respawn->respawn_pos);
-				}
-				rectangle(
-					(int)round(box.lefttop.x),
-					(int)round(box.lefttop.y),
-					(int)round(box.lefttop.x + box.size.x),
-					(int)round(box.lefttop.y + box.size.y));
+				if (e->position)
+					pos = camera_TransformVec2(app->camera, vec2_Add(*e->misc->respawn_pos, e->position->position));
+				else
+					pos = camera_TransformVec2(app->camera, *e->misc->respawn_pos);
 				line((int)round(pos.x + 12), (int)round(pos.y), (int)round(pos.x - 12), (int)round(pos.y));
 				line((int)round(pos.x), (int)round(pos.y + 12), (int)round(pos.x), (int)round(pos.y - 12));
 			}
-			if (e->misc->hazard) {
+			if (e->misc->trigger_flags & misc_Hazard)
 				setlinecolor(RGB(255, 0, 0));
-				Box2 box;
-				if (e->position)
-					box = camera_TransformBox2(app->camera, box2_Offset(*e->misc->hazard, e->position->position));
-				else
-					box = camera_TransformBox2(app->camera, *e->misc->hazard);
-				rectangle(
-					(int)round(box.lefttop.x),
-					(int)round(box.lefttop.y),
-					(int)round(box.lefttop.x + box.size.x),
-					(int)round(box.lefttop.y + box.size.y));
-			}
+			Box2 box;
+			if (e->position)
+				box = camera_TransformBox2(app->camera, box2_Offset(e->misc->trigger, e->position->position));
+			else
+				box = camera_TransformBox2(app->camera, e->misc->trigger);
+			rectangle(
+				(int)round(box.lefttop.x),
+				(int)round(box.lefttop.y),
+				(int)round(box.lefttop.x + box.size.x),
+				(int)round(box.lefttop.y + box.size.y));
 		}
 	}
 	if (app->player->player) {
