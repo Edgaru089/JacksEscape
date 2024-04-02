@@ -22,7 +22,8 @@ typedef struct _App {
 	System_Camera   *camera;
 	System_Particle *particle;
 
-	bool wantQuit;
+	char *switch_level;
+	bool  wantQuit;
 } App;
 
 App *app_NewApp();
@@ -32,6 +33,10 @@ void app_Advance(App *app, Duration deltaTime);
 void app_Render(App *app);
 
 void app_DebugText(App *app, vector_Vector *vec_string);
+
+// Trigger the app to reload all entities before next frame update.
+void app_QueueLoadLevel(App *app, const char *level_name);
+void _app_SwitchLevel(App *app);
 
 
 #ifdef __cplusplus

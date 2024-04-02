@@ -17,7 +17,7 @@
 App *app_NewApp() {
 	render_LoadBundle("bundles.txt");
 
-	App *app = malloc(sizeof(App));
+	App *app = zero_malloc(sizeof(App));
 
 	app->input    = input_NewSystem(app);
 	app->physics  = physics_NewSystem(app);
@@ -26,7 +26,8 @@ App *app_NewApp() {
 	app->camera   = camera_NewSystem(app);
 	app->particle = particle_NewSystem(app);
 
-	app->wantQuit = false;
+	app->switch_level = NULL;
+	app->wantQuit     = false;
 
 
 	Entity *player = entity_Create(app->entity, "player");
@@ -104,6 +105,13 @@ void app_DeleteApp(App *app) {
 
 
 void app_Advance(App *app, Duration deltaTime) {
+	// Limit deltaTime to 20ms (1/50 second)
+	if (deltaTime.microseconds > 20000)
+		deltaTime.microseconds = 20000;
+
+	if (app->switch_level != NULL)
+		_app_SwitchLevel(app);
+
 	particle_Advance(app->particle, deltaTime);
 	input_Advance(app->input);
 	player_Advance(app->player, deltaTime);
