@@ -110,7 +110,7 @@ static void _render_BundleCommand(char *cmd) {
 }
 
 
-static char linebuf[512];
+char linebuf[512];
 
 void render_LoadBundle(const char *filename) {
 	if (!render_Bundles)

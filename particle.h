@@ -46,6 +46,9 @@ void particle_Render(System_Particle *sys);
 void particle_Emit(System_Particle *sys, Vec2 pos, Vec2 vec, double vec_friction, double size, double sizedec, Duration tolive, const FillMode *fill);
 void particle_Delete(System_Particle *sys, uintptr_t id);
 
+// Clear all particles.
+void particle_Clear(System_Particle *sys);
+
 
 #ifdef __cplusplus
 }

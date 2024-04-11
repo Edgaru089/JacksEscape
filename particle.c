@@ -3,6 +3,7 @@
 #include "types.h"
 #include "util/tree.h"
 #include "util/vector.h"
+#include "util/assert.h"
 #include <stdio.h>
 
 
@@ -77,4 +78,15 @@ void particle_Emit(System_Particle *sys, Vec2 pos, Vec2 vec, double vec_friction
 	p->size         = size;
 	p->sizedec      = sizedec;
 	p->mode         = fill;
+}
+
+
+void particle_Clear(System_Particle *sys) {
+	vector_Clear(sys->deleted_ids);
+	// Delete every first node
+	int count = tree_Count(sys->parts);
+	while (count--)
+		tree_Delete(sys->parts, tree_FirstNode(sys->parts));
+
+	ASSERT(tree_Count(sys->parts) == 0);
 }
