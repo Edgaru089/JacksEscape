@@ -68,7 +68,7 @@ static void _app_LevelCommand(App *app, char *cmd) {
 		c = TOKEN_DOUBLE;
 		d = TOKEN_DOUBLE;
 
-		Entity *e = entity_Create(app->entity, NULL);
+		Entity *e = entity_Create(app->entity, cmd);
 		ADD_COMPONENT(e, hitbox);
 		e->hitbox->box   = box2(a, b, c, d);
 		e->hitbox->fixed = true;
@@ -80,7 +80,7 @@ static void _app_LevelCommand(App *app, char *cmd) {
 		a = TOKEN_DOUBLE;
 		b = TOKEN_DOUBLE;
 
-		Entity *e = entity_Create(app->entity, NULL);
+		Entity *e = entity_Create(app->entity, cmd);
 		ADD_COMPONENT(e, player);
 		e->player->hazardRespawn = vec2(a, b);
 		ADD_COMPONENT(e, position);
@@ -101,7 +101,7 @@ static void _app_LevelCommand(App *app, char *cmd) {
 		e = TOKEN_DOUBLE;
 		f = TOKEN_DOUBLE;
 
-		Entity *en = entity_Create(app->entity, NULL);
+		Entity *en = entity_Create(app->entity, cmd);
 		misc_InstantiateHazardRespawn(app, en, box2(a, b, c, d), vec2(e, f));
 		entity_Commit(app->entity, en);
 	}
@@ -113,7 +113,7 @@ static void _app_LevelCommand(App *app, char *cmd) {
 		c = TOKEN_DOUBLE;
 		d = TOKEN_DOUBLE;
 
-		Entity *e = entity_Create(app->entity, NULL);
+		Entity *e = entity_Create(app->entity, cmd);
 		misc_InstantiateHazard(app, e, box2(a, b, c, d));
 		entity_Commit(app->entity, e);
 	}
@@ -125,7 +125,7 @@ static void _app_LevelCommand(App *app, char *cmd) {
 		c = TOKEN_DOUBLE;
 		d = TOKEN_DOUBLE;
 
-		Entity *e      = entity_Create(app->entity, NULL);
+		Entity *e      = entity_Create(app->entity, cmd);
 		char   *bundle = TOKEN;
 		if (bundle != NULL)
 			e->render = render_NewComponent(app, bundle);
@@ -147,9 +147,17 @@ static void _app_LevelCommand(App *app, char *cmd) {
 	}
 
 	CMD("LEVEL_TRANSITION") {
-		// TODO
-		// Entity *e = entity_Create(app->entity, NULL);
-		// entity_Commit(app->entity, e);
+		double a, b, c, d;
+		a                = TOKEN_DOUBLE;
+		b                = TOKEN_DOUBLE;
+		c                = TOKEN_DOUBLE;
+		d                = TOKEN_DOUBLE;
+		char *next_level = TOKEN;
+		if (next_level) {
+			Entity *e = entity_Create(app->entity, cmd);
+			misc_InstantiateChangeLevel(app, e, box2(a, b, c, d), next_level);
+			entity_Commit(app->entity, e);
+		}
 	}
 
 	CMD("CUTOFF") {
@@ -166,6 +174,7 @@ void _app_SwitchLevel(App *app) {
 		WARN("called when switch_level is NULL", 0);
 		return;
 	}
+	INFO("Switching level to %s", app->switch_level);
 
 	FILE *f = fopen(app->switch_level, "r");
 	if (!f) {

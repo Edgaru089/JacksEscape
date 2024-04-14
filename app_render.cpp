@@ -56,6 +56,8 @@ void app_Render(App *app) {
 			}
 			if (e->misc->trigger_flags & misc_Hazard)
 				setlinecolor(RGB(255, 0, 0));
+			if (e->misc->change_level)
+				setlinecolor(RGB(255, 255, 0));
 			Box2 box;
 			if (e->position)
 				box = camera_TransformBox2(app->camera, box2_Offset(e->misc->trigger, e->position->position));

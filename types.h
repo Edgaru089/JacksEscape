@@ -14,7 +14,8 @@ extern "C" {
 #define SCREEN_WIDTH  1600
 #define SCREEN_HEIGHT 900
 
-#define WARN(fmt, ...) fprintf(stderr, "[WARN][%s] " fmt "\n", __func__, __VA_ARGS__)
+#define WARN(fmt, ...) fprintf(stderr, "[WARN][%s] " fmt "\n", __func__, ##__VA_ARGS__)
+#define INFO(fmt, ...) fprintf(stderr, "[%s] " fmt "\n", __func__, ##__VA_ARGS__)
 
 
 static inline void *zero_malloc(size_t size) {

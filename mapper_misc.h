@@ -40,6 +40,10 @@ void misc_thinker_Hazard(App *app, Entity *e, Duration deltaTime);
 // Kills itself after some time
 void misc_thinker_ToLive(App *app, Entity *e, Duration deltaTime);
 
+// Thinker for level transition
+void misc_thinker_ChangeLevel(App *app, Entity *e, Duration deltaTime);
+
+
 typedef enum {
 	misc_Hazard = 1 << 0, // Hazard, harms the player on contact
 } misc_TriggerFlags;
@@ -51,7 +55,8 @@ typedef struct {
 	Box2              trigger; // Relative to Position if exists; absolute otherwise
 	misc_TriggerFlags trigger_flags;
 	misc_Textbox     *textbox;
-	Vec2             *respawn_pos; // Set hazard respawn trigger
+	Vec2             *respawn_pos;  // Set hazard respawn trigger
+	char             *change_level; // Change level
 
 	TimePoint tolive; // Deletes itself after this time if it is not 0
 } Component_Misc;
@@ -78,6 +83,11 @@ void misc_InstantiateHazard(App *app, Entity *e, Box2 trigger_box);
 // You would normally want to set duration to a fixed amount,
 // and since to time_Now().
 void misc_InstantiateToLive(App *app, Entity *e, Duration duration, TimePoint since);
+
+
+// Inserts components for change level
+// Creates misc & the thinker.
+void misc_InstantiateChangeLevel(App *app, Entity *e, Box2 trigger_box, const char *next_level);
 
 
 static inline Box2 misc_TextboxUpright(double width, double height) {

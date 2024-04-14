@@ -4,6 +4,7 @@
 #include "camera.h"
 #include "mapper_misc.h"
 #include "physics.h"
+#include "render_component.h"
 #include "util/assert.h"
 #include "util/tree.h"
 #include "util/vector.h"
@@ -97,6 +98,7 @@ static inline void _entity_Delete(System_Entity *sys, uintptr_t id) {
 	physics_DeleteEntity(sys->super->physics, e->id);
 	player_DeleteEntity(sys->super->player, e->id);
 	camera_DeleteEntity(sys->super->camera, e->id);
+
 
 	_entity_FreeMembers(e);
 

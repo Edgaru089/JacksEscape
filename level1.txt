@@ -1,0 +1,4 @@
+CUTOFF 600
+HITBOX 60 350 1134 65
+TEXTBOX 541 191 178 166 info_plate_small_1 Work\sin\sProgress!!
+PLAYER 565 350
