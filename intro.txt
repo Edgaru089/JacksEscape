@@ -1,0 +1,17 @@
+CUTOFF 1000
+HITBOX -245 250 1427 44
+PLAYER 600 250
+HITBOX -176 -408 78 798
+TEXTBOX 905 65 182 189 info_plate Welcome!\nPress\sSpace\sto\sjump.\nYou\scan\sjump\sagain\smidair.
+HAZARD_RESPAWN 1051 29 123 237 1097 250
+HITBOX 1114 250 68 524
+HAZARD 1128 600 424 89
+HITBOX 1480 250 318 519
+HITBOX 2903 -325 108 1226
+HITBOX 2309 392 454 503
+TEXTBOX 1566 120 123 134 info_plate_small_1 Press\s';'\sto\sdash,\son\sground\sor\smidair.\nYou\scan\sonly\sdash\s1\stime\smidair.
+HAZARD 1758 733 600 103
+HAZARD_RESPAWN 1492 23 297 242 1706 250
+LEVEL_TRANSITION 2624 853 371 76 level1
+TEXTBOX 2577 264 137 132 info_plate_small_2 Jump\sdown\sto\sthe\snext\slevel.\nNow\scomplete\swith\slevel\stransitions!
+HAZARD_RESPAWN 2315 41 107 368 2372 392
