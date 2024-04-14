@@ -1,8 +1,14 @@
 
 #include <stdio.h>
 #include "app.h"
+#include "entity.h"
+#include "mapper_misc.h"
 #include "particle.h"
+#include "physics.h"
+#include "render_component.h"
 #include "types.h"
+#include "util/vector.h"
+#include "util/assert.h"
 
 
 void app_QueueLoadLevel(App *app, const char *level_name) {
@@ -15,13 +21,140 @@ void app_QueueLoadLevel(App *app, const char *level_name) {
 
 
 #define CMD1(str)    if (strcmp(cmd, str) == 0)
-#define CMD(str)     else if (strcmd(cmd, str) == 0)
+#define CMD(str)     else if (strcmp(cmd, str) == 0)
 #define TOKEN        (strtok(NULL, " "))
 #define TOKEN_INT    (atoi(TOKEN))
-#define TOKEN_DOUBLE (strtod(TOKEN))
+#define TOKEN_DOUBLE (strtod(TOKEN, NULL))
+
+
+static vector_Vector *charbuf;
+
+static void _app_UnescapeTextbox(char *t) {
+	ASSERT(t && "only can be called with t!=NULL");
+	if (!charbuf)
+		charbuf = vector_Create(sizeof(char));
+	else
+		vector_Clear(charbuf);
+	size_t len = strlen(t);
+
+	const char bs = '\\', space = ' ', newline = '\n', tab = '\t', zero = '\0';
+
+	for (int i = 0; i < len; i++) {
+		if (t[i] == '\\') {
+			if (i == len - 1)
+				vector_Push(charbuf, &bs); // Weird case
+			else {
+				if (t[i + 1] == 's')
+					vector_Push(charbuf, &space);
+				else if (t[i + 1] == 'n')
+					vector_Push(charbuf, &newline);
+				else if (t[i + 1] == 't')
+					vector_Push(charbuf, &tab);
+				i++;
+			}
+		} else
+			vector_Push(charbuf, &t[i]);
+	}
+	vector_Push(charbuf, &zero);
+}
+
 
 // Subsequent tokens can be read by strtok(NULL, " ")
-static void _app_LevelCommand(char *cmd) {
+static void _app_LevelCommand(App *app, char *cmd) {
+	CMD1("HITBOX") {
+		double a, b, c, d;
+		a = TOKEN_DOUBLE;
+		b = TOKEN_DOUBLE;
+		c = TOKEN_DOUBLE;
+		d = TOKEN_DOUBLE;
+
+		Entity *e = entity_Create(app->entity, NULL);
+		ADD_COMPONENT(e, hitbox);
+		e->hitbox->box   = box2(a, b, c, d);
+		e->hitbox->fixed = true;
+		entity_Commit(app->entity, e);
+	}
+
+	CMD("PLAYER") {
+		double a, b;
+		a = TOKEN_DOUBLE;
+		b = TOKEN_DOUBLE;
+
+		Entity *e = entity_Create(app->entity, NULL);
+		ADD_COMPONENT(e, player);
+		e->player->hazardRespawn = vec2(a, b);
+		ADD_COMPONENT(e, position);
+		e->position->position = vec2(a, b);
+		e->position->velocity = vec2(0, 0);
+		ADD_COMPONENT(e, hitbox);
+		e->hitbox->box.lefttop = vec2(-20, -80);
+		e->hitbox->box.size    = vec2(40, 80);
+		entity_Commit(app->entity, e);
+	}
+
+	CMD("HAZARD_RESPAWN") {
+		double a, b, c, d, e, f;
+		a = TOKEN_DOUBLE;
+		b = TOKEN_DOUBLE;
+		c = TOKEN_DOUBLE;
+		d = TOKEN_DOUBLE;
+		e = TOKEN_DOUBLE;
+		f = TOKEN_DOUBLE;
+
+		Entity *en = entity_Create(app->entity, NULL);
+		misc_InstantiateHazardRespawn(app, en, box2(a, b, c, d), vec2(e, f));
+		entity_Commit(app->entity, en);
+	}
+
+	CMD("HAZARD") {
+		double a, b, c, d;
+		a = TOKEN_DOUBLE;
+		b = TOKEN_DOUBLE;
+		c = TOKEN_DOUBLE;
+		d = TOKEN_DOUBLE;
+
+		Entity *e = entity_Create(app->entity, NULL);
+		misc_InstantiateHazard(app, e, box2(a, b, c, d));
+		entity_Commit(app->entity, e);
+	}
+
+	CMD("TEXTBOX") {
+		double a, b, c, d;
+		a = TOKEN_DOUBLE;
+		b = TOKEN_DOUBLE;
+		c = TOKEN_DOUBLE;
+		d = TOKEN_DOUBLE;
+
+		Entity *e      = entity_Create(app->entity, NULL);
+		char   *bundle = TOKEN;
+		if (bundle != NULL)
+			e->render = render_NewComponent(app, bundle);
+
+		// We need to compute a position element
+		Vec2 position = {
+			.x = a + c / 2.0,
+			.y = b + d};
+		ADD_COMPONENT(e, position);
+		e->position->position = position;
+		e->position->velocity = vec2(0.0, 0.0);
+
+		char *text_raw = TOKEN;
+		if (text_raw) {
+			_app_UnescapeTextbox(text_raw);
+			misc_InstantiateTextbox(app, e, vector_Data(charbuf), box2(-c / 2.0, -d, c, d), (-d - 40));
+		}
+		entity_Commit(app->entity, e);
+	}
+
+	CMD("LEVEL_TRANSITION") {
+		// TODO
+		// Entity *e = entity_Create(app->entity, NULL);
+		// entity_Commit(app->entity, e);
+	}
+
+	CMD("CUTOFF") {
+		app->player->cutoff = TOKEN_DOUBLE;
+	}
 }
 
 
@@ -52,10 +185,11 @@ void _app_SwitchLevel(App *app) {
 		char *cmd = strtok(linebuf, " ");
 		if (cmd == NULL)
 			continue;
-		_app_LevelCommand(cmd);
+		_app_LevelCommand(app, cmd);
 	}
 
 
 	free(app->switch_level);
 	app->switch_level = NULL;
+	fclose(f);
 }
