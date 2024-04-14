@@ -21,6 +21,7 @@ System_Player *player_NewSystem(App *super) {
 	System_Player *sys = malloc(sizeof(System_Player));
 	sys->super         = super;
 	sys->player        = NULL;
+	sys->cutoff        = 5000.0;
 	return sys;
 }
 void player_DeleteSystem(System_Player *sys) {
@@ -152,7 +153,7 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 
 
 	// Respawn if fallen out of the world
-	if (p->super->position->position.y > 5000)
+	if (p->super->position->position.y > sys->cutoff)
 		player_HazardHarm(sys);
 
 

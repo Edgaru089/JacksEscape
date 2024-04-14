@@ -39,6 +39,10 @@ typedef struct {
 	// The player in the world.
 	// Control is paused if equals NULL.
 	Component_Player *player;
+
+	// Cutoff Y position.
+	// If the player is lower than this position, the player is environment harmed.
+	double cutoff;
 } System_Player;
 
 System_Player *player_NewSystem(App *super);
