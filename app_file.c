@@ -58,33 +58,42 @@ static void _app_UnescapeTextbox(char *t) {
 	vector_Push(charbuf, &zero);
 }
 
+static inline Vec2 readvec2() {
+	double a, b;
+	a      = TOKEN_DOUBLE;
+	b      = TOKEN_DOUBLE;
+	Vec2 v = {.x = a, .y = b};
+	return v;
+}
+static inline Box2 readbox2() {
+	Vec2 a, b;
+	a        = readvec2();
+	b        = readvec2();
+	Box2 box = {.lefttop = a, .size = b};
+	return box;
+}
+
 
 // Subsequent tokens can be read by strtok(NULL, " ")
 static void _app_LevelCommand(App *app, char *cmd) {
 	CMD1("HITBOX") {
-		double a, b, c, d;
-		a = TOKEN_DOUBLE;
-		b = TOKEN_DOUBLE;
-		c = TOKEN_DOUBLE;
-		d = TOKEN_DOUBLE;
+		Box2 box = readbox2();
 
 		Entity *e = entity_Create(app->entity, cmd);
 		ADD_COMPONENT(e, hitbox);
-		e->hitbox->box   = box2(a, b, c, d);
+		e->hitbox->box   = box;
 		e->hitbox->fixed = true;
 		entity_Commit(app->entity, e);
 	}
 
 	CMD("PLAYER") {
-		double a, b;
-		a = TOKEN_DOUBLE;
-		b = TOKEN_DOUBLE;
+		Vec2 vec = readvec2();
 
 		Entity *e = entity_Create(app->entity, cmd);
 		ADD_COMPONENT(e, player);
-		e->player->hazardRespawn = vec2(a, b);
+		e->player->hazardRespawn = vec;
 		ADD_COMPONENT(e, position);
-		e->position->position = vec2(a, b);
+		e->position->position = vec;
 		e->position->velocity = vec2(0, 0);
 		ADD_COMPONENT(e, hitbox);
 		e->hitbox->box.lefttop = vec2(-20, -80);
@@ -93,28 +102,19 @@ static void _app_LevelCommand(App *app, char *cmd) {
 	}
 
 	CMD("HAZARD_RESPAWN") {
-		double a, b, c, d, e, f;
-		a = TOKEN_DOUBLE;
-		b = TOKEN_DOUBLE;
-		c = TOKEN_DOUBLE;
-		d = TOKEN_DOUBLE;
-		e = TOKEN_DOUBLE;
-		f = TOKEN_DOUBLE;
+		Box2 box = readbox2();
+		Vec2 vec = readvec2();
 
-		Entity *en = entity_Create(app->entity, cmd);
-		misc_InstantiateHazardRespawn(app, en, box2(a, b, c, d), vec2(e, f));
-		entity_Commit(app->entity, en);
+		Entity *e = entity_Create(app->entity, cmd);
+		misc_InstantiateHazardRespawn(app, e, box, vec);
+		entity_Commit(app->entity, e);
 	}
 
 	CMD("HAZARD") {
-		double a, b, c, d;
-		a = TOKEN_DOUBLE;
-		b = TOKEN_DOUBLE;
-		c = TOKEN_DOUBLE;
-		d = TOKEN_DOUBLE;
+		Box2 box = readbox2();
 
 		Entity *e = entity_Create(app->entity, cmd);
-		misc_InstantiateHazard(app, e, box2(a, b, c, d));
+		misc_InstantiateHazard(app, e, box);
 		entity_Commit(app->entity, e);
 	}
 
@@ -147,15 +147,11 @@ static void _app_LevelCommand(App *app, char *cmd) {
 	}
 
 	CMD("LEVEL_TRANSITION") {
-		double a, b, c, d;
-		a                = TOKEN_DOUBLE;
-		b                = TOKEN_DOUBLE;
-		c                = TOKEN_DOUBLE;
-		d                = TOKEN_DOUBLE;
+		Box2  box        = readbox2();
 		char *next_level = TOKEN;
 		if (next_level) {
 			Entity *e = entity_Create(app->entity, cmd);
-			misc_InstantiateChangeLevel(app, e, box2(a, b, c, d), next_level);
+			misc_InstantiateChangeLevel(app, e, box, next_level);
 			entity_Commit(app->entity, e);
 		}
 	}
