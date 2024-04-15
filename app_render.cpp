@@ -1,6 +1,7 @@
 
 #include "app.h"
 #include "camera.h"
+#include "mapper_misc.h"
 #include "particle.h"
 #include "physics.h"
 #include "easyx.h"
@@ -56,6 +57,8 @@ void app_Render(App *app) {
 			}
 			if (e->misc->trigger_flags & misc_Hazard)
 				setlinecolor(RGB(255, 0, 0));
+			if (e->misc->trigger_flags & misc_CameraFocus)
+				setlinecolor(RGB(0, 255, 255));
 			if (e->misc->change_level)
 				setlinecolor(RGB(255, 255, 0));
 			Box2 box;
@@ -95,6 +98,16 @@ void app_Render(App *app) {
 			Vec2 pos = {.x = 0.0, .y = 0.0};
 			if (e->position)
 				pos = e->position->position;
+			// Has fillbox
+			if (r->fillbox.size.x > EPS) {
+				Box2 cam = camera_TransformBox2(app->camera, r->fillbox);
+				setfillcolor(r->fillcolor);
+				fillrectangle(
+					(int)round(cam.lefttop.x),
+					(int)round(cam.lefttop.y),
+					(int)round(cam.lefttop.x + cam.size.x),
+					(int)round(cam.lefttop.y + cam.size.y));
+			}
 			// Has bundle
 			if (r->bundle)
 				render_DrawBundleW(app, r->bundle, pos);

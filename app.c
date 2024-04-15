@@ -27,6 +27,7 @@ App *app_NewApp() {
 	app->particle = particle_NewSystem(app);
 
 	app->switch_level = NULL;
+	app->clear_color  = 0;
 	app->wantQuit     = false;
 
 

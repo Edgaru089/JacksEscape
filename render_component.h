@@ -15,11 +15,14 @@ typedef void (*render_CustomFunc)(App *app, Entity *e, Vec2 entity_screen_pos, v
 // Rendering component.
 // This is mostly for components requiring static renders.
 typedef struct {
-	App *super;
+	Entity *super;
 
 	render_Bundle    *bundle;      // A render bundle, usually found by render_FindBundle()
 	render_CustomFunc custom;      // Custom rendering function
 	void             *custom_data; // User data for the callback
+
+	Box2     fillbox;   // Fill box
+	uint32_t fillcolor; // Fill color
 } Component_Render;
 
 

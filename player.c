@@ -178,8 +178,8 @@ void player_HazardHarm(System_Player *sys) {
 			sys->player->super->position->position,
 			vec2(speed_linear * cos(angle), speed_linear * sin(angle)),
 			rand_DoubleRange(2, 3),
-			rand_DoubleRange(5, 30),
-			rand_DoubleRange(15, 22),
+			rand_DoubleRange(5, 28),
+			rand_DoubleRange(20, 32),
 			duration_FromSeconds(0),
 			&render_ModeDefault);
 	}

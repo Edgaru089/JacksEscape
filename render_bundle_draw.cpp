@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <easyx.h>
+#include <wingdi.h>
 
 
 namespace {
@@ -27,7 +28,7 @@ extern "C" void render_DrawPrimitiveW(App *app, render_Primitive *p, Vec2 offset
 		Vec2 screenpos;
 		if (!app->camera) {
 			// Really weird
-			fprintf(stderr, "[WARN][render_DrawPrimitiveW] called without a Camera system\n");
+			WARN("called without a Camera system");
 			screenpos = realpos;
 			needDraw  = true;
 		} else {

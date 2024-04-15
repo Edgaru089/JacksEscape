@@ -22,8 +22,9 @@ typedef struct _App {
 	System_Camera   *camera;
 	System_Particle *particle;
 
-	char *switch_level;
-	bool  wantQuit;
+	char    *switch_level;
+	uint32_t clear_color;
+	bool     wantQuit;
 } App;
 
 App *app_NewApp();

@@ -72,6 +72,13 @@ static inline Box2 readbox2() {
 	Box2 box = {.lefttop = a, .size = b};
 	return box;
 }
+static inline uint32_t readcolor() {
+	int r, g, b;
+	r = TOKEN_INT;
+	g = TOKEN_INT;
+	b = TOKEN_INT;
+	return (uint32_t)((r) | (g << 8) | (b << 16));
+}
 
 
 // Subsequent tokens can be read by strtok(NULL, " ")
@@ -166,6 +173,20 @@ static void _app_LevelCommand(App *app, char *cmd) {
 
 	CMD("CUTOFF") {
 		app->player->cutoff = TOKEN_DOUBLE;
+	}
+
+	CMD("BACKGROUND") {
+		app->clear_color = readcolor();
+	}
+
+	CMD("FILL") {
+		uint32_t color = readcolor();
+		Box2     box   = readbox2();
+
+		Entity *e = entity_Create(app->entity, cmd);
+		ADD_COMPONENT(e, render);
+		e->render->fillbox   = box;
+		e->render->fillcolor = color;
 	}
 
 	else {
