@@ -156,8 +156,20 @@ static void _app_LevelCommand(App *app, char *cmd) {
 		}
 	}
 
+	CMD("CAMERA_FOCUS") {
+		Box2 box = readbox2();
+
+		Entity *e = entity_Create(app->entity, cmd);
+		misc_InstantiateCameraFocus(app, e, box);
+		entity_Commit(app->entity, e);
+	}
+
 	CMD("CUTOFF") {
 		app->player->cutoff = TOKEN_DOUBLE;
+	}
+
+	else {
+		WARN("unknown command \"%s\"", cmd);
 	}
 }
 

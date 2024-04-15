@@ -115,6 +115,28 @@ void misc_thinker_ChangeLevel(App *app, Entity *e, Duration deltaTime) {
 }
 
 
+void misc_thinker_CameraFocus(App *app, Entity *e, Duration deltaTime) {
+	if (!e->misc || !(e->misc->trigger_flags & misc_CameraFocus)) {
+		WARN("called on an entity without misc or misc.flags&misc_CameraFocus", 0);
+		e->thinker = NULL;
+		return;
+	}
+
+	if (app->player->player == NULL) // No player
+		return;
+	Component_Player *p = app->player->player;
+
+	Box2 worldbox = ABSOLUTE_BOX(e, e->misc->trigger);
+	if (box2_Contains(worldbox, p->super->position->position)) {
+		app->camera->target = &e->misc->trigger;
+	} else {
+		if (app->camera->target == &e->misc->trigger)
+			// Player just left this box
+			app->camera->target = NULL;
+	}
+}
+
+
 // Utility functions for creating misc entities
 void misc_InstantiateTextbox(App *app, Entity *e, const char *text, Box2 trigger_box, float offset) {
 	ASSERT(e->misc == NULL && "Instantiate must be called with e.misc not set");
@@ -165,4 +187,12 @@ void misc_InstantiateChangeLevel(App *app, Entity *e, Box2 trigger_box, const ch
 	e->misc->trigger      = trigger_box;
 	e->misc->change_level = copy_malloc(next_level);
 	e->thinker            = &misc_thinker_ChangeLevel;
+}
+
+void misc_InstantiateCameraFocus(App *app, Entity *e, Box2 trigger_box) {
+	ASSERT(e->misc == NULL && "Instantiate must be called with e.misc not set");
+	e->misc                = zero_malloc(sizeof(Component_Misc));
+	e->misc->trigger       = trigger_box;
+	e->misc->trigger_flags = misc_CameraFocus;
+	e->thinker             = &misc_thinker_CameraFocus;
 }

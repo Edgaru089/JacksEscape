@@ -15,9 +15,9 @@ typedef struct {
 	App              *super;
 	Component_Player *player;
 
-	Box2   screen;      // Screen box, e.g. 1280x720 origin (0,0)
-	Box2   cam, target; // Current & target camera
-	double speed;       // Fraction of distance between cam & target to be covered in 1 sec
+	Box2   screen;       // Screen box, e.g. 1280x720 origin (0,0)
+	Box2   cam, *target; // Current & target camera
+	double speed;        // Fraction of distance between cam & target to be covered in 1 sec
 } System_Camera;
 
 System_Camera *camera_NewSystem(App *super);

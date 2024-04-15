@@ -43,9 +43,13 @@ void misc_thinker_ToLive(App *app, Entity *e, Duration deltaTime);
 // Thinker for level transition
 void misc_thinker_ChangeLevel(App *app, Entity *e, Duration deltaTime);
 
+// Thinker for camera focus
+void misc_thinker_CameraFocus(App *app, Entity *e, Duration deltaTime);
+
 
 typedef enum {
-	misc_Hazard = 1 << 0, // Hazard, harms the player on contact
+	misc_Hazard      = 1 << 0, // Hazard, harms the player on contact
+	misc_CameraFocus = 1 << 1, // Camera focuses the center of the box when player's pos is in the box
 } misc_TriggerFlags;
 
 
@@ -88,6 +92,10 @@ void misc_InstantiateToLive(App *app, Entity *e, Duration duration, TimePoint si
 // Inserts components for change level
 // Creates misc & the thinker.
 void misc_InstantiateChangeLevel(App *app, Entity *e, Box2 trigger_box, const char *next_level);
+
+// Inserts components for camera focus box
+// Creates misc & thinker
+void misc_InstantiateCameraFocus(App *app, Entity *e, Box2 trigger_box);
 
 
 static inline Box2 misc_TextboxUpright(double width, double height) {

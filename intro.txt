@@ -15,3 +15,4 @@ HAZARD_RESPAWN 1492 23 297 242 1706 250
 LEVEL_TRANSITION 2624 853 371 76 level1.txt
 TEXTBOX 2577 264 137 132 info_plate_small_2 Jump\sdown\sto\sthe\snext\slevel.\nNow\scomplete\swith\slevel\stransitions!
 HAZARD_RESPAWN 2315 41 107 368 2372 392
+CAMERA_FOCUS 1050 -70 1400 1000

@@ -38,8 +38,8 @@ void camera_DeleteEntity(System_Camera *sys, uintptr_t id) {
 
 void camera_Advance(System_Camera *sys, Duration deltaTime) {
 	Vec2 tocenter;
-	if (sys->target.size.x > EPS)
-		tocenter = box2_Center(sys->target);
+	if (sys->target != NULL)
+		tocenter = box2_Center(*sys->target);
 	else if (sys->player)
 		tocenter = vec2_Add(
 			sys->player->super->position->position,
