@@ -163,9 +163,27 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 }
 
 
+static int harmed_particle_count = 20;
+
 void player_HazardHarm(System_Player *sys) {
 	if (!sys->player)
 		return;
+
+	// Emit some particles
+	for (int i = 0; i < harmed_particle_count; i++) {
+		double speed_linear = rand_DoubleRange(150, 400);
+		double angle        = rand_Double01() * 2.0 * M_PI;
+		particle_Emit(
+			sys->super->particle,
+			sys->player->super->position->position,
+			vec2(speed_linear * cos(angle), speed_linear * sin(angle)),
+			rand_DoubleRange(2, 3),
+			rand_DoubleRange(5, 30),
+			rand_DoubleRange(15, 22),
+			duration_FromSeconds(0),
+			&render_ModeDefault);
+	}
+
 	sys->player->storedSpeedY              = 0;
 	sys->player->super->position->velocity = vec2(0, 0);
 	sys->player->super->position->position = sys->player->hazardRespawn;
