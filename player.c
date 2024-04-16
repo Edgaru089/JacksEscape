@@ -72,19 +72,10 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 		p->faceDirection = 1; // Face right by default
 
 	// Particles
-	static Duration  emitCooldown = {.microseconds = 150000};
+	static Duration  emitCooldown = {.microseconds = 80000};
 	static TimePoint lastEmit     = {.microseconds = 0};
-	if (time_Since(lastEmit).microseconds > emitCooldown.microseconds) {
-		lastEmit    = time_Now();
-		Vec2 to_pos = vec2_Add(p->super->position->position, vec2(0, -p->super->hitbox->box.size.y));
-		particle_Emit(
-			sys->super->particle,
-			vec2_Add(vec2_Random(-20, 20, -10, 10), to_pos),
-			vec2(0, -100), 2, 6, 6,
-			duration_FromSeconds(0), &render_ModeInverse);
-	}
-	// Particles when dashing
 	if (time_Since(p->lastDash).microseconds < dashLength.microseconds && dabs(p->super->position->velocity.x) > EPS) {
+		// When dashing
 		static TimePoint lastDashEmit = {.microseconds = 0};
 		static Duration  cooldown     = {.microseconds = 4000};
 		if (time_Since(lastDashEmit).microseconds > cooldown.microseconds) {
@@ -96,6 +87,23 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 				vec2(rand_DoubleRange(650, 700) * -p->faceDirection, rand_DoubleRange(-100, 100)),
 				7, rand_DoubleRange(14, 20), rand_DoubleRange(32, 40),
 				duration_FromSeconds(0), &render_ModeRotate);
+		}
+		lastEmit = time_Now();
+		lastEmit.microseconds -= 74000;
+	} else {
+		// When not dashing
+		if (time_Since(lastEmit).microseconds > emitCooldown.microseconds) {
+			lastEmit = time_Now();
+			lastEmit.microseconds += duration_FromSeconds(0.05 * rand_Double01()).microseconds;
+			Vec2 to_pos = vec2_Add(p->super->position->position, vec2(0, -p->super->hitbox->box.size.y));
+			particle_Emit(
+				sys->super->particle,
+				vec2_Add(vec2_Random(-10, 10, -10, 10), to_pos),
+				vec2_Add(
+					vec2(0, rand_DoubleRange(-200, -240)),
+					vec2_Scale(p->super->position->velocity, rand_DoubleRange(0.75, 1.0))),
+				2, round(rand_DoubleRange(12, 16)), 20,
+				duration_FromSeconds(0), &render_ModeDefault);
 		}
 	}
 

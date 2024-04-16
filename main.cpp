@@ -26,7 +26,8 @@ int main() {
 #else // MSVC
 	settextstyle(TEXTHEIGHT, 0, L"Courier New");
 #endif
-	vector_Vector *debugText = vector_Create(1);
+	vector_Vector *debugText    = vector_Create(1);
+	bool           debugPressed = false;
 
 	App *app = app_NewApp();
 	while (!app->wantQuit) {
@@ -42,13 +43,22 @@ int main() {
 		app_Advance(app, time_Reset(&lastUpdate));
 
 		BeginBatchDraw();
-		cleardevice();
 		app_Render(app);
 
-		app_DebugText(app, debugText);
-		render_DrawText(10, 10, (const char *)vector_Data(debugText));
+		if (app->debugOn) {
+			app_DebugText(app, debugText);
+			render_DrawText(10, 10, (const char *)vector_Data(debugText));
+		}
 
 		EndBatchDraw();
+
+		// Check debug button status
+		if ((GetAsyncKeyState(VK_F3) & 0x8000) != 0) {
+			if (!debugPressed)
+				app->debugOn = !app->debugOn;
+			debugPressed = true;
+		} else
+			debugPressed = false;
 
 
 		Duration toSleep = {.microseconds = 1000000 / 200 - time_Reset(&lastFrame).microseconds};

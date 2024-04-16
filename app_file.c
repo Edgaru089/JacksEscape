@@ -103,8 +103,8 @@ static void _app_LevelCommand(App *app, char *cmd) {
 		e->position->position = vec;
 		e->position->velocity = vec2(0, 0);
 		ADD_COMPONENT(e, hitbox);
-		e->hitbox->box.lefttop = vec2(-20, -80);
-		e->hitbox->box.size    = vec2(40, 80);
+		e->hitbox->box.lefttop = vec2(-20, -50);
+		e->hitbox->box.size    = vec2(40, 50);
 		entity_Commit(app->entity, e);
 	}
 

@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 
-#define TEXTHEIGHT 18
+#define TEXTHEIGHT 24
 
 
 // Draws text at the given on-screen position.

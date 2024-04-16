@@ -53,16 +53,25 @@ extern "C" void misc_render_Textbox(App *app, Entity *e, Vec2 entity_screen_pos,
 	int rgb = (int)round(fminf(t->progress, 1.0f) * 255.0);
 	settextcolor(RGB(rgb, rgb, rgb));
 
+	// Fade the background from App background to Black
+	int r = app->clear_color & 0xff;
+	int g = (app->clear_color & 0xff00) >> 8;
+	int b = (app->clear_color & 0xff0000) >> 16;
+	setbkcolor(RGB((int)roundf(r * (1.0f - t->progress)), (int)roundf(g * (1.0f - t->progress)), (int)roundf(b * (1.0f - t->progress))));
+
+
 	// Compute the bounding rect
 	RECT rect;
 	ASSERT(e->position && "Textboxes must have a position component");
 	rect.left  = (LONG)round(entity_screen_pos.x) - 20;
 	rect.right = (LONG)round(entity_screen_pos.x) + 20;
-	rect.top   = (LONG)round(entity_screen_pos.y) + t->offset;
-	rect.top   = (LONG)round(entity_screen_pos.y) + t->offset + 40;
+	rect.top   = (LONG)round(entity_screen_pos.y) + t->offset * 0.8;
 
 	// Convert & draw
 	// https://docs.easyx.cn/zh-cn/drawtext
 	convert_text(t->text);
 	drawtext((LPCTSTR)vector_Data(tbuf), &rect, DT_CENTER | DT_NOCLIP);
+
+	// Restore background to Black
+	setbkcolor(0);
 }
