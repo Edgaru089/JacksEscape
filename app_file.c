@@ -135,7 +135,7 @@ static void _app_LevelCommand(App *app, char *cmd) {
 		Entity *e      = entity_Create(app->entity, cmd);
 		char   *bundle = TOKEN;
 		if (bundle != NULL)
-			e->render = render_NewComponent(app, bundle);
+			e->render = render_NewComponent(e, bundle);
 
 		// We need to compute a position element
 		Vec2 position = {

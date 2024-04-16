@@ -149,7 +149,7 @@ void misc_InstantiateTextbox(App *app, Entity *e, const char *text, Box2 trigger
 	e->misc->textbox->offset = offset;
 
 	if (!e->render)
-		e->render = render_NewComponentFunc(app, &misc_render_Textbox, NULL);
+		e->render = render_NewComponentFunc(e, &misc_render_Textbox, NULL);
 	else
 		e->render->custom = &misc_render_Textbox;
 	e->thinker = &misc_thinker_Textbox;

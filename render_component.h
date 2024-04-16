@@ -27,9 +27,9 @@ typedef struct {
 
 
 // Creates a new component with a static render bundle
-Component_Render *render_NewComponent(App *app, const char *bundle_name);
+Component_Render *render_NewComponent(Entity *super, const char *bundle_name);
 // Creates a new component with a callback for rendering
-Component_Render *render_NewComponentFunc(App *app, render_CustomFunc func, void *data);
+Component_Render *render_NewComponentFunc(Entity *super, render_CustomFunc func, void *data);
 void              render_DeleteComponent(Component_Render *r);
 
 
