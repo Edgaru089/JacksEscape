@@ -18,8 +18,7 @@ typedef enum {
 
 // render_Primitive describes one render operation.
 typedef struct {
-	FillMode mode;   // fill mode
-	uint32_t fg, bg; // foreground & background colors
+	FillMode mode; // fill mode
 
 	render_PrimitiveType type;
 	vector_Vector       *points; // Vector of Vec2

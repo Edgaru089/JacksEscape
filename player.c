@@ -83,6 +83,7 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 			Vec2 to_pos  = vec2_Add(p->super->position->position, vec2(0, -p->super->hitbox->box.size.y / 2.0));
 			particle_Emit(
 				sys->super->particle,
+				3,
 				vec2_Add(vec2_Random(-5, 5, -30, 30), to_pos),
 				vec2(rand_DoubleRange(650, 700) * -p->faceDirection, rand_DoubleRange(-100, 100)),
 				7, rand_DoubleRange(14, 20), rand_DoubleRange(32, 40),
@@ -98,6 +99,7 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 			Vec2 to_pos = vec2_Add(p->super->position->position, vec2(0, -p->super->hitbox->box.size.y));
 			particle_Emit(
 				sys->super->particle,
+				3,
 				vec2_Add(vec2_Random(-10, 10, -10, 10), to_pos),
 				vec2_Add(
 					vec2(0, rand_DoubleRange(-200, -240)),
@@ -134,6 +136,7 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 			for (int i = 0; i < airjumpParticleCount; i++)
 				particle_Emit(
 					sys->super->particle,
+					3,
 					vec2_Add(vec2_Random(-20, 20, -5, 5), p->super->position->position),
 					(p->onGround) ? vec2(rand_DoubleRange(-50, 50), -100) : vec2(0, 200), 2, rand_DoubleRange(8, 12), 20,
 					duration_FromSeconds(0), &render_ModeRotate);
@@ -188,6 +191,7 @@ void player_HazardHarm(System_Player *sys) {
 		double angle        = rand_Double01() * 2.0 * M_PI;
 		particle_Emit(
 			sys->super->particle,
+			3,
 			sys->player->super->position->position,
 			vec2(speed_linear * cos(angle), speed_linear * sin(angle)),
 			rand_DoubleRange(2, 3),

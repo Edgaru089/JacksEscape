@@ -6,6 +6,7 @@
 #include "player.h"
 #include "types.h"
 #include "util/assert.h"
+#include "util/rand.h"
 #include <stdio.h>
 
 
@@ -52,6 +53,40 @@ void misc_thinker_Hazard(App *app, Entity *e, Duration deltaTime) {
 		e->thinker = NULL;
 		return;
 	}
+
+	// Emit some black particles
+	// BTW, very bad (but reliable) way to store a number here!
+	static const FillMode mode = {
+		.rop2     = 13, // R2_COPYPEN
+		.style    = 0,  // BS_SOLID
+		.hatch    = 0,
+		.rotate   = {.microseconds = 0},
+		.dissolve = {.microseconds = 0},
+		.fadein   = false,
+		.bg       = 0xffffff,
+		.fg       = 0};
+	uint64_t  emitCooldown = 400.0 * 40000.0 / e->misc->trigger.size.x; // 40 msec across 400px
+	TimePoint lastEmit     = {.microseconds = (uint64_t)e->thinkerData};
+	if (time_Since(lastEmit).microseconds > emitCooldown) {
+		lastEmit = time_Now();
+		lastEmit.microseconds -= 10000 * rand_Double01();
+		Box2 worldbox = ABSOLUTE_BOX(e, e->misc->trigger);
+		particle_Emit(
+			app->particle,
+			0,
+			vec2_Random(
+				worldbox.lefttop.x + 20,
+				worldbox.lefttop.x + worldbox.size.x - 20,
+				worldbox.lefttop.y + 20.0,
+				worldbox.lefttop.y + 40.0),
+			vec2(0.0, rand_DoubleRange(-200.0, -280.0)),
+			rand_DoubleRange(1, 1.5),
+			rand_DoubleRange(18, 30),
+			20, duration_FromSeconds(0), &mode);
+		e->thinkerData = (void *)lastEmit.microseconds;
+	}
+
+
 	if (app->player->player == NULL) // No player
 		return;
 	Component_Player *p         = app->player->player;

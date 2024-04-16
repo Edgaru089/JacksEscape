@@ -51,8 +51,6 @@ static void _render_BundleCommand(char *cmd) {
 		}
 		_tmpp         = malloc(sizeof(render_Primitive));
 		_tmpp->points = vector_Create(sizeof(Vec2));
-		_tmpp->fg     = 0xffffff;
-		_tmpp->bg     = 0;
 		_tmpp->mode   = render_ModeDefault;
 
 		// parse the type
@@ -88,19 +86,19 @@ static void _render_BundleCommand(char *cmd) {
 	} else if (CMD("FG")) {
 		// Set Foreground color
 		if (_tmpp) {
-			int r     = atoi(strtok(NULL, " "));
-			int g     = atoi(strtok(NULL, " "));
-			int b     = atoi(strtok(NULL, " "));
-			_tmpp->fg = RGB(r, g, b);
+			int r          = atoi(strtok(NULL, " "));
+			int g          = atoi(strtok(NULL, " "));
+			int b          = atoi(strtok(NULL, " "));
+			_tmpp->mode.fg = RGB(r, g, b);
 		} else
 			WARN("FG without PRIM first", 0);
 	} else if (CMD("BG")) {
 		// Set Background color
 		if (_tmpp) {
-			int r     = atoi(strtok(NULL, " "));
-			int g     = atoi(strtok(NULL, " "));
-			int b     = atoi(strtok(NULL, " "));
-			_tmpp->bg = RGB(r, g, b);
+			int r          = atoi(strtok(NULL, " "));
+			int g          = atoi(strtok(NULL, " "));
+			int b          = atoi(strtok(NULL, " "));
+			_tmpp->mode.bg = RGB(r, g, b);
 		} else
 			WARN("BG without PRIM first", 0);
 	} else {

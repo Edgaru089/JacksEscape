@@ -61,21 +61,27 @@ const FillMode render_ModeDefault = {
 	.hatch    = 0,
 	.rotate   = {.microseconds = 0},
 	.dissolve = {.microseconds = 0},
-	.fadein   = false};
+	.fadein   = false,
+	.bg       = 0,
+	.fg       = 0xffffff};
 const FillMode render_ModeInverse = {
 	.rop2     = R2_NOT,
 	.style    = BS_SOLID,
 	.hatch    = 0,
 	.rotate   = {.microseconds = 0},
 	.dissolve = {.microseconds = 0},
-	.fadein   = false};
+	.fadein   = false,
+	.bg       = 0,
+	.fg       = 0xffffff};
 extern const FillMode render_ModeRotate = {
 	.rop2     = R2_COPYPEN,
 	.style    = BS_SOLID,
 	.hatch    = 0,
 	.rotate   = {.microseconds = 100000},
 	.dissolve = {.microseconds = 0},
-	.fadein   = false};
+	.fadein   = false,
+	.bg       = 0,
+	.fg       = 0xffffff};
 
 
 void render_SetModes(FillMode mode, TimePoint since) {
@@ -97,12 +103,17 @@ void render_SetModes(FillMode mode, TimePoint since) {
 		static const long hatches[] = {HS_HORIZONTAL, HS_FDIAGONAL, HS_VERTICAL, HS_BDIAGONAL};
 		setfillstyle(BS_HATCHED, hatches[steps % 4], NULL);
 		setrop2(R2_COPYPEN);
+		setfillcolor(0xffffff);
+		setbkcolor(0);
 		return;
 	}
 
 	// Normal mode
 	setfillstyle(mode.style, mode.hatch, NULL);
 	setrop2(mode.rop2);
+	setlinecolor(mode.fg);
+	setfillcolor(mode.fg);
+	setbkcolor(mode.bg);
 }
 
 void render_FillScreen() {

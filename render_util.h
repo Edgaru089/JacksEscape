@@ -43,6 +43,7 @@ typedef struct {
 	// amount of time. Overrides rotate, style & hatch
 	Duration dissolve;
 	bool     fadein; // Fade Into being full for true, fade out of otherwise
+	uint32_t bg, fg; // Background & foreground colors
 } FillMode;
 
 // Default fill mode.

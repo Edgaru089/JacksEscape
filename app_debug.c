@@ -46,7 +46,7 @@ void app_DebugText(App *app, vector_Vector *vec_string) {
 	PUSH_STRING(buf);
 	snprintf(
 		buf, sizeof(buf) - 1,
-		"Particle count: %d\n", tree_Count(app->particle->parts));
+		"Particle count[0]: %d\n", tree_Count(app->particle->parts[0]));
 	PUSH_STRING(buf);
 
 	char zero = '\0';

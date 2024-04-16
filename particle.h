@@ -11,6 +11,9 @@ extern "C" {
 #endif
 
 
+#define PARTICLE_LAYER_COUNT 4
+
+
 // A particle instance.
 typedef struct {
 	uintptr_t id;            // ID.
@@ -30,7 +33,7 @@ typedef struct _App App;
 // Particle system.
 typedef struct {
 	App           *super;
-	tree_Tree     *parts; // uintptr_t -> struct Particle
+	tree_Tree     *parts[PARTICLE_LAYER_COUNT]; // uintptr_t -> struct Particle
 	vector_Vector *deleted_ids;
 	uintptr_t      maxID;
 } System_Particle;
@@ -43,8 +46,7 @@ void particle_Render(System_Particle *sys);
 
 
 // Emit a particle here.
-void particle_Emit(System_Particle *sys, Vec2 pos, Vec2 vec, double vec_friction, double size, double sizedec, Duration tolive, const FillMode *fill);
-void particle_Delete(System_Particle *sys, uintptr_t id);
+void particle_Emit(System_Particle *sys, int layer, Vec2 pos, Vec2 vec, double vec_friction, double size, double sizedec, Duration tolive, const FillMode *fill);
 
 // Clear all particles.
 void particle_Clear(System_Particle *sys);

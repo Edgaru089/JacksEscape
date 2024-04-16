@@ -47,9 +47,6 @@ extern "C" void render_DrawPrimitiveW(App *app, render_Primitive *p, Vec2 offset
 	// See if any of the points are in the camera box
 	if (needDraw) {
 		// Set the colors
-		setlinecolor(p->fg);
-		setfillcolor(p->fg);
-		setbkcolor(p->bg);
 		render_SetModes(p->mode, time_Now());
 
 		// Draw the converted primitive
