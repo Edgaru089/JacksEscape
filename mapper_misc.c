@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "physics.h"
 #include "player.h"
+#include "render_util.h"
 #include "types.h"
 #include "util/assert.h"
 #include "util/rand.h"
@@ -141,6 +142,28 @@ void misc_thinker_ChangeLevel(App *app, Entity *e, Duration deltaTime) {
 	}
 	if (app->player->player == NULL) // No player
 		return;
+
+	// Copied from Hazard thinker
+	uint64_t  emitCooldown = 400.0 * 60000.0 / e->misc->trigger.size.x; // 60 msec across 400px
+	TimePoint lastEmit     = {.microseconds = (uint64_t)e->thinkerData};
+	if (time_Since(lastEmit).microseconds > emitCooldown) {
+		lastEmit = time_Now();
+		lastEmit.microseconds -= 10000 * rand_Double01();
+		Box2 worldbox = ABSOLUTE_BOX(e, e->misc->trigger);
+		particle_Emit(
+			app->particle,
+			0,
+			vec2_Random(
+				worldbox.lefttop.x + 20,
+				worldbox.lefttop.x + worldbox.size.x - 20,
+				worldbox.lefttop.y + 20.0,
+				worldbox.lefttop.y + 40.0),
+			vec2(0.0, rand_DoubleRange(-250.0, -300.0)),
+			rand_DoubleRange(1, 1.5),
+			rand_DoubleRange(20, 30),
+			20, duration_FromSeconds(0), &render_ModeDefault);
+		e->thinkerData = (void *)lastEmit.microseconds;
+	}
 	Component_Player *p         = app->player->player;
 	Box2              playerbox = physics_HitboxAbsolute(p->super->hitbox);
 
