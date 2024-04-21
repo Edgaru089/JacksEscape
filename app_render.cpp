@@ -10,6 +10,7 @@
 #include "util/tree.h"
 #include "types.h"
 #include "render_util.h"
+#include "util/vector.h"
 #include <math.h>
 #include <graphics.h>
 
@@ -27,7 +28,7 @@ void app_Render(App *app) {
 	setbkcolor(app->clear_color);
 	cleardevice();
 
-	// Draw fill boxes first
+	// Draw fill polys & boxes first
 	for (tree_Node *i = tree_FirstNode(app->entity->entities);
 		 i != NULL;
 		 i = tree_Node_Next(i)) {
@@ -39,9 +40,29 @@ void app_Render(App *app) {
 			Vec2 pos = {.x = 0.0, .y = 0.0};
 			if (e->position)
 				pos = e->position->position;
+
+			// Has fill polygon
+			if (r->fillpoly) {
+				static vector_Vector *buf = vector_Create(2 * sizeof(int));
+				vector_Clear(buf);
+
+				// Transform every point in the polygon
+				for (int i = 0; i < vector_Size(r->fillpoly); i++) {
+					Vec2 screen_point        = camera_TransformVec2(app->camera, vec2_Add(*(Vec2 *)vector_At(r->fillpoly, i), pos));
+					int  screen_point_int[2] = {
+                        (int)round(screen_point.x),
+                        (int)round(screen_point.y)};
+					vector_Push(buf, screen_point_int);
+				}
+
+				// Draw
+				setfillcolor(r->fillcolor);
+				solidpolygon((POINT *)vector_Data(buf), vector_Size(r->fillpoly));
+			}
+
 			// Has fillbox
 			if (r->fillbox.size.x > EPS) {
-				Box2 cam = camera_TransformBox2(app->camera, r->fillbox);
+				Box2 cam = camera_TransformBox2(app->camera, box2_Offset(r->fillbox, pos));
 				setfillcolor(r->fillcolor);
 				solidrectangle(
 					(int)round(cam.lefttop.x),

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "util/vector.h"
 #include "render_bundle.h"
 
 
@@ -21,8 +22,9 @@ typedef struct {
 	render_CustomFunc custom;      // Custom rendering function
 	void             *custom_data; // User data for the callback
 
-	Box2     fillbox;   // Fill box
-	uint32_t fillcolor; // Fill color
+	Box2           fillbox;   // Fill box
+	vector_Vector *fillpoly;  // Fill polygon, vector of Vec2
+	uint32_t       fillcolor; // Fill color
 } Component_Render;
 
 

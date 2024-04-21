@@ -188,6 +188,25 @@ static void _app_LevelCommand(App *app, char *cmd) {
 		e->render->fillbox   = box;
 		e->render->fillcolor = color;
 	}
+	CMD("FILLPOLY") {
+		uint32_t color = readcolor();
+		int      n     = TOKEN_INT;
+
+		// Allocate a Vector
+		vector_Vector *vec = vector_Create(sizeof(Vec2));
+		vector_Reserve(vec, n);
+
+		// Read N points
+		for (int i = 0; i < n; i++) {
+			Vec2 point = readvec2();
+			vector_Push(vec, &point);
+		}
+
+		Entity *e = entity_Create(app->entity, cmd);
+		ADD_COMPONENT(e, render);
+		e->render->fillpoly  = vec; // Deallocated in render_DeleteComponent
+		e->render->fillcolor = color;
+	}
 
 	else {
 		WARN("unknown command \"%s\"", cmd);

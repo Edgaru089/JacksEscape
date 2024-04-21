@@ -3,6 +3,7 @@
 #include "app.h"
 #include "render_bundle.h"
 #include "types.h"
+#include "util/vector.h"
 
 
 Component_Render *render_NewComponent(Entity *super, const char *bundle_name) {
@@ -25,5 +26,7 @@ Component_Render *render_NewComponentFunc(Entity *super, render_CustomFunc func,
 }
 
 void render_DeleteComponent(Component_Render *r) {
+	if (r->fillpoly)
+		vector_Destroy(r->fillpoly);
 	free(r);
 }
