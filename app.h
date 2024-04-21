@@ -29,6 +29,7 @@ typedef struct _App {
 	char    *switch_level;
 	uint32_t clear_color;
 	bool     wantQuit, debugOn;
+	bool     paused;
 } App;
 
 App *app_NewApp();

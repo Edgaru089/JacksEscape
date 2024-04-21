@@ -68,8 +68,8 @@ void misc_thinker_Hazard(App *app, Entity *e, Duration deltaTime) {
 		.fg       = 0};
 	uint64_t  emitCooldown = 400.0 * 40000.0 / e->misc->trigger.size.x; // 40 msec across 400px
 	TimePoint lastEmit     = {.microseconds = (uint64_t)e->thinkerData};
-	if (time_Since(lastEmit).microseconds > emitCooldown) {
-		lastEmit = time_Now();
+	if (gametime_Since(app->time, lastEmit).microseconds > emitCooldown) {
+		lastEmit = gametime_Now(app->time);
 		lastEmit.microseconds -= 10000 * rand_Double01();
 		Box2 worldbox = ABSOLUTE_BOX(e, e->misc->trigger);
 		particle_Emit(
@@ -128,7 +128,7 @@ void misc_thinker_ToLive(App *app, Entity *e, Duration deltaTime) {
 		return;
 	}
 
-	if (e->misc->tolive.microseconds < time_Now().microseconds) {
+	if (e->misc->tolive.microseconds < gametime_Now(app->time).microseconds) {
 		// After its allocated time
 		entity_Delete(app->entity, e->id);
 	}
@@ -146,8 +146,8 @@ void misc_thinker_ChangeLevel(App *app, Entity *e, Duration deltaTime) {
 	// Copied from Hazard thinker
 	uint64_t  emitCooldown = 400.0 * 60000.0 / e->misc->trigger.size.x; // 60 msec across 400px
 	TimePoint lastEmit     = {.microseconds = (uint64_t)e->thinkerData};
-	if (time_Since(lastEmit).microseconds > emitCooldown) {
-		lastEmit = time_Now();
+	if (gametime_Since(app->time, lastEmit).microseconds > emitCooldown) {
+		lastEmit = gametime_Now(app->time);
 		lastEmit.microseconds -= 10000 * rand_Double01();
 		Box2 worldbox = ABSOLUTE_BOX(e, e->misc->trigger);
 		particle_Emit(

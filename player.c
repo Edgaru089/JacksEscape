@@ -74,12 +74,12 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 	// Particles
 	static Duration  emitCooldown = {.microseconds = 80000};
 	static TimePoint lastEmit     = {.microseconds = 0};
-	if (time_Since(p->lastDash).microseconds < dashLength.microseconds && dabs(p->super->position->velocity.x) > EPS) {
+	if (gametime_Since(sys->super->time, p->lastDash).microseconds < dashLength.microseconds && dabs(p->super->position->velocity.x) > EPS) {
 		// When dashing
 		static TimePoint lastDashEmit = {.microseconds = 0};
 		static Duration  cooldown     = {.microseconds = 4000};
-		if (time_Since(lastDashEmit).microseconds > cooldown.microseconds) {
-			lastDashEmit = time_Now();
+		if (gametime_Since(sys->super->time, lastDashEmit).microseconds > cooldown.microseconds) {
+			lastDashEmit = gametime_Now(sys->super->time);
 			Vec2 to_pos  = vec2_Add(p->super->position->position, vec2(0, -p->super->hitbox->box.size.y / 2.0));
 			particle_Emit(
 				sys->super->particle,
@@ -89,12 +89,12 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 				7, rand_DoubleRange(14, 20), rand_DoubleRange(32, 40),
 				duration_FromSeconds(0), &render_ModeRotate);
 		}
-		lastEmit = time_Now();
+		lastEmit = gametime_Now(sys->super->time);
 		lastEmit.microseconds -= 74000;
 	} else {
 		// When not dashing
-		if (time_Since(lastEmit).microseconds > emitCooldown.microseconds) {
-			lastEmit = time_Now();
+		if (gametime_Since(sys->super->time, lastEmit).microseconds > emitCooldown.microseconds) {
+			lastEmit = gametime_Now(sys->super->time);
 			lastEmit.microseconds += duration_FromSeconds(0.05 * rand_Double01()).microseconds;
 			Vec2 to_pos = vec2_Add(p->super->position->position, vec2(0, -p->super->hitbox->box.size.y));
 			particle_Emit(
@@ -148,13 +148,13 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 		p->dashCount = 0;
 	if (input_IsPressed(input->keys[input_Key_Dash]) &&
 		(p->onGround || p->dashCount < airdashCount) &&
-		time_Since(p->lastDash).microseconds > dashCooldown.microseconds) {
-		p->lastDash = time_Now();
+		gametime_Since(sys->super->time, p->lastDash).microseconds > dashCooldown.microseconds) {
+		p->lastDash = gametime_Now(sys->super->time);
 		if (!p->onGround)
 			p->dashCount++;
 	}
 	// Am I dashing right now?
-	if (time_Since(p->lastDash).microseconds < dashLength.microseconds) {
+	if (gametime_Since(sys->super->time, p->lastDash).microseconds < dashLength.microseconds) {
 		p->super->position->velocity.x += p->faceDirection * dashSpeed;
 		p->super->position->velocity.y = 0;
 	} else { // Release the stored Y speed

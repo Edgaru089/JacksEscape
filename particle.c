@@ -4,6 +4,7 @@
 #include "util/tree.h"
 #include "util/vector.h"
 #include "util/assert.h"
+#include "app.h"
 #include <stdio.h>
 
 
@@ -38,7 +39,7 @@ void particle_DeleteSystem(System_Particle *sys) {
 static void _particle_AdvancePart(System_Particle *sys, int layer, Particle *p, Duration deltaTime) {
 	p->size -= p->sizedec * duration_Seconds(deltaTime);
 	if ((p->tolive.microseconds != 0 &&
-		 time_Since(p->addtime).microseconds > p->tolive.microseconds) ||
+		 gametime_Since(sys->super->time, p->addtime).microseconds > p->tolive.microseconds) ||
 		p->size < EPS) { // vanished
 		particle_Delete(sys, layer, p->id);
 		return;
@@ -82,7 +83,7 @@ void particle_Emit(System_Particle *sys, int layer, Vec2 pos, Vec2 vec, double v
 	Particle *p  = tree_Insert(sys->parts[layer], id, NULL);
 	memset(p, 0, sizeof(Particle));
 	p->id           = id;
-	p->addtime      = time_Now();
+	p->addtime      = gametime_Now(sys->super->time);
 	p->tolive       = tolive;
 	p->pos          = pos;
 	p->vec          = vec;

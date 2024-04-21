@@ -65,7 +65,10 @@ void input_Advance(System_Input *sys) {
 	}
 
 	if (sys->keys[input_Key_Escape] == JustPressed) {
-		fprintf(stderr, "[input_Advance] Let's quit now!\n");
-		sys->super->wantQuit = true;
+		if (!sys->super->paused)
+			fprintf(stderr, "[input_Advance] Pausing\n");
+		else
+			fprintf(stderr, "[input_Advance] Unpausing\n");
+		sys->super->paused = !sys->super->paused;
 	}
 }

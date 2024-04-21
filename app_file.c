@@ -233,6 +233,7 @@ void _app_SwitchLevel(App *app) {
 	// Clear the current level
 	entity_Clear(app->entity);
 	particle_Clear(app->particle);
+	app->camera->target = NULL;
 
 	// Read every line
 	while (!feof(f) && fgets(linebuf, sizeof(linebuf), f)) {

@@ -31,6 +31,7 @@ App *app_NewApp() {
 	app->switch_level = NULL;
 	app->clear_color  = 0;
 	app->wantQuit     = false;
+	app->paused       = false;
 
 
 	Entity *player = entity_Create(app->entity, "player");
@@ -68,11 +69,14 @@ void app_Advance(App *app, Duration deltaTime) {
 	if (app->switch_level != NULL)
 		_app_SwitchLevel(app);
 
-	gametime_Advance(app->time, deltaTime);
-	particle_Advance(app->particle, deltaTime);
 	input_Advance(app->input);
-	player_Advance(app->player, deltaTime);
-	physics_Advance(app->physics, deltaTime);
-	entity_Advance(app->entity, deltaTime);
-	camera_Advance(app->camera, deltaTime);
+
+	if (!app->paused) {
+		gametime_Advance(app->time, deltaTime);
+		particle_Advance(app->particle, deltaTime);
+		player_Advance(app->player, deltaTime);
+		physics_Advance(app->physics, deltaTime);
+		entity_Advance(app->entity, deltaTime);
+		camera_Advance(app->camera, deltaTime);
+	}
 }

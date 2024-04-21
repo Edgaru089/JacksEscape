@@ -172,5 +172,11 @@ void app_Render(App *app) {
 
 
 	settextcolor(RGB(255, 255, 255));
+
+	// If paused, display a text
+	if (app->paused) {
+		RECT rect = {.left = SCREEN_WIDTH / 2 - 10, .top = 100, .right = SCREEN_WIDTH / 2 + 10, .bottom = 200};
+		drawtext("Game Paused", &rect, DT_CENTER | DT_NOCLIP);
+	}
 }
 }
