@@ -49,14 +49,15 @@ extern "C" void misc_render_Textbox(App *app, Entity *e, Vec2 entity_screen_pos,
 	if (t->progress < EPS)
 		return;
 
-	// Set the color
-	int rgb = (int)round(fminf(t->progress, 1.0f) * 255.0);
-	settextcolor(RGB(rgb, rgb, rgb));
-
-	// Fade the background from App background to Black
+	// This is the background
 	int r = app->clear_color & 0xff;
 	int g = (app->clear_color & 0xff00) >> 8;
 	int b = (app->clear_color & 0xff0000) >> 16;
+
+	// Fade foreground from App bg to White
+	settextcolor(RGB((int)roundf(r + (255 - r) * t->progress), (int)roundf(g + (255 - g) * t->progress), (int)roundf(b + (255 - b) * t->progress)));
+
+	// Fade the background from App background to Black
 	setbkcolor(RGB((int)roundf(r * (1.0f - t->progress)), (int)roundf(g * (1.0f - t->progress)), (int)roundf(b * (1.0f - t->progress))));
 
 
