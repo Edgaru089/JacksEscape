@@ -27,6 +27,7 @@ typedef struct _App {
 	System_GameTime *time;
 
 	char    *switch_level;
+	double   timescale;
 	uint32_t clear_color;
 	bool     wantQuit, debugOn;
 	bool     paused;

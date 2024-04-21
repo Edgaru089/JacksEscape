@@ -64,6 +64,12 @@ void input_Advance(System_Input *sys) {
 		}
 	}
 
+	if (input_IsPressed(sys->keys[input_Key_Spell])) {
+		sys->super->timescale = 0.25;
+	} else {
+		sys->super->timescale = 1.0;
+	}
+
 	if (sys->keys[input_Key_Escape] == JustPressed) {
 		if (!sys->super->paused)
 			fprintf(stderr, "[input_Advance] Pausing\n");

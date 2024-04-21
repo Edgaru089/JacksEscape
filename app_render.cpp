@@ -12,6 +12,7 @@
 #include "render_util.h"
 #include "util/vector.h"
 #include <math.h>
+#include <stdio.h>
 #include <graphics.h>
 
 
@@ -177,6 +178,12 @@ void app_Render(App *app) {
 	if (app->paused) {
 		RECT rect = {.left = SCREEN_WIDTH / 2 - 10, .top = 100, .right = SCREEN_WIDTH / 2 + 10, .bottom = 200};
 		drawtext("Game Paused", &rect, DT_CENTER | DT_NOCLIP);
+	}
+	if (abs(app->timescale - 1.0) > EPS) {
+		RECT rect = {.left = SCREEN_WIDTH / 2 - 10, .top = 50, .right = SCREEN_WIDTH / 2 + 10, .bottom = 150};
+		char buf[128];
+		snprintf(buf, sizeof(buf), "*** TIMESCALE %.2lf ***", app->timescale);
+		drawtext(buf, &rect, DT_CENTER | DT_NOCLIP);
 	}
 }
 }

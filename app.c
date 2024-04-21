@@ -29,6 +29,7 @@ App *app_NewApp() {
 	app->time     = gametime_NewSystem(app);
 
 	app->switch_level = NULL;
+	app->timescale    = 1.0;
 	app->clear_color  = 0;
 	app->wantQuit     = false;
 	app->paused       = false;
@@ -70,6 +71,9 @@ void app_Advance(App *app, Duration deltaTime) {
 		_app_SwitchLevel(app);
 
 	input_Advance(app->input);
+
+	if (1.0 - app->timescale > EPS)
+		deltaTime.microseconds = deltaTime.microseconds * app->timescale;
 
 	if (!app->paused) {
 		gametime_Advance(app->time, deltaTime);
