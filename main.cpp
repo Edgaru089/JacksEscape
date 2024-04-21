@@ -29,7 +29,8 @@ int main() {
 	vector_Vector *debugText    = vector_Create(1);
 	bool           debugPressed = false;
 
-	App *app = app_NewApp();
+	App *app    = app_NewApp();
+	app->window = win;
 	while (!app->wantQuit) {
 		if (time_Since(frameCounter).microseconds >= 1000000) { // 1 sec
 			/* Duration d = */ time_Reset(&frameCounter);

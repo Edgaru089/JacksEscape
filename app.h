@@ -15,6 +15,8 @@ extern "C" {
 
 
 typedef struct _App {
+	void *window; // HWND pointer; window handle set by main()
+
 	System_Physics  *physics;
 	System_Player   *player;
 	System_Input    *input;
