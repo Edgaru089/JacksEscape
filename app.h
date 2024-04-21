@@ -1,6 +1,7 @@
 #pragma once
 
 #include "entity.h"
+#include "gametime.h"
 #include "physics.h"
 #include "player.h"
 #include "input.h"
@@ -23,6 +24,7 @@ typedef struct _App {
 	System_Entity   *entity;
 	System_Camera   *camera;
 	System_Particle *particle;
+	System_GameTime *time;
 
 	char    *switch_level;
 	uint32_t clear_color;

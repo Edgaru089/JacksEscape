@@ -2,6 +2,7 @@
 #include "app.h"
 #include "camera.h"
 #include "entity.h"
+#include "gametime.h"
 #include "input.h"
 #include "particle.h"
 #include "physics.h"
@@ -25,6 +26,7 @@ App *app_NewApp() {
 	app->entity   = entity_NewSystem(app);
 	app->camera   = camera_NewSystem(app);
 	app->particle = particle_NewSystem(app);
+	app->time     = gametime_NewSystem(app);
 
 	app->switch_level = NULL;
 	app->clear_color  = 0;
@@ -51,6 +53,8 @@ void app_DeleteApp(App *app) {
 	physics_DeleteSystem(app->physics);
 	player_DeleteSystem(app->player);
 	camera_DeleteSystem(app->camera);
+	particle_DeleteSystem(app->particle);
+	gametime_DeleteSystem(app->time);
 
 	free(app);
 }
@@ -64,6 +68,7 @@ void app_Advance(App *app, Duration deltaTime) {
 	if (app->switch_level != NULL)
 		_app_SwitchLevel(app);
 
+	gametime_Advance(app->time, deltaTime);
 	particle_Advance(app->particle, deltaTime);
 	input_Advance(app->input);
 	player_Advance(app->player, deltaTime);

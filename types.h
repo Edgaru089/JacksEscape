@@ -107,11 +107,15 @@ typedef struct {
 	int64_t microseconds;
 } TimePoint;
 
-TimePoint time_Now();
+// No game logic should use the time_XXX functions for time.
+// Use gametime_XXX instead.
+TimePoint time_Now(); // Don't use this!
 TimePoint time_After(TimePoint now, Duration after);
-Duration  time_Since(TimePoint prev);
-Duration  time_Difference(TimePoint now, TimePoint prev);
-Duration  time_Reset(TimePoint *prev);
+// Don't use this!
+Duration time_Since(TimePoint prev);
+Duration time_Difference(TimePoint now, TimePoint prev);
+// Don't use this!
+Duration time_Reset(TimePoint *prev);
 
 // 1e-6
 extern const double EPS;
