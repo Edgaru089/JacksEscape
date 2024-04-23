@@ -1,5 +1,6 @@
 #pragma once
 
+#include "types.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -21,6 +22,8 @@ typedef enum {
 	input_Key_Use,
 	input_Key_Dash,
 	input_Key_Escape,
+	input_Key_LeftMouse,
+	input_Key_RightMouse,
 	input_Key_Count
 } input_Key;
 
@@ -61,6 +64,10 @@ void input_SetDefaultKeymap(System_Input *sys);
 
 // Update key states
 void input_Advance(System_Input *sys);
+
+
+// Get where the mouse is right now
+Vec2 input_MousePosition(System_Input *sys);
 
 
 #ifdef __cplusplus

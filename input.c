@@ -17,19 +17,23 @@ const char *input_KeyNames[input_Key_Count] = {
 	"Spell",
 	"Use",
 	"Dash",
-	"Escape"};
+	"Escape",
+	"Left Mouse Button",
+	"Right Mouse Button"};
 
 void input_SetDefaultKeymap(System_Input *sys) {
-	sys->systemKeymap[input_Key_Up]     = 'W';
-	sys->systemKeymap[input_Key_Left]   = 'A';
-	sys->systemKeymap[input_Key_Down]   = 'S';
-	sys->systemKeymap[input_Key_Right]  = 'D';
-	sys->systemKeymap[input_Key_Jump]   = VK_SPACE;
-	sys->systemKeymap[input_Key_Attack] = 'J';
-	sys->systemKeymap[input_Key_Spell]  = 'K';
-	sys->systemKeymap[input_Key_Use]    = 'L';
-	sys->systemKeymap[input_Key_Dash]   = VK_OEM_1; // The ;: key on the US keyboard
-	sys->systemKeymap[input_Key_Escape] = VK_ESCAPE;
+	sys->systemKeymap[input_Key_Up]         = 'W';
+	sys->systemKeymap[input_Key_Left]       = 'A';
+	sys->systemKeymap[input_Key_Down]       = 'S';
+	sys->systemKeymap[input_Key_Right]      = 'D';
+	sys->systemKeymap[input_Key_Jump]       = VK_SPACE;
+	sys->systemKeymap[input_Key_Attack]     = 'J';
+	sys->systemKeymap[input_Key_Spell]      = 'K';
+	sys->systemKeymap[input_Key_Use]        = 'L';
+	sys->systemKeymap[input_Key_Dash]       = VK_OEM_1; // The ;: key on the US keyboard
+	sys->systemKeymap[input_Key_Escape]     = VK_ESCAPE;
+	sys->systemKeymap[input_Key_LeftMouse]  = VK_LBUTTON;
+	sys->systemKeymap[input_Key_RightMouse] = VK_RBUTTON;
 }
 
 System_Input *input_NewSystem(App *super) {
@@ -77,4 +81,12 @@ void input_Advance(System_Input *sys) {
 			fprintf(stderr, "[input_Advance] Unpausing\n");
 		sys->super->paused = !sys->super->paused;
 	}
+}
+
+
+Vec2 input_MousePosition(System_Input *sys) {
+	POINT point;
+	GetCursorPos(&point);
+	ScreenToClient((HWND)sys->super->window, &point);
+	return vec2(point.x, point.y);
 }
