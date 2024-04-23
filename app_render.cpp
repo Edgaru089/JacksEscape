@@ -175,15 +175,12 @@ void app_Render(App *app) {
 	settextcolor(RGB(255, 255, 255));
 
 	// If paused, display a text
-	if (app->paused) {
-		RECT rect = {.left = SCREEN_WIDTH / 2 - 10, .top = 100, .right = SCREEN_WIDTH / 2 + 10, .bottom = 200};
-		drawtext("Game Paused", &rect, DT_CENTER | DT_NOCLIP);
-	}
-	if (abs(app->timescale - 1.0) > EPS) {
-		RECT rect = {.left = SCREEN_WIDTH / 2 - 10, .top = 50, .right = SCREEN_WIDTH / 2 + 10, .bottom = 150};
+	if (app->paused)
+		render_DrawTextEx("Game Paused", box2(SCREEN_WIDTH / 2 - 10, 100, 20, 100), DT_CENTER | DT_NOCLIP);
+	if (1.0 - app->timescale > EPS) {
 		char buf[128];
 		snprintf(buf, sizeof(buf), "*** TIMESCALE %.2lf ***", app->timescale);
-		drawtext(buf, &rect, DT_CENTER | DT_NOCLIP);
+		render_DrawTextEx(buf, box2(SCREEN_WIDTH / 2 - 10, 50, 20, 100), DT_CENTER | DT_NOCLIP);
 	}
 }
 }

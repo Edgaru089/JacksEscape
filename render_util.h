@@ -17,6 +17,9 @@ extern "C" {
 // for newlines.
 void render_DrawText(int x, int y, const char *str);
 
+// A warpper around drawtext().
+void render_DrawTextEx(const char *str, Box2 rect, unsigned int flags);
+
 
 // Fill modes.
 typedef struct {

@@ -132,6 +132,7 @@
     <ClInclude Include="app.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="entity.h" />
+    <ClInclude Include="gametime.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="mapper_misc.h" />
     <ClInclude Include="particle.h" />
@@ -153,9 +154,11 @@
   <ItemGroup>
     <ClCompile Include="app.c" />
     <ClCompile Include="app_debug.c" />
+    <ClCompile Include="app_file.c" />
     <ClCompile Include="app_render.cpp" />
     <ClCompile Include="camera.c" />
     <ClCompile Include="entity.c" />
+    <ClCompile Include="gametime.c" />
     <ClCompile Include="input.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapper_misc.c" />

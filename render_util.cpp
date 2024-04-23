@@ -54,6 +54,29 @@ void render_DrawText(int x, int y, const char *str) {
 	}
 }
 
+void render_DrawTextEx(const char *str, Box2 rect, unsigned int flags) {
+	if (!tbuf)
+		tbuf = vector_Create(sizeof(NCHAR));
+
+	const NCHAR zero = 0;
+	vector_Clear(tbuf);
+	int len = strlen(str);
+	for (int i = 0; i < len; i++) {
+		NCHAR c = (NCHAR)str[i];
+		vector_Push(tbuf, &c);
+	}
+
+	if (vector_Size(tbuf) > 0) {
+		vector_Push(tbuf, &zero);
+		RECT r;
+		r.left = (int)round(rect.lefttop.x);
+		r.top  = (int)round(rect.lefttop.y);
+		r.right = (int)round(rect.lefttop.x + rect.size.x);
+		r.bottom = (int)round(rect.lefttop.y + rect.size.y);
+		drawtext((LPCTSTR)vector_Data(tbuf), &r, flags);
+	}
+}
+
 
 const FillMode render_ModeDefault = {
 	.rop2     = R2_COPYPEN,

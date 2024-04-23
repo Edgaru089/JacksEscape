@@ -78,6 +78,9 @@
     <ClInclude Include="render_component.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="gametime.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="util\queue.c">
@@ -153,6 +156,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="render_component.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="gametime.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="app_file.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
