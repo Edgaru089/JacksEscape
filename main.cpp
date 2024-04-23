@@ -32,6 +32,11 @@ int main() {
 	App *app    = app_NewApp();
 	app->window = win;
 	while (!app->wantQuit) {
+		// Check if the window is still open
+		// On Windows/MinGW, the loop stucks open when the window is closed
+		if (!IsWindow(win))
+			break;
+
 		if (time_Since(frameCounter).microseconds >= 1000000) { // 1 sec
 			/* Duration d = */ time_Reset(&frameCounter);
 			char buf[128];
