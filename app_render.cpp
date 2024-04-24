@@ -7,6 +7,7 @@
 #include "easyx.h"
 #include "render_bundle.h"
 #include "render_component.h"
+#include "ui.h"
 #include "util/tree.h"
 #include "types.h"
 #include "render_util.h"
@@ -21,10 +22,7 @@ TimePoint since = time_Now();
 } // namespace
 
 
-extern "C" {
-
-
-void app_Render(App *app) {
+extern "C" void app_Render(App *app) {
 	render_SetModes(render_ModeDefault, time_Now());
 	setbkcolor(app->clear_color);
 	cleardevice();
@@ -176,11 +174,13 @@ void app_Render(App *app) {
 
 	// If paused, display a text
 	if (app->paused)
-		render_DrawTextEx("Game Paused", box2(SCREEN_WIDTH / 2 - 10, 100, 20, 100), DT_CENTER | DT_NOCLIP);
+		render_DrawTextEx("Game Paused", box2(SCREEN_WIDTH / 2.0 - 10, 100, 20, 100), DT_CENTER | DT_NOCLIP);
 	if (1.0 - app->timescale > EPS) {
 		char buf[128];
 		snprintf(buf, sizeof(buf), "*** TIMESCALE %.2lf ***", app->timescale);
-		render_DrawTextEx(buf, box2(SCREEN_WIDTH / 2 - 10, 50, 20, 100), DT_CENTER | DT_NOCLIP);
+		render_DrawTextEx(buf, box2(SCREEN_WIDTH / 2.0 - 10, 50, 20, 100), DT_CENTER | DT_NOCLIP);
 	}
-}
+
+	// Draw UI
+	ui_Render(app->ui);
 }

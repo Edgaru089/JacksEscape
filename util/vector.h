@@ -68,6 +68,11 @@ void *vector_At(vector_Vector *vec, uintptr_t i);
 // Data returns the data buffer.
 void *vector_Data(vector_Vector *vec);
 
+// Back returns the last element in the vector.
+//
+// No boundary test is performed.
+void *vector_Back(vector_Vector *vec);
+
 
 #ifdef __cplusplus
 }

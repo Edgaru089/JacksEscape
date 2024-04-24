@@ -7,6 +7,7 @@
 #include "input.h"
 #include "camera.h"
 #include "particle.h"
+#include "ui.h"
 #include "types.h"
 #include "util/vector.h"
 
@@ -25,6 +26,7 @@ typedef struct _App {
 	System_Camera   *camera;
 	System_Particle *particle;
 	System_GameTime *time;
+	System_UI       *ui;
 
 	char    *switch_level;
 	double   timescale;

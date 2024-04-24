@@ -3,6 +3,7 @@
 
 #include "string.h"
 #include "stdlib.h"
+#include "assert.h"
 
 
 vector_Vector *vector_Create(uintptr_t objectSize) {
@@ -19,6 +20,7 @@ vector_Vector *vector_Create(uintptr_t objectSize) {
 
 // Resizes the underlying buffer to a new capacity
 static inline void __vector_Rebuffer(vector_Vector *vec, uintptr_t newcap) {
+	ASSERT(newcap >= vec->size);
 	void *newbuf = malloc(newcap);
 	memcpy(newbuf, vec->data, vec->size);
 	free(vec->data);
@@ -50,7 +52,7 @@ bool vector_Pop(vector_Vector *vec, void *out_data) {
 
 void vector_Append(vector_Vector *vec, const void *data, uintptr_t n) {
 	uintptr_t oldsize = vec->size, addsize = vec->objectSize * n;
-	vector_Resize(vec, oldsize + addsize);
+	vector_Resize(vec, vector_Size(vec) + n);
 
 	if (data)
 		memcpy(vec->data + oldsize, data, addsize);
@@ -59,7 +61,7 @@ void vector_Append(vector_Vector *vec, const void *data, uintptr_t n) {
 }
 
 void vector_Resize(vector_Vector *vec, uintptr_t size) {
-	uintptr_t newsize = size;
+	uintptr_t newsize = size * vec->objectSize;
 	if (newsize > vec->cap) {
 		// grow the buffer exponentially
 		uint64_t newcap = vec->cap;
@@ -100,4 +102,8 @@ void *vector_At(vector_Vector *vec, uintptr_t i) {
 // Data returns the data buffer.
 void *vector_Data(vector_Vector *vec) {
 	return vec->data;
+}
+
+void *vector_Back(vector_Vector *vec) {
+	return vector_At(vec, vector_Size(vec) - 1);
 }

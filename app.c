@@ -11,6 +11,7 @@
 #include "render_bundle.h"
 #include "render_component.h"
 #include "mapper_misc.h"
+#include "ui.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -27,6 +28,9 @@ App *app_NewApp() {
 	app->camera   = camera_NewSystem(app);
 	app->particle = particle_NewSystem(app);
 	app->time     = gametime_NewSystem(app);
+	app->ui       = ui_NewSystem(app);
+	ui_RebuildUI(app->ui);
+	ui_PushState(app->ui, ui_Running);
 
 	app->switch_level = NULL;
 	app->timescale    = 1.0;
@@ -57,6 +61,7 @@ void app_DeleteApp(App *app) {
 	camera_DeleteSystem(app->camera);
 	particle_DeleteSystem(app->particle);
 	gametime_DeleteSystem(app->time);
+	ui_DeleteSystem(app->ui);
 
 	free(app);
 }
@@ -72,15 +77,18 @@ void app_Advance(App *app, Duration deltaTime) {
 
 	input_Advance(app->input);
 
+	Duration delta_game = deltaTime;
 	if (1.0 - app->timescale > EPS)
-		deltaTime.microseconds = deltaTime.microseconds * app->timescale;
+		delta_game.microseconds = delta_game.microseconds * app->timescale;
 
 	if (!app->paused) {
-		gametime_Advance(app->time, deltaTime);
-		particle_Advance(app->particle, deltaTime);
-		player_Advance(app->player, deltaTime);
-		physics_Advance(app->physics, deltaTime);
-		entity_Advance(app->entity, deltaTime);
-		camera_Advance(app->camera, deltaTime);
+		gametime_Advance(app->time, delta_game);
+		particle_Advance(app->particle, delta_game);
+		player_Advance(app->player, delta_game);
+		physics_Advance(app->physics, delta_game);
+		entity_Advance(app->entity, delta_game);
+		camera_Advance(app->camera, delta_game);
 	}
+
+	ui_Advance(app->ui, deltaTime);
 }

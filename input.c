@@ -1,6 +1,7 @@
 
 #include "input.h"
 #include "app.h"
+#include "ui.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -75,11 +76,15 @@ void input_Advance(System_Input *sys) {
 	}
 
 	if (sys->keys[input_Key_Escape] == JustPressed) {
-		if (!sys->super->paused)
-			fprintf(stderr, "[input_Advance] Pausing\n");
-		else
-			fprintf(stderr, "[input_Advance] Unpausing\n");
-		sys->super->paused = !sys->super->paused;
+		if (ui_CurrentState(sys->super->ui) == ui_Running) {
+			// Pause
+			ui_PushState(sys->super->ui, ui_Paused);
+			sys->super->paused = true;
+		} else if (ui_CurrentState(sys->super->ui) == ui_Paused) {
+			// Unpause
+			ui_PopState(sys->super->ui);
+			sys->super->paused = false;
+		}
 	}
 }
 
