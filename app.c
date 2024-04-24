@@ -16,6 +16,11 @@
 #include <stdio.h>
 
 
+#ifndef RGB
+#define RGB(r, g, b) ((r) | ((g) << 8) | ((b) << 16))
+#endif
+
+
 App *app_NewApp() {
 	render_LoadBundle("bundles.txt");
 
@@ -30,25 +35,14 @@ App *app_NewApp() {
 	app->time     = gametime_NewSystem(app);
 	app->ui       = ui_NewSystem(app);
 	ui_RebuildUI(app->ui);
-	ui_PushState(app->ui, ui_Running);
+	ui_PushState(app->ui, ui_TitleMenu);
 
 	app->switch_level = NULL;
 	app->timescale    = 1.0;
-	app->clear_color  = 0;
+	app->clear_color  = RGB(40, 40, 40);
 	app->wantQuit     = false;
 	app->paused       = false;
 
-
-	Entity *player = entity_Create(app->entity, "player");
-	ADD_COMPONENT(player, player);
-	ADD_COMPONENT(player, position);
-	player->position->position = vec2(500, 500);
-	player->position->velocity = vec2(0, 0);
-	ADD_COMPONENT(player, hitbox);
-	player->hitbox->box.lefttop = vec2(-20, -80);
-
-	app_QueueLoadLevel(app, "intro.txt");
-	_app_SwitchLevel(app);
 
 	return app;
 }

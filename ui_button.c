@@ -42,4 +42,9 @@ ui_Part ui_Button_New(Box2 box, const char *label, ui_ActionCallback callback, u
 		.free     = &_ui_Button_Free};
 	return part;
 }
-ui_Part ui_Button_NewLeftAligned(Box2 box, const char *label, ui_ActionCallback callback, uintptr_t data);
+ui_Part ui_Button_NewLeftAligned(Box2 box, const char *label, ui_ActionCallback callback, uintptr_t data) {
+	ui_Part part = ui_Button_New(box, label, callback, data);
+
+	((ui_Button *)part.user)->left_aligned = true;
+	return part;
+}

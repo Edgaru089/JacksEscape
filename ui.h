@@ -63,7 +63,7 @@ void ui_PopState(System_UI *sys);
 ui_State ui_CurrentState(System_UI *sys);
 
 
-#define UI_PADDING    (20)
+#define UI_PADDING    (16)
 #define UI_BACKGROUND (0)
 
 #define UI_BACKGROUND_FADE_MOVE_SPEED (20.0)

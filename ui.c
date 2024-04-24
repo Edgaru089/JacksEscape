@@ -90,20 +90,20 @@ void ui_Advance(System_UI *sys, Duration deltaTime) {
 	sys->bg.lefttop = lt;
 	sys->bg.size    = vec2_Minus(rb, lt);
 
-	for (int i = 0; i < ui_StateCount; i++)
-		for (int j = 0; j < vector_Size(sys->parts[i]); j++) {
-			ui_Part *part = (ui_Part *)vector_At(sys->parts[i], j);
-			// Hover check
-			if (box2_Contains(part->box, input_MousePosition(sys->super->input))) {
-				part->hovered  = true;
-				part->progress = dmin(part->progress + UI_BUTTON_HOVER_SPEED * duration_Seconds(deltaTime), 1.0);
-			} else {
-				part->hovered  = false;
-				part->progress = dmax(part->progress - UI_BUTTON_HOVER_SPEED * duration_Seconds(deltaTime), 0.0);
-			}
-
-			part->update(sys, part, part->user, deltaTime);
+	ui_State state = ui_CurrentState(sys);
+	for (int i = 0; i < vector_Size(sys->parts[state]); i++) {
+		ui_Part *part = (ui_Part *)vector_At(sys->parts[state], i);
+		// Hover check
+		if (box2_Contains(part->box, input_MousePosition(sys->super->input))) {
+			part->hovered  = true;
+			part->progress = dmin(part->progress + UI_BUTTON_HOVER_SPEED * duration_Seconds(deltaTime), 1.0);
+		} else {
+			part->hovered  = false;
+			part->progress = dmax(part->progress - UI_BUTTON_HOVER_SPEED * duration_Seconds(deltaTime), 0.0);
 		}
+
+		part->update(sys, part, part->user, deltaTime);
+	}
 }
 
 

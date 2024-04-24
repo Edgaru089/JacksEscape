@@ -66,10 +66,14 @@ extern "C" void _ui_Button_Draw(System_UI *sys, ui_Part *part, void *user) {
 	setfillcolor(color_final);
 	settextcolor(RGB(255, 255, 255));
 
+	Box2 padded_box = part->box;
+	padded_box.lefttop.x += UI_PADDING;
+	padded_box.size.x -= 2 * UI_PADDING;
+
 	solidrectangle(
 		(int)round(part->box.lefttop.x),
 		(int)round(part->box.lefttop.y),
 		(int)round(part->box.lefttop.x + part->box.size.x),
 		(int)round(part->box.lefttop.y + part->box.size.y));
-	render_DrawTextEx(b->label, part->box, (b->left_aligned ? DT_LEFT : DT_CENTER) | DT_VCENTER | DT_SINGLELINE);
+	render_DrawTextEx(b->label, padded_box, (b->left_aligned ? DT_LEFT : DT_CENTER) | DT_VCENTER | DT_SINGLELINE);
 }

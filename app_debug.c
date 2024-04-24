@@ -1,6 +1,7 @@
 
 #include "app.h"
 #include "types.h"
+#include "ui.h"
 #include "util/tree.h"
 #include "util/vector.h"
 
@@ -46,8 +47,17 @@ void app_DebugText(App *app, vector_Vector *vec_string) {
 	PUSH_STRING(buf);
 	snprintf(
 		buf, sizeof(buf) - 1,
-		"Particle count[0]: %d\n", tree_Count(app->particle->parts[0]));
+		"Particle count[0]: %d\n\nUI Stack:\n", tree_Count(app->particle->parts[0]));
 	PUSH_STRING(buf);
+
+	for (int i = 0; i < vector_Size(app->ui->state); i++) {
+		ui_State *s = vector_At(app->ui->state, i);
+		snprintf(
+			buf, sizeof(buf) - 1,
+			"    %s\n", ui_StateTitle[*s]);
+		PUSH_STRING(buf);
+	}
+
 
 	char zero = '\0';
 	vector_Push(vec_string, &zero);

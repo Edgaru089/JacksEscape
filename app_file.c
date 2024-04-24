@@ -227,6 +227,8 @@ void _app_SwitchLevel(App *app) {
 	FILE *f = fopen(app->switch_level, "r");
 	if (!f) {
 		WARN("failed to open file\"%s\"", app->switch_level);
+		free(app->switch_level);
+		app->switch_level = NULL;
 		return;
 	}
 
