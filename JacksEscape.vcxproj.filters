@@ -81,6 +81,9 @@
     <ClInclude Include="gametime.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ui.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="util\queue.c">
@@ -162,6 +165,21 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="app_file.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ui.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ui_action.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ui_build.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ui_button.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ui_render.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
