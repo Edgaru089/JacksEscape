@@ -17,6 +17,17 @@ int main() {
 
 #ifdef __MINGW32__
 	SetProcessDPIAware();
+#else
+	HINSTANCE user32Dll = LoadLibraryA("user32.dll");
+	if (user32Dll) {
+		typedef BOOL(WINAPI * SetProcessDPIAwareFuncType)();
+		SetProcessDPIAwareFuncType setProcessDPIAwareFunc = (SetProcessDPIAwareFuncType)GetProcAddress(user32Dll, "SetProcessDPIAware");
+		if (setProcessDPIAwareFunc) {
+			if (!setProcessDPIAwareFunc())
+				WARN("failed to set process DPI awareness");
+		}
+		FreeLibrary(user32Dll);
+	}
 #endif
 	HWND win = initgraph(SCREEN_WIDTH, SCREEN_HEIGHT);
 	SetWindowTextA(win, "JacksEscape");
