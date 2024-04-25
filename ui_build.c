@@ -31,10 +31,17 @@ static void _ui_Action_ReturnToTitle(System_UI *sys, ui_Part *part, uintptr_t da
 	sys->super->camera->target = NULL;
 }
 static void _ui_Action_SelectLevel(System_UI *sys, ui_Part *part, uintptr_t data) {
+	while (vector_Size(sys->state) > 0 && ui_CurrentState(sys) != ui_TitleMenu) {
+		INFO("popping \"%s\"", ui_StateTitle[ui_CurrentState(sys)]);
+		ui_Action_PopState(sys, part, data);
+	}
+	sys->super->paused = false;
+	if (vector_Size(sys->state) == 0)
+		WARN("new state stack is now empty, ohno");
+
 	const char *level = (const char *)data;
 	app_QueueLoadLevel(sys->super, level);
 	ui_Action_PushState(sys, part, (uintptr_t)ui_Running);
-	sys->super->paused = false;
 }
 static void _ui_Action_StartFromBeginning(System_UI *sys, ui_Part *part, uintptr_t data) {
 	_ui_Action_SelectLevel(sys, part, (uintptr_t) "intro.txt");
