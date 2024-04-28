@@ -25,7 +25,7 @@ static void _render_BundleCommand(char *cmd) {
 	if (CMD("BUNDLE")) {
 		// Start a bundle
 		if (_tmpb != NULL) {
-			WARN("_tmpb!=0, you forgot to use ENDBUNDLE for the last bundle, discarding", 0);
+			WARN("_tmpb!=0, you forgot to use ENDBUNDLE for the last bundle, discarding");
 			free(_tmpb);
 		}
 		_tmpb = render_NewBundle(strtok(NULL, " "));
@@ -38,13 +38,13 @@ static void _render_BundleCommand(char *cmd) {
 			vector_Push(render_Bundles, &_tmpb);
 			_tmpb = NULL;
 		} else
-			WARN("_tmpb==0, ENDBUNDLE without BUNDLE first", 0);
+			WARN("_tmpb==0, ENDBUNDLE without BUNDLE first");
 
 
 	} else if (CMD("PRIM")) {
 		// start a primitive
 		if (_tmpp != NULL) {
-			WARN("_tmpp!=0, you forgot to ENDPRIM for the last primitive, discarding", 0);
+			WARN("_tmpp!=0, you forgot to ENDPRIM for the last primitive, discarding");
 			if (_tmpp->points)
 				vector_Destroy(_tmpp->points);
 			free(_tmpp);
@@ -82,7 +82,7 @@ static void _render_BundleCommand(char *cmd) {
 			Vec2   v = vec2(x, y);
 			vector_Push(_tmpp->points, &v);
 		} else
-			WARN("P without PRIM first", 0);
+			WARN("P without PRIM first");
 	} else if (CMD("FG")) {
 		// Set Foreground color
 		if (_tmpp) {
@@ -91,7 +91,7 @@ static void _render_BundleCommand(char *cmd) {
 			int b          = atoi(strtok(NULL, " "));
 			_tmpp->mode.fg = RGB(r, g, b);
 		} else
-			WARN("FG without PRIM first", 0);
+			WARN("FG without PRIM first");
 	} else if (CMD("BG")) {
 		// Set Background color
 		if (_tmpp) {
@@ -100,15 +100,13 @@ static void _render_BundleCommand(char *cmd) {
 			int b          = atoi(strtok(NULL, " "));
 			_tmpp->mode.bg = RGB(r, g, b);
 		} else
-			WARN("BG without PRIM first", 0);
+			WARN("BG without PRIM first");
 	} else {
 		WARN("unknown command %s", cmd);
 	}
 #undef CMD
 }
 
-
-char linebuf[512];
 
 void render_LoadBundle(const char *filename) {
 	if (!render_Bundles)
@@ -120,6 +118,7 @@ void render_LoadBundle(const char *filename) {
 		return;
 	}
 
+	char linebuf[512];
 	while (!feof(f) && fgets(linebuf, sizeof(linebuf), f)) {
 		while (linebuf[strlen(linebuf) - 1] == '\n')
 			linebuf[strlen(linebuf) - 1] = '\0';

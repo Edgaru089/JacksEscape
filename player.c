@@ -56,9 +56,9 @@ void player_DeleteEntity(System_Player *sys, uintptr_t id) {
 }
 
 
-static double   walkSpeed = 300.0, jumpSpeed = 800.0, dashSpeed = 1500.0;
-static int      airjumpCount = 1, airdashCount = 1, airjumpParticleCount = 10;
-static Duration dashLength = {.microseconds = 150000}, dashCooldown = {.microseconds = 400000};
+static const double   walkSpeed = 300.0, jumpSpeed = 800.0, dashSpeed = 1500.0;
+static const int      airjumpCount = 1, airdashCount = 1, airjumpParticleCount = 10;
+static const Duration dashLength = {.microseconds = 150000}, dashCooldown = {.microseconds = 400000};
 
 
 void player_Advance(System_Player *sys, Duration deltaTime) {
@@ -179,7 +179,7 @@ void player_Advance(System_Player *sys, Duration deltaTime) {
 }
 
 
-static int harmed_particle_count = 20;
+static const int harmed_particle_count = 20;
 
 void player_HazardHarm(System_Player *sys) {
 	if (!sys->player)

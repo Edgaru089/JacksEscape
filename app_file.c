@@ -214,12 +214,9 @@ static void _app_LevelCommand(App *app, char *cmd) {
 }
 
 
-// Defined in render_bundle_file.c
-extern char linebuf[512];
-
 void _app_SwitchLevel(App *app) {
 	if (app->switch_level == NULL) {
-		WARN("called when switch_level is NULL", 0);
+		WARN("called when switch_level is NULL");
 		return;
 	}
 	INFO("Switching level to %s", app->switch_level);
@@ -238,6 +235,8 @@ void _app_SwitchLevel(App *app) {
 	app->camera->target = NULL;
 
 	// Read every line
+	char linebuf[512];
+	memset(linebuf, 0, sizeof(linebuf));
 	while (!feof(f) && fgets(linebuf, sizeof(linebuf), f)) {
 		while (linebuf[strlen(linebuf) - 1] == '\n')
 			linebuf[strlen(linebuf) - 1] = '\0';
