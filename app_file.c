@@ -171,6 +171,11 @@ static void _app_LevelCommand(App *app, char *cmd) {
 		entity_Commit(app->entity, e);
 	}
 
+	CMD("PUT_CAMERA") {
+		Vec2 center = readvec2();
+		app->camera->cam = box2_FromCenter(center, app->camera->screen.size);
+	}
+
 	CMD("CUTOFF") {
 		app->player->cutoff = TOKEN_DOUBLE;
 	}
