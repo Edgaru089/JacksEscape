@@ -43,6 +43,7 @@ App *app_NewApp() {
 	app->wantQuit     = false;
 	app->paused       = false;
 
+	app_QueueLoadLevel(app, "title.txt");
 
 	return app;
 }

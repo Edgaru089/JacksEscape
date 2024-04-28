@@ -140,8 +140,6 @@ void misc_thinker_ChangeLevel(App *app, Entity *e, Duration deltaTime) {
 		e->thinker = NULL;
 		return;
 	}
-	if (app->player->player == NULL) // No player
-		return;
 
 	// Copied from Hazard thinker
 	uint64_t  emitCooldown = 400.0 * 60000.0 / e->misc->trigger.size.x; // 60 msec across 400px
@@ -164,6 +162,10 @@ void misc_thinker_ChangeLevel(App *app, Entity *e, Duration deltaTime) {
 			20, duration_FromSeconds(0), &render_ModeDefault);
 		e->thinkerData = (void *)lastEmit.microseconds;
 	}
+
+	if (app->player->player == NULL) // No player
+		return;
+
 	Component_Player *p         = app->player->player;
 	Box2              playerbox = physics_HitboxAbsolute(p->super->hitbox);
 

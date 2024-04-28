@@ -24,11 +24,7 @@ static void _ui_Action_ReturnToTitle(System_UI *sys, ui_Part *part, uintptr_t da
 		WARN("new state stack is now empty, ohno");
 
 	sys->super->clear_color = RGB(40, 40, 40);
-	// Clear the app
-	// see app_file.c:233
-	entity_Clear(sys->super->entity);
-	particle_Clear(sys->super->particle);
-	sys->super->camera->target = NULL;
+	app_QueueLoadLevel(sys->super, "title.txt");
 }
 static void _ui_Action_SelectLevel(System_UI *sys, ui_Part *part, uintptr_t data) {
 	while (vector_Size(sys->state) > 0 && ui_CurrentState(sys) != ui_TitleMenu) {
