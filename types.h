@@ -70,6 +70,12 @@ static inline Box2 box2(double x, double y, double width, double height) {
 	b.size.y    = height;
 	return b;
 }
+static inline Box2 box2v(Vec2 lefttop, Vec2 size) {
+	Box2 b;
+	b.lefttop = lefttop;
+	b.size    = size;
+	return b;
+}
 
 
 // Intersection test.
@@ -79,6 +85,7 @@ bool box2_Contains(const Box2 box, const Vec2 point);
 
 Vec2 box2_Center(Box2 box);
 Box2 box2_FromCenter(Vec2 center, Vec2 size);
+Box2 box2_FromPivot(Vec2 position, Vec2 pivot, Vec2 size);
 
 Box2 box2_Offset(Box2 box, Vec2 offset);
 Box2 box2_OffsetX(Box2 box, double offsetX);

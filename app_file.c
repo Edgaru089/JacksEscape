@@ -172,7 +172,7 @@ static void _app_LevelCommand(App *app, char *cmd) {
 	}
 
 	CMD("PUT_CAMERA") {
-		Vec2 center = readvec2();
+		Vec2 center      = readvec2();
 		app->camera->cam = box2_FromCenter(center, app->camera->screen.size);
 	}
 
@@ -237,7 +237,8 @@ void _app_SwitchLevel(App *app) {
 	// Clear the current level
 	entity_Clear(app->entity);
 	particle_Clear(app->particle);
-	app->camera->target = NULL;
+	app->camera->target              = NULL;
+	app->level_playtime.microseconds = 0;
 
 	// Read every line
 	char linebuf[512];
@@ -253,7 +254,9 @@ void _app_SwitchLevel(App *app) {
 	}
 
 
-	free(app->switch_level);
-	app->switch_level = NULL;
+	if (app->current_level)
+		free(app->current_level);
+	app->current_level = app->switch_level;
+	app->switch_level  = NULL;
 	fclose(f);
 }

@@ -47,7 +47,7 @@ void app_DebugText(App *app, vector_Vector *vec_string) {
 	PUSH_STRING(buf);
 	snprintf(
 		buf, sizeof(buf) - 1,
-		"Particle count[0]: %d\n\nUI Stack:\n", tree_Count(app->particle->parts[0]));
+		"Particle count[0]: %d\n\nCurrent Level: %s\nPlaytime: %.4lfs\n\nUI Stack:\n", tree_Count(app->particle->parts[0]), (app->current_level ? app->current_level : "NULL"), duration_Seconds(app->level_playtime));
 	PUSH_STRING(buf);
 
 	for (int i = 0; i < vector_Size(app->ui->state); i++) {

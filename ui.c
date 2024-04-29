@@ -12,7 +12,9 @@ const char *ui_StateTitle[ui_StateCount] = {
 	"Pause Menu",
 	"Jack's Escape (ver. 3.141592) - Title",
 	"Select Level",
-	"Options"};
+	"Options",
+	"Level Finished",
+	"Leaderboards"};
 
 
 static inline double dabs(double x) { return x > 0 ? x : -x; }
@@ -32,7 +34,8 @@ void ui_DeleteSystem(System_UI *sys) {
 	for (int i = 0; i < ui_StateCount; i++)
 		for (int j = 0; j < vector_Size(sys->parts[i]); j++) {
 			ui_Part *part = (ui_Part *)vector_At(sys->parts[i], j);
-			part->free(sys, part, part->user);
+			if (part->free)
+				part->free(sys, part, part->user);
 		}
 	for (int i = 0; i < ui_StateCount; i++)
 		vector_Destroy(sys->parts[i]);
@@ -102,7 +105,8 @@ void ui_Advance(System_UI *sys, Duration deltaTime) {
 			part->progress = dmax(part->progress - UI_BUTTON_HOVER_SPEED * duration_Seconds(deltaTime), 0.0);
 		}
 
-		part->update(sys, part, part->user, deltaTime);
+		if (part->update)
+			part->update(sys, part, part->user, deltaTime);
 	}
 }
 

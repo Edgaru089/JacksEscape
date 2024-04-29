@@ -34,7 +34,8 @@ extern "C" void ui_Render(System_UI *sys) {
 	if (sys->bg.size.x > sys->bg_target.size.x * 0.9)
 		for (int i = 0; i < vector_Size(sys->parts[layer]); i++) {
 			ui_Part *part = (ui_Part *)vector_At(sys->parts[layer], i);
-			part->draw(sys, part, part->user);
+			if (part->draw)
+				part->draw(sys, part, part->user);
 		}
 }
 
@@ -66,14 +67,46 @@ extern "C" void _ui_Button_Draw(System_UI *sys, ui_Part *part, void *user) {
 	setfillcolor(color_final);
 	settextcolor(RGB(255, 255, 255));
 
-	Box2 padded_box = part->box;
-	padded_box.lefttop.x += UI_PADDING;
-	padded_box.size.x -= 2 * UI_PADDING;
-
 	solidrectangle(
 		(int)round(part->box.lefttop.x),
 		(int)round(part->box.lefttop.y),
 		(int)round(part->box.lefttop.x + part->box.size.x),
 		(int)round(part->box.lefttop.y + part->box.size.y));
-	render_DrawTextEx(b->label, padded_box, (b->left_aligned ? DT_LEFT : DT_CENTER) | DT_VCENTER | DT_SINGLELINE);
+	if (b->left_aligned) {
+		Box2 padded_box = part->box;
+		padded_box.lefttop.x += UI_PADDING;
+		padded_box.size.x -= 2 * UI_PADDING;
+
+		render_DrawTextEx(b->label, padded_box, DT_LEFT | DT_VCENTER | DT_SINGLELINE);
+	} else
+		render_DrawTextEx(b->label, part->box, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+}
+
+extern "C" void _ui_Label_Draw(System_UI *sys, ui_Part *part, uintptr_t user) {
+	ui_Label *label = (ui_Label *)user;
+	if (!label->label || strlen(label->label) == 0)
+		return;
+
+	Box2 padded_box = part->box;
+	padded_box.lefttop.x += UI_PADDING;
+	padded_box.size.x -= 2 * UI_PADDING;
+
+	setbkcolor(0);
+	settextcolor(RGB(255, 255, 255));
+
+	if (label->align < 0)
+		render_DrawTextEx(label->label, padded_box, DT_LEFT | DT_VCENTER | DT_SINGLELINE);
+	else if (label->align > 0)
+		render_DrawTextEx(label->label, padded_box, DT_RIGHT | DT_VCENTER | DT_SINGLELINE);
+	else // align == 0
+		render_DrawTextEx(label->label, padded_box, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+}
+
+extern "C" void _ui_Fill_Draw(System_UI *sys, ui_Part *part, uintptr_t user) {
+	setfillcolor(part->user);
+	solidrectangle(
+		(int)round(part->box.lefttop.x),
+		(int)round(part->box.lefttop.y),
+		(int)round(part->box.lefttop.x + part->box.size.x),
+		(int)round(part->box.lefttop.y + part->box.size.y));
 }

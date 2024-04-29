@@ -107,6 +107,14 @@ Box2 box2_FromCenter(Vec2 center, Vec2 size) {
 			.y = center.y - size.y / 2.0}};
 	return box;
 }
+Box2 box2_FromPivot(Vec2 position, Vec2 pivot, Vec2 size) {
+	Box2 box = {
+		.size    = size,
+		.lefttop = {
+			.x = position.x - size.x * pivot.x,
+			.y = position.y - size.y * pivot.y}};
+	return box;
+}
 
 Box2 box2_Offset(Box2 box, Vec2 offset) {
 	box.lefttop = vec2_Add(box.lefttop, offset);

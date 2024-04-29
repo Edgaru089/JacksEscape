@@ -28,7 +28,9 @@ typedef struct _App {
 	System_GameTime *time;
 	System_UI       *ui;
 
+	char    *current_level;
 	char    *switch_level;
+	Duration level_playtime;
 	double   timescale;
 	uint32_t clear_color;
 	bool     wantQuit, debugOn;

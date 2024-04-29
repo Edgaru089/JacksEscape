@@ -37,11 +37,12 @@ App *app_NewApp() {
 	ui_RebuildUI(app->ui);
 	ui_PushState(app->ui, ui_TitleMenu);
 
-	app->switch_level = NULL;
-	app->timescale    = 1.0;
-	app->clear_color  = RGB(40, 40, 40);
-	app->wantQuit     = false;
-	app->paused       = false;
+	app->current_level = NULL;
+	app->switch_level  = NULL;
+	app->timescale     = 1.0;
+	app->clear_color   = RGB(40, 40, 40);
+	app->wantQuit      = false;
+	app->paused        = false;
 
 	app_QueueLoadLevel(app, "title.txt");
 
@@ -83,6 +84,7 @@ void app_Advance(App *app, Duration deltaTime) {
 		physics_Advance(app->physics, delta_game);
 		entity_Advance(app->entity, delta_game);
 		camera_Advance(app->camera, delta_game);
+		app->level_playtime.microseconds += deltaTime.microseconds;
 	}
 
 	ui_Advance(app->ui, deltaTime);

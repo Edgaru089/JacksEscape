@@ -6,6 +6,7 @@
 #include "player.h"
 #include "render_util.h"
 #include "types.h"
+#include "ui.h"
 #include "util/assert.h"
 #include "util/rand.h"
 #include <stdio.h>
@@ -171,7 +172,7 @@ void misc_thinker_ChangeLevel(App *app, Entity *e, Duration deltaTime) {
 
 	Box2 worldbox = ABSOLUTE_BOX(e, e->misc->trigger);
 	if (box2_Intersects(worldbox, playerbox, NULL))
-		app_QueueLoadLevel(app, e->misc->change_level);
+		ui_EnterIntermission(app->ui, e->misc->change_level);
 }
 
 
