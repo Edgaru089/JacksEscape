@@ -183,8 +183,10 @@
     <ClCompile Include="types.c" />
     <ClCompile Include="ui.c" />
     <ClCompile Include="ui_action.c" />
+    <ClCompile Include="ui_boxbuilder.c" />
     <ClCompile Include="ui_build.c" />
     <ClCompile Include="ui_button.c" />
+    <ClCompile Include="ui_label.c" />
     <ClCompile Include="ui_render.cpp" />
     <ClCompile Include="util\queue.c" />
     <ClCompile Include="util\rand.c" />

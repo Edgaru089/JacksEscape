@@ -182,5 +182,11 @@
     <ClCompile Include="ui_render.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ui_label.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ui_boxbuilder.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
