@@ -139,6 +139,7 @@
     <ClInclude Include="entity.h" />
     <ClInclude Include="gametime.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="leaderboards.h" />
     <ClInclude Include="mapper_misc.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="physics.h" />
@@ -166,6 +167,8 @@
     <ClCompile Include="entity.c" />
     <ClCompile Include="gametime.c" />
     <ClCompile Include="input.c" />
+    <ClCompile Include="leaderboards.c" />
+    <ClCompile Include="leaderboards_file.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapper_misc.c" />
     <ClCompile Include="mapper_misc_render.cpp" />

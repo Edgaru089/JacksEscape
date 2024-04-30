@@ -70,6 +70,7 @@ static void _ui_Action_EndIntermission(System_UI *sys, ui_Part *part, uintptr_t 
 		// should be able to just use this
 		_ui_Action_SelectLevel(sys, part, data);
 		free((void *)data);
+		((ui_Button *)part->user)->callback_data = NULL;
 	}
 }
 

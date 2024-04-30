@@ -84,6 +84,9 @@
     <ClInclude Include="ui.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="leaderboards.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="util\queue.c">
@@ -186,6 +189,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ui_boxbuilder.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="leaderboards.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="leaderboards_file.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
