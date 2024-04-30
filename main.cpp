@@ -63,6 +63,7 @@ int main() {
 		app_Render(app);
 
 		if (app->debugOn) {
+			setbkcolor(0);
 			app_DebugText(app, debugText);
 			render_DrawText(10, 10, (const char *)vector_Data(debugText));
 		}

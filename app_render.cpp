@@ -171,6 +171,7 @@ extern "C" void app_Render(App *app) {
 
 
 	settextcolor(RGB(255, 255, 255));
+	setbkcolor(RGB(0, 0, 0));
 
 	// If paused, display a text
 	if (app->paused)
@@ -179,6 +180,18 @@ extern "C" void app_Render(App *app) {
 		char buf[128];
 		snprintf(buf, sizeof(buf), "*** TIMESCALE %.2lf ***", app->timescale);
 		render_DrawTextEx(buf, box2(SCREEN_WIDTH / 2.0 - 10, 50, 20, 100), DT_CENTER | DT_NOCLIP);
+	}
+
+	// Display a Timer
+	if (strcmp(app->current_level, "title.txt") != 0) {
+		char buf[64];
+		snprintf(
+			buf, sizeof(buf),
+			"%02d:%02d.%02d",
+			app->level_playtime.microseconds / 1000 / 1000 / 60,
+			app->level_playtime.microseconds / 1000 / 1000 % 60,
+			app->level_playtime.microseconds / 10000 % 100);
+		render_DrawTextEx(buf, box2(0, 0, SCREEN_WIDTH, TEXTHEIGHT), DT_RIGHT);
 	}
 
 	// Draw UI
