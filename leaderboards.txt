@@ -1,0 +1,6 @@
+
+!intro.txt
+3500 edgar
+
+!level1.txt
+30000 edgar
