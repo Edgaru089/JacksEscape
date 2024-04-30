@@ -81,6 +81,18 @@ void ui_EnterIntermission(System_UI *sys, const char *next_level) {
 	// We need to update the UI elements in this State
 	//  0            1            2             3             4           5              6                 7              8     9
 	// "Level Time" <level_time> "Record Time" <record_time> <seperator> <replay_level> <return_to_title> <leaderboards> <sep> <next_level>
+	vector_Vector *parts = sys->parts[ui_InterMission];
+#define PART(i) ((ui_Part *)vector_At(parts, i))
+	char buf[64];
+
+	// <level_time>
+	snprintf(
+		buf, sizeof(buf),
+		"%02d:%02d.%02d",
+		sys->super->level_playtime.microseconds / 1000 / 1000 / 60,
+		sys->super->level_playtime.microseconds / 1000 / 1000 % 60,
+		sys->super->level_playtime.microseconds / 10000 % 100);
+	ui_Label_SetLabel(PART(1), buf);
 }
 
 
