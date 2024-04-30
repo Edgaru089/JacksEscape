@@ -37,6 +37,13 @@ static inline void *copy_malloc_size(void *src, size_t size) {
 	return p;
 }
 
+static inline char *copy_realloc(char *original, const char *src) {
+	size_t len = strlen(src);
+	char  *p   = (char *)realloc(original, len + 1);
+	memcpy(p, src, len + 1);
+	return p;
+}
+
 
 // A 2d vector of double.
 typedef struct {

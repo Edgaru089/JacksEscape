@@ -2,6 +2,7 @@
 
 #include "entity.h"
 #include "gametime.h"
+#include "leaderboards.h"
 #include "physics.h"
 #include "player.h"
 #include "input.h"
@@ -19,14 +20,15 @@ extern "C" {
 typedef struct _App {
 	void *window; // HWND pointer; window handle set by main()
 
-	System_Physics  *physics;
-	System_Player   *player;
-	System_Input    *input;
-	System_Entity   *entity;
-	System_Camera   *camera;
-	System_Particle *particle;
-	System_GameTime *time;
-	System_UI       *ui;
+	System_Physics      *physics;
+	System_Player       *player;
+	System_Input        *input;
+	System_Entity       *entity;
+	System_Camera       *camera;
+	System_Particle     *particle;
+	System_GameTime     *time;
+	System_UI           *ui;
+	System_Leaderboards *lboard;
 
 	char    *current_level;
 	char    *switch_level;

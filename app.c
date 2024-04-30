@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "gametime.h"
 #include "input.h"
+#include "leaderboards.h"
 #include "particle.h"
 #include "physics.h"
 #include "player.h"
@@ -34,8 +35,11 @@ App *app_NewApp() {
 	app->particle = particle_NewSystem(app);
 	app->time     = gametime_NewSystem(app);
 	app->ui       = ui_NewSystem(app);
+	app->lboard   = lboard_NewSystem(app);
 	ui_RebuildUI(app->ui);
 	ui_PushState(app->ui, ui_TitleMenu);
+
+	lboard_LoadFromFile(app->lboard, "leaderboards.txt");
 
 	app->current_level = NULL;
 	app->switch_level  = NULL;
@@ -58,6 +62,7 @@ void app_DeleteApp(App *app) {
 	particle_DeleteSystem(app->particle);
 	gametime_DeleteSystem(app->time);
 	ui_DeleteSystem(app->ui);
+	lboard_DeleteSystem(app->lboard);
 
 	free(app);
 }

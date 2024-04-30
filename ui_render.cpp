@@ -92,7 +92,7 @@ extern "C" void _ui_Label_Draw(System_UI *sys, ui_Part *part, uintptr_t user) {
 	padded_box.size.x -= 2 * UI_PADDING;
 
 	setbkcolor(0);
-	settextcolor(RGB(255, 255, 255));
+	settextcolor(label->color);
 
 	if (label->align < 0)
 		render_DrawTextEx(label->label, padded_box, DT_LEFT | DT_VCENTER | DT_SINGLELINE);

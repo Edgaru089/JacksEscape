@@ -104,8 +104,9 @@ ui_Part ui_Button_NewLeftAligned(Box2 box, const char *label, ui_ActionCallback 
 
 
 typedef struct {
-	char *label; // Allocated & copied, NULL means no label
-	int   align; // <0: left aligned; ==0: center aligned; >0: right aligned
+	char    *label; // Allocated & copied, NULL means no label
+	int      align; // <0: left aligned; ==0: center aligned; >0: right aligned
+	uint32_t color;
 } ui_Label;
 ui_Part ui_Label_New(Box2 box, const char *label, int alignment);
 void    ui_Label_SetLabel(ui_Part *part, const char *label);

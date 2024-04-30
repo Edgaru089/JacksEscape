@@ -1,14 +1,24 @@
 
+#include "leaderboards.h"
 #include "render_util.h"
+#include "types.h"
 #include "ui.h"
 #include "app.h"
+#include "util/tree.h"
 #include "util/vector.h"
 #include <stdio.h>
+#include <windows.h>
 
 
 #ifndef RGB
 #define RGB(r, g, b) ((r) | ((g) << 8) | ((b) << 16))
 #endif
+
+#define UI_LEADERBOARDS_ITEM_COUNT (8)
+
+
+// Defined in ui_label.c
+void _ui_Label_UpdateShiny(System_UI *sys, ui_Part *part, uintptr_t user, Duration deltatime);
 
 
 static void _ui_Action_ResumeGame(System_UI *sys, ui_Part *part, uintptr_t data) {
@@ -63,6 +73,48 @@ static void _ui_Action_EndIntermission(System_UI *sys, ui_Part *part, uintptr_t 
 	}
 }
 
+static void _ui_Action_EnterLeaderboards(System_UI *sys, ui_Part *part, uintptr_t data) {
+	vector_Vector *parts = sys->parts[ui_Leaderboards];
+#define PART(i) ((ui_Part *)vector_At(parts, i))
+
+	int collected = 0;
+	int indice    = lboard_FindLevel(sys->super->lboard, sys->super->current_level);
+	if (indice != -1) {
+		tree_Tree *tree = *(tree_Tree **)vector_At(sys->super->lboard->records, indice);
+		for (tree_Node *node = tree_FirstNode(tree); node != NULL; node = tree_Node_Next(node)) {
+			uintptr_t      time_millisec = node->key;
+			vector_Vector *names         = *(vector_Vector **)node->data;
+			if (names)
+				for (int i = 0; i < vector_Size(names); i++) {
+					char *name = *(char **)vector_At(names, i);
+					if (collected < UI_LEADERBOARDS_ITEM_COUNT) {
+						char buf[64];
+						snprintf(buf, sizeof(buf), "%2d %s", collected + 1, name);
+						((ui_Label *)PART(collected * 2)->user)->label = copy_realloc(((ui_Label *)PART(collected * 2)->user)->label, buf);
+						snprintf(
+							buf, sizeof(buf),
+							"%02d:%02d.%02d",
+							time_millisec / 1000 / 60,
+							time_millisec / 1000 % 60,
+							time_millisec / 10 % 100);
+						((ui_Label *)PART(collected * 2 + 1)->user)->label = copy_realloc(((ui_Label *)PART(collected * 2 + 1)->user)->label, buf);
+						collected++;
+					}
+				}
+		}
+	}
+
+	while (collected < UI_LEADERBOARDS_ITEM_COUNT) {
+		char buf[64];
+		snprintf(buf, sizeof(buf), "%2d", collected + 1);
+		((ui_Label *)PART(collected * 2)->user)->label     = copy_realloc(((ui_Label *)PART(collected * 2)->user)->label, buf);
+		((ui_Label *)PART(collected * 2 + 1)->user)->label = copy_realloc(((ui_Label *)PART(collected * 2 + 1)->user)->label, "-- N/A --");
+		collected++;
+	}
+
+	ui_Action_PushState(sys, part, (uintptr_t)ui_Leaderboards);
+}
+
 
 void ui_EnterIntermission(System_UI *sys, const char *next_level) {
 	// Let's malloc & copy this next_level string
@@ -71,10 +123,13 @@ void ui_EnterIntermission(System_UI *sys, const char *next_level) {
 	ui_Part *last_part = vector_Back(sys->parts[ui_InterMission]);
 	if (((ui_Button *)last_part->user)->callback_data)
 		free((void *)((ui_Button *)last_part->user)->callback_data);
-	if (!next_level || strlen(next_level) == 0)
+	if (!next_level || strlen(next_level) == 0) {
 		((ui_Button *)last_part->user)->callback_data = 0;
-	else
+		((ui_Button *)last_part->user)->label         = copy_realloc(((ui_Button *)last_part->user)->label, "Return to Title");
+	} else {
 		((ui_Button *)last_part->user)->callback_data = (uintptr_t)copy_malloc(next_level);
+		((ui_Button *)last_part->user)->label         = copy_realloc(((ui_Button *)last_part->user)->label, "Proceed to Next Level");
+	}
 	ui_PushState(sys, ui_InterMission);
 	sys->super->paused = true;
 
@@ -82,7 +137,7 @@ void ui_EnterIntermission(System_UI *sys, const char *next_level) {
 	//  0            1            2             3             4           5              6                 7              8     9
 	// "Level Time" <level_time> "Record Time" <record_time> <seperator> <replay_level> <return_to_title> <leaderboards> <sep> <next_level>
 	vector_Vector *parts = sys->parts[ui_InterMission];
-#define PART(i) ((ui_Part *)vector_At(parts, i))
+	// #define PART(i) ((ui_Part *)vector_At(parts, i))
 	char buf[64];
 
 	// <level_time>
@@ -93,6 +148,42 @@ void ui_EnterIntermission(System_UI *sys, const char *next_level) {
 		sys->super->level_playtime.microseconds / 1000 / 1000 % 60,
 		sys->super->level_playtime.microseconds / 10000 % 100);
 	ui_Label_SetLabel(PART(1), buf);
+
+	// Get the record time
+	uintptr_t record = 0;
+	int       indice = lboard_FindLevel(sys->super->lboard, sys->super->current_level);
+	if (indice != -1) {
+		tree_Tree *tree  = *(tree_Tree **)vector_At(sys->super->lboard->records, indice);
+		tree_Node *first = tree_FirstNode(tree);
+		if (first)
+			record = first->key;
+	}
+
+	// <record_time>
+	if (record)
+		snprintf(
+			buf, sizeof(buf),
+			"%02d:%02d.%02d",
+			record / 1000 / 60,
+			record / 1000 % 60,
+			record / 10 % 100);
+	else
+		strcpy(buf, "--:--.--");
+	ui_Label_SetLabel(PART(3), buf);
+
+	// Shiny if lower than record
+	if (record == 0 || sys->super->level_playtime.microseconds / 1000 < record)
+		PART(1)->update = &_ui_Label_UpdateShiny;
+	else {
+		PART(1)->update                    = NULL;
+		((ui_Label *)PART(1)->user)->color = RGB(255, 255, 255);
+	}
+
+	// Get user name
+	DWORD bufsize = sizeof(buf) - 1;
+	GetUserNameA(buf, &bufsize);
+	lboard_Insert(sys->super->lboard, sys->super->current_level, sys->super->level_playtime.microseconds / 1000, buf);
+	lboard_SaveToFile(sys->super->lboard, "leaderboards.txt");
 }
 
 
@@ -164,7 +255,7 @@ void ui_RebuildUI(System_UI *sys) {
 	PUSH_UI(ui_Button_New(
 		box2_FromCenter(vec2(SCREEN_WIDTH / 2.0, 250 + 2 * (40 + UI_PADDING)), vec2(400, 40)),
 		"Leaderboard for This Level",
-		&ui_Action_PushState, (uintptr_t)ui_Leaderboards))
+		&_ui_Action_EnterLeaderboards, 0))
 	PUSH_UI(ui_Button_New(
 		box2_FromCenter(vec2(SCREEN_WIDTH / 2.0, 250 + 3 * (40 + UI_PADDING)), vec2(400, 40)),
 		"Options",
@@ -228,7 +319,7 @@ void ui_RebuildUI(System_UI *sys) {
 	PUSH_UI(ui_Button_New(
 		ui_BoxBuilder_At(builder, 5, 1),
 		"View Leaderboards for Level",
-		&ui_Action_PushState, (uintptr_t)ui_Leaderboards))
+		&_ui_Action_EnterLeaderboards, 0))
 	PUSH_UI(ui_Fill_New(
 		box2v(
 			vec2_Add(
@@ -240,8 +331,34 @@ void ui_RebuildUI(System_UI *sys) {
 		ui_BoxBuilder_At(builder, 7, 1),
 		"Proceed to Next Level",
 		&_ui_Action_EndIntermission, 0))
+	ui_BoxBuilder_Delete(builder);
 
 
+	// Leaderboards
 	p = sys->parts[ui_Leaderboards];
 	vector_Clear(p);
+
+	builder              = ui_BoxBuilder_New();
+	builder->line_height = 28;
+	builder->pivot       = vec2(0.5, 0.5625);
+	builder->position    = vec2(SCREEN_WIDTH / 2.0, SCREEN_HEIGHT / 2.0);
+	for (int i = 1; i <= UI_LEADERBOARDS_ITEM_COUNT; i++)
+		ui_BoxBuilder_SetCount(builder, i, 1);
+	ui_BoxBuilder_SetCount(builder, UI_LEADERBOARDS_ITEM_COUNT + 1, 1);
+	ui_BoxBuilder_Assemble(builder);
+
+	for (int i = 1; i <= UI_LEADERBOARDS_ITEM_COUNT; i++) {
+		char buf[64];
+		snprintf(buf, sizeof(buf), "%2d", i);
+		PUSH_UI(ui_Label_New(
+			ui_BoxBuilder_At(builder, i, 1),
+			buf, -1))
+		PUSH_UI(ui_Label_New(
+			ui_BoxBuilder_At(builder, i, 1),
+			"-- N/A --", 1))
+	}
+	PUSH_UI(ui_Button_New(
+		ui_BoxBuilder_At(builder, UI_LEADERBOARDS_ITEM_COUNT + 1, 1),
+		"Return",
+		&ui_Action_PopState, 0))
 }

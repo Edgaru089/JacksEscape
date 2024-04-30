@@ -25,7 +25,7 @@ void lboard_DeleteSystem(System_Leaderboards *sys) {
 
 	// Free records
 	for (int i = 0; i < vector_Size(sys->records); i++) {
-		tree_Tree *tree = *(tree_Tree **)vector_At(sys->levelnames, i);
+		tree_Tree *tree = *(tree_Tree **)vector_At(sys->records, i);
 		for (tree_Node *node = tree_FirstNode(tree); node != NULL; node = tree_Node_Next(node)) {
 			vector_Vector *names = *(vector_Vector **)node->data;
 			if (names) {
@@ -57,7 +57,7 @@ void lboard_Insert(System_Leaderboards *sys, const char *level, uintptr_t time_m
 		// Append a new one
 		char      *level_copy = copy_malloc(level);
 		tree_Tree *empty_tree = tree_Create(sizeof(vector_Vector *));
-		vector_Push(sys->levelnames, level_copy);
+		vector_Push(sys->levelnames, &level_copy);
 		vector_Push(sys->records, &empty_tree);
 		ASSERT(vector_Size(sys->levelnames) == vector_Size(sys->records));
 		indice = vector_Size(sys->levelnames) - 1;
@@ -67,7 +67,7 @@ void lboard_Insert(System_Leaderboards *sys, const char *level, uintptr_t time_m
 
 	// Insert or find this node
 	bool       added;
-	tree_Node *node = tree_Insert(tree, time_millisec, &added);
+	tree_Node *node = tree_InsertNode(tree, time_millisec, &added);
 	if (added)
 		// Brand new node, create a new vector of names
 		*((vector_Vector **)node->data) = vector_Create(sizeof(char *));
