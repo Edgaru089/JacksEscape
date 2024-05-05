@@ -19,7 +19,7 @@ void lboard_LoadFromFile(System_Leaderboards *sys, const char *filename) {
 	char linebuf[512];
 	memset(linebuf, 0, sizeof(linebuf));
 	while (!feof(f) && fgets(linebuf, sizeof(linebuf), f)) {
-		while (linebuf[strlen(linebuf) - 1] == '\n')
+		while (linebuf[0] !='\0' && linebuf[strlen(linebuf) - 1] == '\n')
 			linebuf[strlen(linebuf) - 1] = '\0';
 
 		// Skip empty lines
